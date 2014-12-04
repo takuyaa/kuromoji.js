@@ -2,7 +2,7 @@ kuromoji.js
 ===========
 
 JavaScript implementation of Japanese morphological analyzer.
-This is a pure JavaScript porting of Kuromoji from scratch.
+This is a pure JavaScript porting of [Kuromoji](http://www.atilika.com/ja/products/kuromoji.html).
 
 
 Directory
