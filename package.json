@@ -1,0 +1,52 @@
+{
+  "name": "kuromoji",
+  "version": "0.0.1",
+  "author": "Takuya Asano <takuya.a@gmail.com>",
+  "description": "JavaScript implementation of Japanese morphological analyzer",
+  "main": "./dist/node/kuromoji.js",
+  "keywords": [
+    "morphological analyzer",
+    "tokenizer",
+    "japanese",
+    "pos",
+    "pos tagger",
+    "nlp"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/takuyaa/kuromoji.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/takuyaa/kuromoji.js.git"
+  },
+  "scripts": {
+    "test": "mocha -R spec --recursive"
+  },
+  "bugs": {
+    "url": "https://github.com/takuyaa/kuromoji.js/issues"
+  },
+  "dependencies": {
+    "async": "^0.9.0",
+    "doublearray": "0.0.2",
+    "zlibjs": "^0.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^6.3.2",
+    "chai": "^1.10.0",
+    "event-stream": "^3.1.7",
+    "gulp": "^3.8.10",
+    "gulp-clean": "^0.3.1",
+    "gulp-gunzip": "0.0.2",
+    "gulp-gzip": "0.0.8",
+    "gulp-istanbul": "^0.3.1",
+    "gulp-jsdoc": "^0.1.4",
+    "gulp-jshint": "^1.9.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-remote-src": "^0.3.0",
+    "gulp-sourcemaps": "^1.2.8",
+    "gulp-util": "^3.0.1",
+    "gulp-webserver": "^0.8.7",
+    "jconv": "^0.1.5",
+    "run-sequence": "^1.0.1",
+    "vinyl-source-stream": "^1.0.0"
+  }
+}
