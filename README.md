@@ -4,6 +4,8 @@ kuromoji.js
 JavaScript implementation of Japanese morphological analyzer.
 This is a pure JavaScript porting of [Kuromoji](http://www.atilika.com/ja/products/kuromoji.html).
 
+You can see how kuromoji.js works in [demo site](http://takuyaa.github.io/kuromoji.js/demo/tokenize.html).
+
 
 Directory
 ---------
