@@ -1,0 +1,133 @@
+<!doctype html>
+<!--
+  ~ Copyright Copyright 2014 Takuya Asano
+  ~ Copyright 2010-2014 Atilika Inc. and contributors
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html class="no-js" lang="ja">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>kuromoji.js demo</title>
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css"/>
+    <script src="bower_components/foundation/js/vendor/modernizr.js"></script>
+    <script src="bower_components/vue/dist/vue.min.js"></script>
+    <script src="bower_components/foundation/js/vendor/jquery.js"></script>
+    <script src="bower_components/foundation/js/vendor/fastclick.js"></script>
+    <script src="bower_components/foundation/js/foundation.min.js"></script>
+    <script src="bower_components/kuromoji/dist/browser/kuromoji.js"></script>
+</head>
+<body>
+
+<div class="row">
+    <div class="small-12 columns">
+
+        <h1>kuromoji.js demo</h1>
+
+        <style id="css">
+            text {
+            font-weight: 300;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            }
+
+            .node rect {
+            stroke: #999;
+            stroke-width: 1px;
+            fill: #fff;
+            }
+
+            .edgeLabel rect {
+            fill: #fff;
+            }
+
+            .edgePath path {
+            stroke: #333;
+            stroke-width: 1.5px;
+            fill: none;
+            }
+        </style>
+
+
+        <div id="demo" class="row">
+            <div class="large-12 columns">
+                <div v-show="isLoading" data-alert="" class="alert-box radius">
+                    <div v-text="message"></div>
+                </div>
+
+                <form v-show="!isLoading">
+                    <label>解析対象
+                        <input type="text" placeholder="解析したい文字列を入力してください"
+                               v-model="inputText" />
+                        <input type="text" name="dummy" style="display:none;">
+                    </label>
+
+                    <table v-show="tokens.length" width="100%">
+                        <thead>
+                        <tr>
+                            <th>表層形</th>
+                            <th>品詞</th>
+                            <th>品詞細分類1</th>
+                            <th>品詞細分類2</th>
+                            <th>品詞細分類3</th>
+                            <th>活用型</th>
+                            <th>活用形</th>
+                            <th>基本形</th>
+                            <th>読み</th>
+                            <th>発音</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-repeat="token: tokens">
+                            <td>{{token.surface_form}}</td>
+                            <td>{{token.pos}}</td>
+                            <td>{{token.pos_detail_1}}</td>
+                            <td>{{token.pos_detail_2}}</td>
+                            <td>{{token.pos_detail_3}}</td>
+                            <td>{{token.conjugated_type}}</td>
+                            <td>{{token.conjugated_form}}</td>
+                            <td>{{token.basic_form}}</td>
+                            <td>{{token.reading}}</td>
+                            <td>{{token.pronunciation}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!--
+                    <a href="#" v-on="click: drawGraph" v-show="svgStyle=='hidden'" class="radius button">ラティスを表示する</a>
+                    -->
+
+                    <svg v-style="visibility: svgStyle" width="100%" height="800px">
+                        <g id="lattice" transform="translate(20,20)"></g>
+                    </svg>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="js/tokenize.js"></script>
+
+<script>
+  $(document).foundation();
+</script>
+
+</body>
+</html>

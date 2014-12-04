@@ -1,0 +1,57 @@
+{
+  "name": "kuromoji",
+  "version": "0.0.2",
+  "authors": [
+    "Takuya Asano <takuya.a@gmail.com>"
+  ],
+  "description": "JavaScript implementation of Japanese morphological analyzer",
+  "main": [
+    "dist/browser/kuromoji.js",
+    "dist/dict/base.dat.gz",
+    "dist/dict/cc.dat.gz",
+    "dist/dict/check.dat.gz",
+    "dist/dict/tid.dat.gz",
+    "dist/dict/tid_map.dat.gz",
+    "dist/dict/tid_pos.dat.gz",
+    "dist/dict/unk.dat.gz",
+    "dist/dict/unk_char.dat.gz",
+    "dist/dict/unk_compat.dat.gz",
+    "dist/dict/unk_invoke.dat.gz",
+    "dist/dict/unk_map.dat.gz",
+    "dist/dict/unk_pos.dat.gz"
+  ],
+  "keywords": [
+    "morphological analyzer",
+    "tokenizer",
+    "japanese",
+    "pos",
+    "pos tagger",
+    "nlp"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/takuyaa/kuromoji.js",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "coverage",
+    "demo",
+    "example",
+    "jsdoc",
+    "node_modules",
+    "scripts",
+    "src",
+    "test",
+    "dist/node",
+    "gulpfile.js",
+    "package.json"
+  ],
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.2",
+    "commit": "3a491f6cd2e65a0431cde7d42099833f08860530"
+  },
+  "_source": "git://github.com/takuyaa/kuromoji.js.git",
+  "_target": "~0.0.2",
+  "_originalSource": "kuromoji"
+}
