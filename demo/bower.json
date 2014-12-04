@@ -15,7 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "kuromoji": "~0.0.1",
+    "kuromoji": "~0.0.2",
     "foundation": "~5.4.7",
     "vue": "~0.10.6"
   }
