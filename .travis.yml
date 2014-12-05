@@ -1,3 +1,13 @@
 language: node_js
 node_js:
   - 0.10
+
+before_install:
+  - npm install mocha
+  - npm install chai
+  - npm install async
+  - npm install zlibjs
+  - npm install doublearray
+
+script:
+  - mocha test/TokenizerTest.js
