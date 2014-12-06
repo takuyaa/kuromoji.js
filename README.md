@@ -2,6 +2,7 @@ kuromoji.js
 ===========
 
 [![Build Status](https://travis-ci.org/takuyaa/kuromoji.js.svg?branch=master)](https://travis-ci.org/takuyaa/kuromoji.js)
+[![Coverage Status](https://coveralls.io/repos/takuyaa/kuromoji.js/badge.png)](https://coveralls.io/r/takuyaa/kuromoji.js)
 [![npm version](https://badge.fury.io/js/kuromoji.svg)](http://badge.fury.io/js/kuromoji)
 [![Bower version](https://badge.fury.io/bo/kuromoji.svg)](http://badge.fury.io/bo/kuromoji)
 
