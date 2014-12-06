@@ -3,12 +3,7 @@ node_js:
   - 0.10
 
 before_install:
-  - npm install async
-  - npm install doublearray
-  - npm install zlibjs
-  - npm install mocha
-  - npm install chai
-  - npm install jconv
+  - npm install -g gulp
 
 script:
-  - mocha -R spec --recursive
+  - gulp test
