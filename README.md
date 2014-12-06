@@ -6,6 +6,7 @@ kuromoji.js
 [![npm version](https://badge.fury.io/js/kuromoji.svg)](http://badge.fury.io/js/kuromoji)
 [![Bower version](https://badge.fury.io/bo/kuromoji.svg)](http://badge.fury.io/bo/kuromoji)
 [![dependencies](https://david-dm.org/takuyaa/kuromoji.js.svg)](https://david-dm.org/takuyaa/kuromoji.js)
+[![Codacy Badge](https://www.codacy.com/project/badge/e0f5c0931adc4db2b5f56b30a1c0b2f3)](https://www.codacy.com/public/takuyaa/kuromoji.js)
 
 JavaScript implementation of Japanese morphological analyzer.
 This is a pure JavaScript porting of [Kuromoji](http://www.atilika.com/ja/products/kuromoji.html).
