@@ -18,11 +18,48 @@
 var expect = require("chai").expect;
 var kuromoji = require("../dist/node/kuromoji.js");  // Not to be browserifiy-ed
 var Tokenizer = require("../src/Tokenizer.js");
+var fs = require("fs");
 
 var DIC_DIR = "dist/dict/";
+var ANSWER_TEXT_PATH = "test/resource/bocchan/bocchan-tokenized-features-ipadic.utf-8.txt";
+var RAW_TEXT_PATH = "test/resource/bocchan/bocchan.utf-8.txt";
 
 
-describe("Tokenizer static method test", function () {
+function TokenizedTextParser () {
+}
+
+TokenizedTextParser.parse = function (contents) {
+    var parsed = [];
+    var lines = contents.split("\n");
+    for (var i = 0; i < lines.length; i++) {
+        var token = {};
+        var line = lines[i];
+
+        var l = line.split("\t");
+        if (l.length < 2) {
+            continue;
+        }
+        token.surface_form = l[0];
+
+        var features = l[1].split(",");
+        token.pos = features[0];
+        token.pos_detail_1 = features[1];
+        token.pos_detail_2 = features[2];
+        token.pos_detail_3 = features[3];
+        token.conjugated_type = features[4];
+        token.conjugated_form = features[5];
+        token.basic_form = features[6];
+        if (features.length === 9) {
+            token.reading = features[7];
+            token.pronunciation = features[8];
+        }
+        parsed.push(token);
+    }
+    return parsed;
+};
+
+
+describe.skip("Tokenizer static method test", function () {
     it("splitByPunctuation", function () {
         expect(Tokenizer.splitByPunctuation("すもももももももものうち"))
             .to.deep.eql(["すもももももももものうち"]);
@@ -173,6 +210,10 @@ describe("Tokenizer for IPADic", function () {
         var path = tokenizer.tokenize("となりのトトロ");
         expect(path).to.have.length(3);
     });
+    it("Sentence include unknown symbol #", function () {
+        var path = tokenizer.tokenize("［＃「");
+        expect(path).to.have.length(1);  // MeCab & Kuromoji tokenize this sequence to 1 token
+    });
     it("Blank input", function () {
         var path = tokenizer.tokenize("");
         expect(path).to.have.length(0);
@@ -183,5 +224,21 @@ describe("Tokenizer for IPADic", function () {
         expect(path[0].word_position).to.eql(1);
         expect(path[1].word_position).to.eql(2);
         expect(path[2].word_position).to.eql(3);
+    });
+    it("Large text tokenization is compatible with Kuromoji", function () {
+        var tokenized_contents = fs.readFileSync(ANSWER_TEXT_PATH, { encoding: "utf-8" });
+        var expected = TokenizedTextParser.parse(tokenized_contents);
+
+        var raw_contents = fs.readFileSync(RAW_TEXT_PATH, { encoding: "utf-8" });
+        var result = tokenizer.tokenize(raw_contents);
+
+        for (var i = 0; i < expected.length; i++) {
+            var expected_token = expected[i];
+            var result_token = result[i];
+            expected_token.word_id = result_token.word_id;
+            expected_token.word_type = result_token.word_type;
+            expected_token.word_position = result_token.word_position;
+            expect(result_token).to.deep.eql(expected_token);
+        }
     });
 });
