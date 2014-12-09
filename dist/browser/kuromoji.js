@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2080,7 +2080,7 @@ d=(h[l++]|h[l++]<<8|h[l++]<<16|h[l++]<<24)>>>0;(a.length&4294967295)!==d&&n(Erro
 
 },{}],7:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2209,7 +2209,7 @@ module.exports = Tokenizer;
 
 },{"./util/IpadicFormatter.js":19,"./viterbi/ViterbiBuilder.js":21,"./viterbi/ViterbiSearcher.js":24}],8:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2269,7 +2269,7 @@ module.exports = TokenizerBuilder;
 
 },{"./Tokenizer.js":7,"./loader/DictionaryLoader.js":16}],9:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2309,7 +2309,7 @@ module.exports = CharacterClass;
 
 },{}],10:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2571,7 +2571,7 @@ module.exports = CharacterDefinition;
 
 },{"../util/SurrogateAwareString.js":20,"./CharacterClass.js":9,"./InvokeDefinitionMap.js":13}],11:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2681,7 +2681,7 @@ module.exports = ConnectionCosts;
 
 },{}],12:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2768,7 +2768,7 @@ module.exports = DynamicDictionaries;
 
 },{"./ConnectionCosts.js":11,"./TokenInfoDictionary.js":14,"./UnknownDictionary.js":15,"doublearray":5}],13:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2882,7 +2882,7 @@ module.exports = InvokeDefinitionMap;
 
 },{"../util/ByteBuffer.js":17,"./CharacterClass.js":9}],14:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3038,7 +3038,7 @@ module.exports = TokenInfoDictionary;
 
 },{"../util/ByteBuffer.js":17}],15:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3102,7 +3102,7 @@ module.exports = UnknownDictionary;
 
 },{"../util/ByteBuffer.js":17,"./CharacterDefinition.js":10,"./TokenInfoDictionary.js":14}],16:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3322,7 +3322,7 @@ module.exports = DictionaryLoader;
 
 },{"../dict/DynamicDictionaries.js":12,"async":2,"fs":3,"zlibjs/bin/gunzip.min.js":6}],17:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3612,7 +3612,7 @@ module.exports = ByteBuffer;
 
 },{}],18:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3785,7 +3785,7 @@ module.exports = DictionaryBuilder;
 
 },{"../dict/CharacterDefinition.js":10,"../dict/ConnectionCosts.js":11,"../dict/DynamicDictionaries.js":12,"../dict/TokenInfoDictionary.js":14,"../dict/UnknownDictionary.js":15,"doublearray":5}],19:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3855,7 +3855,7 @@ module.exports = IpadicFormatter;
 
 },{}],20:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3954,7 +3954,7 @@ module.exports = SurrogateAwareString;
 
 },{}],21:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -4059,7 +4059,7 @@ module.exports = ViterbiBuilder;
 
 },{"../util/SurrogateAwareString.js":20,"./ViterbiLattice.js":22,"./ViterbiNode.js":23}],22:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -4123,7 +4123,7 @@ module.exports = ViterbiLattice;
 
 },{"./ViterbiNode.js":23}],23:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -4175,7 +4175,7 @@ module.exports = ViterbiNode;
 
 },{}],24:[function(require,module,exports){
 /*
- * Copyright Copyright 2014 Takuya Asano
+ * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
