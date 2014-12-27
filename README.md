@@ -50,7 +50,7 @@ Load this library as follows:
 
 You can prepare tokenizer like this:
 
-    kuromoji.builder({ dicPath: "path/to/dictionary/dir/" }).build(function (tokenizer) {
+    kuromoji.builder({ dicPath: "path/to/dictionary/dir/" }).build(function (err, tokenizer) {
         // tokenizer is ready
         var path = tokenizer.tokenize("すもももももももものうち");
         console.log(path);
@@ -74,7 +74,7 @@ In your HTML:
 
 In your JavaScript:
 
-    kuromoji.builder({ dicPath: "/url/to/dictionary/dir/" }).build(function (tokenizer) {
+    kuromoji.builder({ dicPath: "/url/to/dictionary/dir/" }).build(function (err, tokenizer) {
         // tokenizer is ready
         var path = tokenizer.tokenize("すもももももももものうち");
         console.log(path);
