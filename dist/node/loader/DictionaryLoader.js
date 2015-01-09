@@ -201,7 +201,10 @@ NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
  */
 NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
     fs.readFile(file, function (err, buffer) {
-        var gz = new zlib.Zlib.Gunzip(new Uint8Array(buffer));
+        if (err) {
+	    throw new Error(err);
+	}
+	var gz = new zlib.Zlib.Gunzip(new Uint8Array(buffer));
         var typed_array = gz.decompress();
         callback(null, typed_array.buffer);
     });
