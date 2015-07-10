@@ -60,7 +60,7 @@ You can prepare tokenizer like this:
 
 ### Browser
 
-Only you need dist/browser/kuromoji.js, and dist/dict/*.dat.gz files
+You only need dist/browser/kuromoji.js, and dist/dict/*.dat.gz files
 
 Install by Bower package manager:
 
