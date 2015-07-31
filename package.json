@@ -36,7 +36,7 @@
     "event-stream": "^3.1.7",
     "gulp": "^3.8.10",
     "gulp-clean": "^0.3.1",
-    "gulp-gunzip": "0.0.2",
+    "gulp-gunzip": "0.0.3",
     "gulp-gzip": "^1.2.0",
     "gulp-istanbul": "^0.10.0",
     "gulp-jsdoc": "^0.1.4",
