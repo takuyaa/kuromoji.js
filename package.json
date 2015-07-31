@@ -47,6 +47,7 @@
     "gulp-util": "^3.0.1",
     "gulp-webserver": "^0.8.7",
     "jconv": "^0.1.5",
+    "mocha": "^2.2.5",
     "run-sequence": "^1.0.1",
     "vinyl-source-stream": "^1.0.0"
   }
