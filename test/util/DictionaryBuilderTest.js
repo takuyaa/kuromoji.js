@@ -74,20 +74,20 @@ describe("DictionaryBuilder", function () {
     });
 
     it("Dictionary not to be null", function () {
-        expect(kuromoji_dic).not.to.be.null();
+        expect(kuromoji_dic).not.to.be.null;
     });
     it("TokenInfoDictionary not to be null", function () {
-        expect(kuromoji_dic.token_info_dictionary).not.to.be.null();
+        expect(kuromoji_dic.token_info_dictionary).not.to.be.null;
     });
     it("TokenInfoDictionary", function () {
         // expect(kuromoji_dic.token_info_dictionary.getFeatures("1467000")).to.have.length.above(1);
         expect(kuromoji_dic.token_info_dictionary.dictionary.buffer).to.have.length.above(1);
     });
     it("DoubleArray not to be null", function () {
-        expect(kuromoji_dic.trie).not.to.be.null();
+        expect(kuromoji_dic.trie).not.to.be.null;
     });
     it("ConnectionCosts not to be null", function () {
-        expect(kuromoji_dic.connection_costs).not.to.be.null();
+        expect(kuromoji_dic.connection_costs).not.to.be.null;
     });
     it("Tokenize simple test", function () {
         var tokenizer = new Tokenizer(kuromoji_dic);
