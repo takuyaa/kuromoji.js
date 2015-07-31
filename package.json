@@ -45,7 +45,7 @@
     "gulp-remote-src": "^0.3.0",
     "gulp-sourcemaps": "^1.2.8",
     "gulp-util": "^3.0.1",
-    "gulp-webserver": "^0.8.7",
+    "gulp-webserver": "^0.9.1",
     "jconv": "^0.1.5",
     "mocha": "^2.2.5",
     "run-sequence": "^1.0.1",

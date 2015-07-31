@@ -160,7 +160,7 @@ gulp.task("lint", function () {
 
 
 gulp.task("webserver", function() {
-    gulp.src("demo")
+    gulp.src("./")
         .pipe(webserver({
             port: 8000,
             livereload: true,
