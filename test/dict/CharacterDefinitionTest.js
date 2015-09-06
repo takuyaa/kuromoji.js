@@ -71,43 +71,43 @@ describe("CharacterDefinition from char.def", function () {
     });
 
     it("SPACE class definition of INVOKE: false, GROUP: true, LENGTH: 0", function () {
-        expect(char_def.lookup(" ").is_always_invoke).to.be.false();
-        expect(char_def.lookup(" ").is_grouping).to.be.true();
+        expect(char_def.lookup(" ").is_always_invoke).to.be.false;
+        expect(char_def.lookup(" ").is_grouping).to.be.true;
         expect(char_def.lookup(" ").max_length).to.be.equal(0);
     });
     it("KANJI class definition of INVOKE: false, GROUP: false, LENGTH: 2", function () {
-        expect(char_def.lookup("日").is_always_invoke).to.be.false();
-        expect(char_def.lookup("日").is_grouping).to.be.false();
+        expect(char_def.lookup("日").is_always_invoke).to.be.false;
+        expect(char_def.lookup("日").is_grouping).to.be.false;
         expect(char_def.lookup("日").max_length).to.be.equal(2);
     });
     it("SYMBOL class definition of INVOKE: true, GROUP: true, LENGTH: 0", function () {
-        expect(char_def.lookup("!").is_always_invoke).to.be.true();
-        expect(char_def.lookup("!").is_grouping).to.be.true();
+        expect(char_def.lookup("!").is_always_invoke).to.be.true;
+        expect(char_def.lookup("!").is_grouping).to.be.true;
         expect(char_def.lookup("!").max_length).to.be.equal(0);
     });
     it("NUMERIC class definition of INVOKE: true, GROUP: true, LENGTH: 0", function () {
-        expect(char_def.lookup("1").is_always_invoke).to.be.true();
-        expect(char_def.lookup("1").is_grouping).to.be.true();
+        expect(char_def.lookup("1").is_always_invoke).to.be.true;
+        expect(char_def.lookup("1").is_grouping).to.be.true;
         expect(char_def.lookup("1").max_length).to.be.equal(0);
     });
     it("ALPHA class definition of INVOKE: true, GROUP: true, LENGTH: 0", function () {
-        expect(char_def.lookup("A").is_always_invoke).to.be.true();
-        expect(char_def.lookup("A").is_grouping).to.be.true();
+        expect(char_def.lookup("A").is_always_invoke).to.be.true;
+        expect(char_def.lookup("A").is_grouping).to.be.true;
         expect(char_def.lookup("A").max_length).to.be.equal(0);
     });
     it("HIRAGANA class definition of INVOKE: false, GROUP: true, LENGTH: 2", function () {
-        expect(char_def.lookup("あ").is_always_invoke).to.be.false();
-        expect(char_def.lookup("あ").is_grouping).to.be.true();
+        expect(char_def.lookup("あ").is_always_invoke).to.be.false;
+        expect(char_def.lookup("あ").is_grouping).to.be.true;
         expect(char_def.lookup("あ").max_length).to.be.equal(2);
     });
     it("KATAKANA class definition of INVOKE: true, GROUP: true, LENGTH: 2", function () {
-        expect(char_def.lookup("ア").is_always_invoke).to.be.true();
-        expect(char_def.lookup("ア").is_grouping).to.be.true();
+        expect(char_def.lookup("ア").is_always_invoke).to.be.true;
+        expect(char_def.lookup("ア").is_grouping).to.be.true;
         expect(char_def.lookup("ア").max_length).to.be.equal(2);
     });
     it("KANJINUMERIC class definition of INVOKE: true, GROUP: true, LENGTH: 0", function () {
-        expect(char_def.lookup("一").is_always_invoke).to.be.true();
-        expect(char_def.lookup("一").is_grouping).to.be.true();
+        expect(char_def.lookup("一").is_always_invoke).to.be.true;
+        expect(char_def.lookup("一").is_grouping).to.be.true;
         expect(char_def.lookup("一").max_length).to.be.equal(0);
     });
     it("Save and load", function () {

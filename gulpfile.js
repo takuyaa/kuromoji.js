@@ -143,6 +143,7 @@ gulp.task("test", function () {
 gulp.task("coverage", function (done) {
     gulp.src(["./src/**/*.js"])
         .pipe(istanbul())
+        .pipe(istanbul.hookRequire())
         .on("finish", function () {
             gulp.src(["test/**/*.js"])
                 .pipe(mocha({ reporter: "list" }))
@@ -160,7 +161,7 @@ gulp.task("lint", function () {
 
 
 gulp.task("webserver", function() {
-    gulp.src("demo")
+    gulp.src("./")
         .pipe(webserver({
             port: 8000,
             livereload: true,
