@@ -24,13 +24,13 @@ var DynamicDictionaries = require("../dict/DynamicDictionaries.js");
 
 
 var fs;
-var nodeZlib;
+var node_zlib;
 var is_browser;
 
 if (typeof window === "undefined") {
     // In node
     fs = require("fs");
-    nodeZlib = require("zlib");
+    node_zlib = require("zlib");
     is_browser = false;
 } else {
     is_browser = true;
@@ -203,9 +203,9 @@ NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
  */
 NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
     fs.readFile(file, function (err, buffer) {
-        nodeZlib.gunzip(buffer, function (err2, decompressed) {
-            var typedArray = new Uint8Array(decompressed);
-            callback(null, typedArray.buffer);
+        node_zlib.gunzip(buffer, function (err2, decompressed) {
+            var typed_array = new Uint8Array(decompressed);
+            callback(null, typed_array.buffer);
         });
     });
 };
