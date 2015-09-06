@@ -1,3 +1,16 @@
+<a name="0.0.4"></a>
+## [0.0.4](https://github.com/takuyaa/kuromoji.js/compare/0.0.3...0.0.4) (2015-09-07)
+
+### Bump deps
+
+* update dependencies in package.json ([#5](https://github.com/takuyaa/kuromoji.js/pull/5))
+
+### Performance Improvements
+
+* use built-in zlib module instead of zlib.js on node.js ([#6](https://github.com/takuyaa/kuromoji.js/pull/6))
+
+
+
 <a name="0.0.3"></a>
 ## [0.0.3](https://github.com/takuyaa/kuromoji.js/compare/0.0.2...0.0.3) (2015-09-06)
 
