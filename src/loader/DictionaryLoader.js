@@ -17,6 +17,7 @@
 
 "use strict";
 
+var path = require("path");
 var async = require("async");
 var zlib = require("zlibjs/bin/gunzip.min.js");
 
@@ -74,7 +75,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Trie
         function (callback) {
             async.map([ "base.dat.gz", "check.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(dic_path + filename, function (err, buffer) {
+                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -94,7 +95,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Token info dictionaries
         function (callback) {
             async.map([ "tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(dic_path + filename, function (err, buffer) {
+                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -114,7 +115,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         },
         // Connection cost matrix
         function (callback) {
-            loadArrayBuffer(dic_path + "cc.dat.gz", function (err, buffer) {
+            loadArrayBuffer(path.join(dic_path, "cc.dat.gz"), function (err, buffer) {
                 if(err) {
                     return callback(err);
                 }
@@ -126,7 +127,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Unknown dictionaries
         function (callback) {
             async.map([ "unk.dat.gz", "unk_pos.dat.gz", "unk_map.dat.gz", "unk_char.dat.gz", "unk_compat.dat.gz", "unk_invoke.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(dic_path + filename, function (err, buffer) {
+                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
