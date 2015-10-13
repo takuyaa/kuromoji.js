@@ -69,15 +69,21 @@ DictionaryLoader.prototype.load = function (load_callback) {
     var dic = this.dic;
     var dic_path = this.dic_path;
     var loadArrayBuffer = this.loadArrayBuffer;
-
+    
     async.parallel([
         // Trie
         function (callback) {
             async.map([ "base.dat.gz", "check.dat.gz" ], function (filename, _callback) {
                 loadArrayBuffer(dic_path + filename, function (err, buffer) {
+                    if(err) {
+                        return _callback(err);
+                    }
                     _callback(null, buffer);
                 });
             }, function (err, buffers) {
+                if(err) {
+                    return callback(err);
+                }
                 var base_buffer = new Int32Array(buffers[0]);
                 var check_buffer = new Int32Array(buffers[1]);
 
@@ -89,9 +95,15 @@ DictionaryLoader.prototype.load = function (load_callback) {
         function (callback) {
             async.map([ "tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz" ], function (filename, _callback) {
                 loadArrayBuffer(dic_path + filename, function (err, buffer) {
+                    if(err) {
+                        return _callback(err);
+                    }
                     _callback(null, buffer);
                 });
             }, function (err, buffers) {
+                if(err) {
+                    return callback(err);
+                }
                 var token_info_buffer = new Uint8Array(buffers[0]);
                 var pos_buffer = new Uint8Array(buffers[1]);
                 var target_map_buffer = new Uint8Array(buffers[2]);
@@ -103,6 +115,9 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Connection cost matrix
         function (callback) {
             loadArrayBuffer(dic_path + "cc.dat.gz", function (err, buffer) {
+                if(err) {
+                    return callback(err);
+                }
                 var cc_buffer = new Int16Array(buffer);
                 dic.loadConnectionCosts(cc_buffer);
                 callback(null);
@@ -112,9 +127,15 @@ DictionaryLoader.prototype.load = function (load_callback) {
         function (callback) {
             async.map([ "unk.dat.gz", "unk_pos.dat.gz", "unk_map.dat.gz", "unk_char.dat.gz", "unk_compat.dat.gz", "unk_invoke.dat.gz" ], function (filename, _callback) {
                 loadArrayBuffer(dic_path + filename, function (err, buffer) {
+                    if(err) {
+                        return _callback(err);
+                    }
                     _callback(null, buffer);
                 });
             }, function (err, buffers) {
+                if(err) {
+                    return callback(err);
+                }
                 var unk_buffer = new Uint8Array(buffers[0]);
                 var unk_pos_buffer = new Uint8Array(buffers[1]);
                 var unk_map_buffer = new Uint8Array(buffers[2]);
@@ -203,7 +224,13 @@ NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
  */
 NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
     fs.readFile(file, function (err, buffer) {
+        if(err) {
+            return callback(err);
+        }
         node_zlib.gunzip(buffer, function (err2, decompressed) {
+            if(err2) {
+                return callback(err2);
+            }
             var typed_array = new Uint8Array(decompressed);
             callback(null, typed_array.buffer);
         });

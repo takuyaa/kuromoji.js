@@ -48,3 +48,13 @@ describe("DictionaryLoader", function () {
         expect(dictionaries.token_info_dictionary.getFeatures("0")).to.have.length.above(1);
     });
 });
+
+describe("DictionaryLoader couldn't load dictionary", function () {
+    it("should call with error", function (done) {
+        var loader = DictionaryLoader.getLoader("non-exist/dictionaries");
+        loader.load(function (err, dic) {
+            expect(err).to.be.an.instanceof(Error);
+            done();
+        });
+    });
+});
