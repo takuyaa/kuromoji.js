@@ -43,10 +43,13 @@ gulp.task("build", function () {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("./dist/node/"));
 
-    browserify({
-        entries: [ "./src/kuromoji.js" ],
-        standalone : "kuromoji"
-    }).bundle()
+    var b = browserify({
+        entries: ["./src/kuromoji.js"],
+        standalone: "kuromoji" // window.kuromoji
+    });
+    // replace NodeDictionaryLoader to BrowserDictionaryLoader
+    b.require(__dirname + "/src/loader/BrowserDictionaryLoader.js", {expose: "./loader/NodeDictionaryLoader.js"});
+    b.bundle()
         .pipe(source("kuromoji.js"))
         .pipe(gulp.dest("./dist/browser/"));
 
