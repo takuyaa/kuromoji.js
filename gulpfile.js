@@ -43,8 +43,10 @@ gulp.task("build", function () {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("./dist/node/"));
 
-    browserify({ entries: [ "./src/kuromoji.js" ] })
-        .bundle()
+    browserify({
+        entries: [ "./src/kuromoji.js" ],
+        standalone : "kuromoji"
+    }).bundle()
         .pipe(source("kuromoji.js"))
         .pipe(gulp.dest("./dist/browser/"));
 
