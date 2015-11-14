@@ -16,7 +16,7 @@
  */
 
 var expect = require("chai").expect;
-var DictionaryLoader = require("../../src/loader/DictionaryLoader.js");
+var DictionaryLoader = require("../../src/loader/NodeDictionaryLoader");
 
 var DIC_DIR = "dist/dict/";
 
@@ -28,7 +28,7 @@ describe("DictionaryLoader", function () {
     before(function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
 
-        var loader = DictionaryLoader.getLoader(DIC_DIR);
+        var loader = new DictionaryLoader(DIC_DIR);
         loader.load(function (err, dic) {
             dictionaries = dic;
             done();
@@ -53,7 +53,7 @@ describe("DictionaryLoader about loading", function () {
     it("could load directory path without suffix /", function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
         
-        var loader = DictionaryLoader.getLoader("dist/dict");// not have suffix /
+        var loader = new DictionaryLoader("dist/dict");// not have suffix /
         loader.load(function (err, dic) {
             expect(err).to.be.null;
             expect(dic).to.not.be.undefined;
@@ -61,7 +61,7 @@ describe("DictionaryLoader about loading", function () {
         });
     });
     it("couldn't load dictionary, then call with error", function (done) {
-        var loader = DictionaryLoader.getLoader("non-exist/dictionaries");
+        var loader = new DictionaryLoader("non-exist/dictionaries");
         loader.load(function (err, dic) {
             expect(err).to.be.an.instanceof(Error);
             done();

@@ -18,7 +18,7 @@
 "use strict";
 
 var Tokenizer = require("./Tokenizer.js");
-var DictionaryLoader = require("./loader/DictionaryLoader.js");
+var DictionaryLoader = require("./loader/NodeDictionaryLoader.js");
 
 
 /**
@@ -40,7 +40,7 @@ function TokenizerBuilder(option) {
  * @param {TokenizerBuilder~onLoad} callback Callback function
  */
 TokenizerBuilder.prototype.build = function (callback) {
-    var loader = DictionaryLoader.getLoader(this.dic_path);
+    var loader = new DictionaryLoader(this.dic_path);
     loader.load(function (err, dic) {
         callback(err, new Tokenizer(dic));
     });
