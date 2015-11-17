@@ -31,10 +31,4 @@ var kuromoji = {
     }
 };
 
-if (typeof window === "undefined") {
-    // In node
-    module.exports = kuromoji;
-} else {
-    // In browser
-    window.kuromoji = kuromoji;
-}
+module.exports = kuromoji;

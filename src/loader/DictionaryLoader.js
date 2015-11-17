@@ -19,23 +19,7 @@
 
 var path = require("path");
 var async = require("async");
-var zlib = require("zlibjs/bin/gunzip.min.js");
-
 var DynamicDictionaries = require("../dict/DynamicDictionaries.js");
-
-
-var fs;
-var node_zlib;
-var is_browser;
-
-if (typeof window === "undefined") {
-    // In node
-    fs = require("fs");
-    node_zlib = require("zlib");
-    is_browser = false;
-} else {
-    is_browser = true;
-}
 
 
 /**
@@ -48,20 +32,9 @@ function DictionaryLoader(dic_path) {
     this.dic_path = dic_path;
 }
 
-/**
- * Factory method for DictionaryLoader
- * @param {string} dic_path Dictionary path
- */
-DictionaryLoader.getLoader = function (dic_path) {
-    if (is_browser) {
-        // In browser
-        return new BrowserDictionaryLoader(dic_path);
-    } else {
-        // In node
-        return new NodeDictionaryLoader(dic_path);
-    }
+DictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
+    throw new Error("DictionaryLoader#loadArrayBuffer should be overwrite");
 };
-
 /**
  * Load dictionary files
  * @param {DictionaryLoader~onLoad} load_callback Callback function called after loaded
@@ -161,89 +134,5 @@ DictionaryLoader.prototype.load = function (load_callback) {
  * @param {Object} err Error object
  * @param {DynamicDictionaries} dic Loaded dictionary
  */
-
-
-/**
- * BrowserDictionaryLoader inherits DictionaryLoader, using jQuery XHR for download
- * @param {string} dic_path Dictionary path
- * @constructor
- */
-function BrowserDictionaryLoader(dic_path) {
-    DictionaryLoader.apply(this, [ dic_path ]);
-}
-BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
-// BrowserDictionaryLoader.prototype.constructor = BrowserDictionaryLoader;
-
-/**
- * Utility function to load gzipped dictionary
- * @param {string} url Dictionary URL
- * @param {BrowserDictionaryLoader~onLoad} callback Callback function
- */
-BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "arraybuffer";
-    xhr.onload = function () {
-        if (this.status !== 200) {
-            callback(xhr.statusText, null);
-        }
-        var arraybuffer = this.response;
-
-        var gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer));
-        var typed_array = gz.decompress();
-        callback(null, typed_array.buffer);
-    };
-    xhr.onerror = function (err) {
-        callback(err, null);
-    };
-    xhr.send();
-};
-
-/**
- * Callback
- * @callback BrowserDictionaryLoader~onLoad
- * @param {Object} err Error object
- * @param {Uint8Array} buffer Loaded buffer
- */
-
-
-/**
- * NodeDictionaryLoader inherits DictionaryLoader
- * @param {string} dic_path Dictionary path
- * @constructor
- */
-function NodeDictionaryLoader(dic_path) {
-    DictionaryLoader.apply(this, [ dic_path ]);
-}
-NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
-// NodeDictionaryLoader.prototype.constructor = NodeDictionaryLoader;
-
-/**
- * Utility function
- * @param {string} file Dictionary file path
- * @param {NodeDictionaryLoader~onLoad} callback Callback function
- */
-NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
-    fs.readFile(file, function (err, buffer) {
-        if(err) {
-            return callback(err);
-        }
-        node_zlib.gunzip(buffer, function (err2, decompressed) {
-            if(err2) {
-                return callback(err2);
-            }
-            var typed_array = new Uint8Array(decompressed);
-            callback(null, typed_array.buffer);
-        });
-    });
-};
-
-/**
- * @callback NodeDictionaryLoader~onLoad
- * @param {Object} err Error object
- * @param {Uint8Array} buffer Loaded buffer
- */
-
-
 
 module.exports = DictionaryLoader;

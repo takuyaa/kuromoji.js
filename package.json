@@ -4,6 +4,9 @@
   "author": "Takuya Asano <takuya.a@gmail.com>",
   "description": "JavaScript implementation of Japanese morphological analyzer",
   "main": "./dist/node/kuromoji.js",
+  "browser": {
+    "./dist/node/loader/NodeDictionaryLoader.js": "./dist/node/loader/BrowserDictionaryLoader.js"
+  },
   "keywords": [
     "morphological analyzer",
     "tokenizer",

@@ -16,7 +16,7 @@
  */
 
 var expect = require("chai").expect;
-var DictionaryLoader = require("../../src/loader/DictionaryLoader.js");
+var DictionaryLoader = require("../../src/loader/NodeDictionaryLoader.js");
 var ViterbiBuilder = require("../../src/viterbi/ViterbiBuilder.js");
 
 var DIC_DIR = "dist/dict/";
@@ -28,7 +28,7 @@ describe("ViterbiBuilder", function () {
 
     before(function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
-        var loader = DictionaryLoader.getLoader(DIC_DIR);
+        var loader = new DictionaryLoader(DIC_DIR);
         loader.load(function (err, dic) {
             viterbi_builder = new ViterbiBuilder(dic);
             done();
