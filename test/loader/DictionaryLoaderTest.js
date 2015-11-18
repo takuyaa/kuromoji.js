@@ -23,7 +23,7 @@ var DIC_DIR = "dist/dict/";
 
 describe("DictionaryLoader", function () {
 
-    var dictionaries = null;  // target object
+    var dictionaries = null; // target object
 
     before(function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
@@ -53,7 +53,7 @@ describe("DictionaryLoader about loading", function () {
     it("could load directory path without suffix /", function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
         
-        var loader = new DictionaryLoader("dist/dict");// not have suffix /
+        var loader = new DictionaryLoader("dist/dict"); // not have suffix /
         loader.load(function (err, dic) {
             expect(err).to.be.null;
             expect(dic).to.not.be.undefined;

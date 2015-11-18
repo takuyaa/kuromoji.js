@@ -43,7 +43,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
     var dic = this.dic;
     var dic_path = this.dic_path;
     var loadArrayBuffer = this.loadArrayBuffer;
-    
+
     async.parallel([
         // Trie
         function (callback) {
