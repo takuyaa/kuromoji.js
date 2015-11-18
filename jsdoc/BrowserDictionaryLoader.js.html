@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: viterbi/ViterbiLattice.js</title>
+    <title>JSDoc: Source: loader/BrowserDictionaryLoader.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: viterbi/ViterbiLattice.js</h1>
+    <h1 class="page-title">Source: loader/BrowserDictionaryLoader.js</h1>
 
     
 
@@ -25,69 +25,52 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/*
- * Copyright 2014 Takuya Asano
- * Copyright 2010-2014 Atilika Inc. and contributors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-"use strict";
-
-var ViterbiNode = require("./ViterbiNode.js");
-
-
+            <pre class="prettyprint source linenums"><code>var zlib = require("zlibjs/bin/gunzip.min.js");
+var DictionaryLoader = require("./DictionaryLoader");
 /**
- * ViterbiLattice is a lattice in Viterbi algorithm
+ * BrowserDictionaryLoader inherits DictionaryLoader, using jQuery XHR for download
+ * @param {string} dic_path Dictionary path
  * @constructor
  */
-function ViterbiLattice() {
-    this.nodes_end_at = [];
-    this.nodes_end_at[0] = [ new ViterbiNode("BOS", 0, 0, 0, "BOS", 0, 0) ];
-    this.eos_pos = 1;
+function BrowserDictionaryLoader(dic_path) {
+    DictionaryLoader.apply(this, [dic_path]);
 }
+BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
+// BrowserDictionaryLoader.prototype.constructor = BrowserDictionaryLoader;
 
 /**
- * Append node to ViterbiLattice
- * @param {ViterbiNode} node
+ * Utility function to load gzipped dictionary
+ * @param {string} url Dictionary URL
+ * @param {BrowserDictionaryLoader~onLoad} callback Callback function
  */
-ViterbiLattice.prototype.append = function (node) {
-    var last_pos = node.start_pos + node.length - 1;
-    if (this.eos_pos &lt; last_pos) {
-        this.eos_pos = last_pos;
-    }
+BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.responseType = "arraybuffer";
+    xhr.onload = function () {
+        if (this.status !== 200) {
+            callback(xhr.statusText, null);
+        }
+        var arraybuffer = this.response;
 
-    var prev_nodes = this.nodes_end_at[last_pos];
-    if (prev_nodes == null) {
-        prev_nodes = [];
-    }
-    prev_nodes.push(node);
-
-    this.nodes_end_at[last_pos] = prev_nodes;
+        var gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer));
+        var typed_array = gz.decompress();
+        callback(null, typed_array.buffer);
+    };
+    xhr.onerror = function (err) {
+        callback(err, null);
+    };
+    xhr.send();
 };
 
 /**
- * Set ends with EOS (End of Statement)
+ * Callback
+ * @callback BrowserDictionaryLoader~onLoad
+ * @param {Object} err Error object
+ * @param {Uint8Array} buffer Loaded buffer
  */
-ViterbiLattice.prototype.appendEos = function () {
-    var last_index = this.nodes_end_at.length;
-    this.eos_pos++;
-    this.nodes_end_at[last_index] = [ new ViterbiNode("EOS", 0, this.eos_pos, 0, "EOS", 0, 0) ];
-};
 
-
-module.exports = ViterbiLattice;
-</code></pre>
+module.exports = BrowserDictionaryLoader;</code></pre>
         </article>
     </section>
 

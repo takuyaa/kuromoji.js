@@ -1,3 +1,13 @@
+<a name="0.0.5"></a>
+## [0.0.5](https://github.com/takuyaa/kuromoji.js/compare/0.0.4...0.0.5) (2015-11-19)
+
+### Bug Fixes
+
+* add error handling when DictionaryLoader try to load non-exist dictionaries ([#7](https://github.com/takuyaa/kuromoji.js/pull/7))
+* work with Atom editor ([#8](https://github.com/takuyaa/kuromoji.js/pull/8))
+
+
+
 <a name="0.0.4"></a>
 ## [0.0.4](https://github.com/takuyaa/kuromoji.js/compare/0.0.3...0.0.4) (2015-09-07)
 
