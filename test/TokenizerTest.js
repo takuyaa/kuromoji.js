@@ -184,4 +184,16 @@ describe("Tokenizer for IPADic", function () {
         expect(path[1].word_position).to.eql(2);
         expect(path[2].word_position).to.eql(3);
     });
+    it("Sentence include punctuation あ、あ。あ、あ。 returns correct positions", function () {
+        var path = tokenizer.tokenize("あ、あ。あ、あ。");
+        expect(path).to.have.length(8);
+        expect(path[0].word_position).to.eql(1);
+        expect(path[1].word_position).to.eql(2);
+        expect(path[2].word_position).to.eql(3);
+        expect(path[3].word_position).to.eql(4);
+        expect(path[4].word_position).to.eql(5);
+        expect(path[5].word_position).to.eql(6);
+        expect(path[6].word_position).to.eql(7);
+        expect(path[7].word_position).to.eql(8);
+    });
 });
