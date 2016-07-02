@@ -81,6 +81,10 @@ Tokenizer.prototype.tokenizeForSentence = function (sentence, tokens) {
     }
     var lattice = this.getLattice(sentence);
     var best_path = this.viterbi_searcher.search(lattice);
+    var last_pos = 0;
+    if (tokens.length > 0) {
+      last_pos = tokens[tokens.length - 1].word_position;
+    }
 
     for (var j = 0; j < best_path.length; j++) {
         var node = best_path[j];
@@ -93,7 +97,7 @@ Tokenizer.prototype.tokenizeForSentence = function (sentence, tokens) {
             } else {
                 features = features_line.split(",");
             }
-            token = this.formatter.formatEntry(node.name, node.start_pos, node.type, features);
+            token = this.formatter.formatEntry(node.name, last_pos + node.start_pos, node.type, features);
         } else if (node.type === "UNKNOWN") {
             // Unknown word
             features_line = this.unknown_dictionary.getFeatures(node.name);
@@ -102,10 +106,10 @@ Tokenizer.prototype.tokenizeForSentence = function (sentence, tokens) {
             } else {
                 features = features_line.split(",");
             }
-            token = this.formatter.formatUnknownEntry(node.name, node.start_pos, node.type, features, node.surface_form);
+            token = this.formatter.formatUnknownEntry(node.name, last_pos + node.start_pos, node.type, features, node.surface_form);
         } else {
             // TODO User dictionary
-            token = this.formatter.formatEntry(node.name, node.start_pos, node.type, []);
+            token = this.formatter.formatEntry(node.name, last_pos + node.start_pos, node.type, []);
         }
 
         tokens.push(token);
