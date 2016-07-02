@@ -83,7 +83,7 @@ Tokenizer.prototype.tokenizeForSentence = function (sentence, tokens) {
     var best_path = this.viterbi_searcher.search(lattice);
     var last_pos = 0;
     if (tokens.length > 0) {
-      last_pos = tokens[tokens.length - 1].word_position;
+        last_pos = tokens[tokens.length - 1].word_position;
     }
 
     for (var j = 0; j < best_path.length; j++) {
