@@ -9,5 +9,5 @@ script:
   - gulp test
 
 after_script:
-  - gulp coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  - gulp coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   - bash <(curl -s https://codecov.io/bash)
