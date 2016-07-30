@@ -48,11 +48,9 @@ function DictionaryBuilder() {
     this.char_text = "";
 }
 
-DictionaryBuilder.prototype.addTokenInfoDictionary = function (text) {
-    var new_entries = text.split(/\n/).map(function (row) {
-        return row.split(",");
-    });
-    this.tid_entries = this.tid_entries.concat(new_entries);
+DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
+    var new_entry = line.split(",");
+    this.tid_entries.push(new_entry);
     return this;
 };
 

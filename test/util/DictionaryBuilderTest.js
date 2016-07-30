@@ -16,38 +16,16 @@
  */
 
 var fs = require("fs");
-var jconv = require("jconv");
 var expect = require("chai").expect;
 
 var kuromoji = require("../../src/kuromoji.js");
 var Tokenizer = require("../../src/Tokenizer.js");
 
-
 var DIC_DIR = "test/resource/minimum-dic/";
-var ENCODING = "EUCJP";
-
-var minimum_dic_files = [
-    "minimum.csv"
-];
-
 var connection_costs_file = DIC_DIR + "matrix.def";
 var char_def_file = DIC_DIR + "char.def";
 var unk_def_file = DIC_DIR + "unk.def";
-var tid_dic_files = minimum_dic_files.map(function (file) {
-    return DIC_DIR + file;
-});
-
-
-var handleMatrixDef = function(filename) {
-    return fs.readFileSync(filename, "ascii");
-};
-
-var handleTokenDic = function(filename) {
-    var text = fs.readFileSync(filename);
-    text = jconv.decode(text, ENCODING);
-    return text;
-};
-
+var tid_dic_file = DIC_DIR + "minimum.csv";
 
 describe("DictionaryBuilder", function () {
     this.timeout(30000);
@@ -57,16 +35,17 @@ describe("DictionaryBuilder", function () {
     before("Build", function (done) {
         // Build token info dictionary
         var builder = kuromoji.dictionaryBuilder();
-        for (var i = 0; i < tid_dic_files.length; i++) {
-            builder = builder.addTokenInfoDictionary(handleTokenDic(tid_dic_files[i]));
-        }
+        var tokenInfo = fs.readFileSync(tid_dic_file, "utf-8");
+        tokenInfo.split("\n").map(function (line) {
+            builder.addTokenInfoDictionary(line);
+        });
 
         // Build connection costs matrix
-        builder = builder.costMatrix(handleMatrixDef(connection_costs_file));
+        builder = builder.costMatrix(fs.readFileSync(connection_costs_file, "ascii"));
 
         // Build unknown dictionary
-        builder = builder.charDef(handleTokenDic(char_def_file));
-        builder = builder.unkDef(handleTokenDic(unk_def_file));
+        builder = builder.charDef(fs.readFileSync(char_def_file, "utf-8"));
+        builder = builder.unkDef(fs.readFileSync(unk_def_file, "utf-8"));
 
         kuromoji_dic = builder.build();
 

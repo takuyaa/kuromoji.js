@@ -7,9 +7,6 @@ var fs = require("fs"),
     browserify = require("browserify"),
     source = require("vinyl-source-stream"),
     gzip = require("gulp-gzip"),
-    gunzip = require("gulp-gunzip"),
-//    untar = require("gulp-untar"),
-    remotesrc = require("gulp-remote-src"),
     sourcemaps = require("gulp-sourcemaps"),
     mocha = require("gulp-mocha"),
     istanbul = require("gulp-istanbul"),
@@ -68,21 +65,6 @@ gulp.task("clean-dict", function () {
 });
 
 
-gulp.task("copy-dict", function () {
-    if (!fs.existsSync("./dict-input/")) {
-        fs.mkdirSync("./dict-input/");
-    }
-
-    return remotesrc(["mecab-ipadic-2.7.0-20070801.tar.gz"], {
-        base: "http://atilika.com/releases/mecab-ipadic/"
-//        base: "http://jaist.dl.sourceforge.net/project/mecab/mecab-ipadic/2.7.0-20070801/mecab-ipadic-2.7.0-20070801.tar.gz"
-    })
-        .pipe(gunzip())
-//        .pipe(untar())  // TODO Fail to untar
-        .pipe(gulp.dest("./dict-input/"));
-});
-
-
 gulp.task("build-dict", function () {
     if (!fs.existsSync("./dist/")) {
         fs.mkdirSync("./dist/");
@@ -102,40 +84,41 @@ gulp.task("build-dict", function () {
         return buffer;
     }
 
-    var dic = require("./scripts/build-dict.js");
+    var dicPromise = require("./scripts/build-dict.js");
+    dicPromise.then((dic) => {
+        var base_buffer = toBuffer(dic.trie.bc.getBaseBuffer()),
+            check_buffer = toBuffer(dic.trie.bc.getCheckBuffer()),
+            token_info_buffer = toBuffer(dic.token_info_dictionary.dictionary.buffer),
+            tid_pos_buffer = toBuffer(dic.token_info_dictionary.pos_buffer.buffer),
+            tid_map_buffer = toBuffer(dic.token_info_dictionary.targetMapToBuffer()),
+            connection_costs_buffer = toBuffer(dic.connection_costs.buffer),
+            unk_buffer = toBuffer(dic.unknown_dictionary.dictionary.buffer),
+            unk_pos_buffer = toBuffer(dic.unknown_dictionary.pos_buffer.buffer),
+            unk_map_buffer = toBuffer(dic.unknown_dictionary.targetMapToBuffer()),
+            char_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.character_category_map),
+            char_compat_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.compatible_category_map),
+            invoke_definition_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.invoke_definition_map.toBuffer());
 
-    var base_buffer = toBuffer(dic.trie.bc.getBaseBuffer()),
-        check_buffer = toBuffer(dic.trie.bc.getCheckBuffer()),
-        token_info_buffer = toBuffer(dic.token_info_dictionary.dictionary.buffer),
-        tid_pos_buffer = toBuffer(dic.token_info_dictionary.pos_buffer.buffer),
-        tid_map_buffer = toBuffer(dic.token_info_dictionary.targetMapToBuffer()),
-        connection_costs_buffer = toBuffer(dic.connection_costs.buffer),
-        unk_buffer = toBuffer(dic.unknown_dictionary.dictionary.buffer),
-        unk_pos_buffer = toBuffer(dic.unknown_dictionary.pos_buffer.buffer),
-        unk_map_buffer = toBuffer(dic.unknown_dictionary.targetMapToBuffer()),
-        char_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.character_category_map),
-        char_compat_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.compatible_category_map),
-        invoke_definition_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.invoke_definition_map.toBuffer());
+        fs.writeFileSync("./dist/dict/base.dat", base_buffer);
+        fs.writeFileSync("./dist/dict/check.dat", check_buffer);
+        fs.writeFileSync("./dist/dict/tid.dat", token_info_buffer);
+        fs.writeFileSync("./dist/dict/tid_pos.dat", tid_pos_buffer);
+        fs.writeFileSync("./dist/dict/tid_map.dat", tid_map_buffer);
+        fs.writeFileSync("./dist/dict/cc.dat", connection_costs_buffer);
+        fs.writeFileSync("./dist/dict/unk.dat", unk_buffer);
+        fs.writeFileSync("./dist/dict/unk_pos.dat", unk_pos_buffer);
+        fs.writeFileSync("./dist/dict/unk_map.dat", unk_map_buffer);
+        fs.writeFileSync("./dist/dict/unk_char.dat", char_map_buffer);
+        fs.writeFileSync("./dist/dict/unk_compat.dat", char_compat_map_buffer);
+        fs.writeFileSync("./dist/dict/unk_invoke.dat", invoke_definition_map_buffer);
 
-    fs.writeFileSync("./dist/dict/base.dat", base_buffer);
-    fs.writeFileSync("./dist/dict/check.dat", check_buffer);
-    fs.writeFileSync("./dist/dict/tid.dat", token_info_buffer);
-    fs.writeFileSync("./dist/dict/tid_pos.dat", tid_pos_buffer);
-    fs.writeFileSync("./dist/dict/tid_map.dat", tid_map_buffer);
-    fs.writeFileSync("./dist/dict/cc.dat", connection_costs_buffer);
-    fs.writeFileSync("./dist/dict/unk.dat", unk_buffer);
-    fs.writeFileSync("./dist/dict/unk_pos.dat", unk_pos_buffer);
-    fs.writeFileSync("./dist/dict/unk_map.dat", unk_map_buffer);
-    fs.writeFileSync("./dist/dict/unk_char.dat", char_map_buffer);
-    fs.writeFileSync("./dist/dict/unk_compat.dat", char_compat_map_buffer);
-    fs.writeFileSync("./dist/dict/unk_invoke.dat", invoke_definition_map_buffer);
+        gulp.src("./dist/dict/*.dat")
+            .pipe(gzip())
+            .pipe(gulp.dest("./dist/dict/"));
 
-    gulp.src("./dist/dict/*.dat")
-        .pipe(gzip())
-        .pipe(gulp.dest("./dist/dict/"));
-
-    gulp.src("./dist/dict/*.dat")
-        .pipe(clean());
+        gulp.src("./dist/dict/*.dat")
+            .pipe(clean());
+    });
 });
 
 
