@@ -17,69 +17,52 @@
 
 "use strict";
 
-var fs = require("fs");
-var jconv = require("jconv");
+const IPADic = require('mecab-ipadic-seed');
+const dic = new IPADic();
 
-var kuromoji = require("../dist/node/kuromoji.js");
-
-
-var DIC_DIR = "scripts/input/";
-var ENCODING = "EUCJP";
-
-var tid_files = [
-    "Adj.csv",
-    "Adnominal.csv",
-    "Adverb.csv",
-    "Auxil.csv",
-    "Conjunction.csv",
-    "Filler.csv",
-    "Interjection.csv",
-    "Noun.adjv.csv",
-    "Noun.adverbal.csv",
-    "Noun.csv",
-    "Noun.demonst.csv",
-    "Noun.nai.csv",
-    "Noun.name.csv",
-    "Noun.number.csv",
-    "Noun.org.csv",
-    "Noun.others.csv",
-    "Noun.place.csv",
-    "Noun.proper.csv",
-    "Noun.verbal.csv",
-    "Others.csv",
-    "Postp-col.csv",
-    "Postp.csv",
-    "Prefix.csv",
-    "Suffix.csv",
-    "Symbol.csv",
-    "Verb.csv"
-];
-
-var handleMatrixDef = function(filename) {
-    return fs.readFileSync(filename, "ascii");
-};
-
-var handleTokenDic = function(filename) {
-    var text = fs.readFileSync(filename);
-    text = jconv.decode(text, ENCODING);
-    return text;
-};
-
+const kuromoji = require("../dist/node/kuromoji.js");
+const builder = kuromoji.dictionaryBuilder();
 
 // Build token info dictionary
-var builder = kuromoji.dictionaryBuilder();
-for (var i = 0; i < tid_files.length; i++) {
-    builder = builder.addTokenInfoDictionary(handleTokenDic(DIC_DIR + tid_files[i]));
-}
+const tokenInfoPromise = dic.readTokenInfo((line) => {
+    builder.addTokenInfoDictionary(line);
+}).then(() => {
+    console.log('Finishied to read token info dics');
+});
 
 // Build connection costs matrix
-builder = builder.costMatrix(handleMatrixDef(DIC_DIR + "matrix.def"));
+let matrixDef = '';
+const matrixDefPromise = dic.readMatrixDef((line) => {
+    matrixDef += line + "\n";
+}).then(() => {
+    builder.costMatrix(matrixDef);
+    console.log('Finishied to read matrix.def');
+});
 
 // Build unknown dictionary
-builder = builder.charDef(handleTokenDic(DIC_DIR + "char.def"));
-builder = builder.unkDef(handleTokenDic(DIC_DIR + "unk.def"));
+let unkDef = '';
+const unkDefPromise = dic.readUnkDef((line) => {
+    unkDef += line + "\n";
+}).then(() => {
+    builder.unkDef(unkDef);
+    console.log('Finishied to read unk.def');
+});
 
+// Build character definition dictionary
+let charDef = '';
+const charDefPromise = dic.readCharDef((line) => {
+    charDef += line + "\n";
+}).then(() => {
+    builder.charDef(charDef);
+    console.log('Finishied to read char.def');
+});
 
-var kuromoji_dic = builder.build();
-
-module.exports = kuromoji_dic;
+module.exports = new Promise((resolve) => {
+    // Build kuromoji.js binary dictionary
+    Promise.all([tokenInfoPromise, matrixDefPromise, unkDefPromise, charDefPromise]).then(() => {
+        console.log('Finishied to read all seed dictionary files');
+        console.log('Building binary dictionary ...');
+        const dic = builder.build();
+        resolve(dic);
+    });
+});
