@@ -26,9 +26,6 @@
 function ConnectionCosts(initial_size) {
     this.dimension = 0;
     this.buffer = new Int16Array(initial_size);
-
-    // 1 dimensional array in original implementation
-    // this.costs = [];
 }
 
 ConnectionCosts.prototype.put = function (forward_id, backward_id, cost) {
@@ -40,11 +37,6 @@ ConnectionCosts.prototype.put = function (forward_id, backward_id, cost) {
         throw "ConnectionCosts buffer overflow";
     }
     this.buffer[index] = cost;
-
-    // if (this.costs[forward_id] == null) {
-    //     this.costs[forward_id] = [];
-    // }
-    // this.costs[forward_id][backward_id] = cost;
 };
 
 ConnectionCosts.prototype.get = function (forward_id, backward_id) {
@@ -53,11 +45,6 @@ ConnectionCosts.prototype.get = function (forward_id, backward_id) {
         throw "ConnectionCosts buffer overflow";
     }
     return this.buffer[index];
-
-    // if (this.costs[forward_id] == null) {
-    //     return null;
-    // }
-    // return this.costs[forward_id][backward_id];
 };
 
 ConnectionCosts.prototype.loadConnectionCosts = function (connection_costs_buffer) {
