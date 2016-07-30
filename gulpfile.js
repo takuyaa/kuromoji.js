@@ -1,25 +1,21 @@
 "use strict";
 
-var fs = require("fs"),
-    gulp = require("gulp"),
-    clean = require("gulp-clean"),
-    merge = require("event-stream").merge,
-    sequence = require("run-sequence"),
-    jshint = require("gulp-jshint"),
-    browserify = require("browserify"),
-    source = require("vinyl-source-stream"),
-    gzip = require("gulp-gzip"),
-    sourcemaps = require("gulp-sourcemaps"),
-    mocha = require("gulp-mocha"),
-    istanbul = require("gulp-istanbul"),
-    webserver = require('gulp-webserver'),
-    jsdoc = require("gulp-jsdoc");
+const fs = require("fs");
+const gulp = require("gulp");
+const clean = require("gulp-clean");
+const merge = require("event-stream").merge;
+const sequence = require("run-sequence");
+const jshint = require("gulp-jshint");
+const browserify = require("browserify");
+const source = require("vinyl-source-stream");
+const gzip = require("gulp-gzip");
+const sourcemaps = require("gulp-sourcemaps");
+const mocha = require("gulp-mocha");
+const istanbul = require("gulp-istanbul");
+const webserver = require('gulp-webserver');
+const jsdoc = require("gulp-jsdoc");
 
-const IPADic = require('mecab-ipadic-seed');
-const kuromoji = require("./dist/node/kuromoji.js");
-
-
-gulp.task("clean", function () {
+gulp.task("clean", () => {
     return merge(
         gulp.src("./dist/browser/kuromoji.js")
             .pipe(clean()),
@@ -28,8 +24,7 @@ gulp.task("clean", function () {
     );
 });
 
-
-gulp.task("build", function () {
+gulp.task("build", () => {
     if (!fs.existsSync("./dist")) {
         fs.mkdirSync("./dist");
     }
@@ -45,7 +40,7 @@ gulp.task("build", function () {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("./dist/node/"));
 
-    var b = browserify({
+    const b = browserify({
         entries: ["./src/kuromoji.js"],
         standalone: "kuromoji" // window.kuromoji
     });
@@ -58,19 +53,19 @@ gulp.task("build", function () {
     console.log("Build done");
 });
 
-
-gulp.task("watch", function () {
+gulp.task("watch", () => {
     gulp.watch([ "./src/**/*.js", "./test/**/*.js" ], [ "lint", "build", "jsdoc" ]);
 });
 
-
-gulp.task("clean-dict", function () {
+gulp.task("clean-dict", () => {
     gulp.src("./dist/dict/")
         .pipe(clean());
 });
 
+gulp.task("build-dict", () => {
+    const IPADic = require('mecab-ipadic-seed');
+    const kuromoji = require("./dist/node/kuromoji.js");
 
-gulp.task("build-dict", function () {
     if (!fs.existsSync("./dist/")) {
         fs.mkdirSync("./dist/");
     }
@@ -132,18 +127,18 @@ gulp.task("build-dict", function () {
         console.log('Building binary dictionary ...');
         return builder.build();
     }).then((dic) => {
-        var base_buffer = toBuffer(dic.trie.bc.getBaseBuffer()),
-            check_buffer = toBuffer(dic.trie.bc.getCheckBuffer()),
-            token_info_buffer = toBuffer(dic.token_info_dictionary.dictionary.buffer),
-            tid_pos_buffer = toBuffer(dic.token_info_dictionary.pos_buffer.buffer),
-            tid_map_buffer = toBuffer(dic.token_info_dictionary.targetMapToBuffer()),
-            connection_costs_buffer = toBuffer(dic.connection_costs.buffer),
-            unk_buffer = toBuffer(dic.unknown_dictionary.dictionary.buffer),
-            unk_pos_buffer = toBuffer(dic.unknown_dictionary.pos_buffer.buffer),
-            unk_map_buffer = toBuffer(dic.unknown_dictionary.targetMapToBuffer()),
-            char_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.character_category_map),
-            char_compat_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.compatible_category_map),
-            invoke_definition_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.invoke_definition_map.toBuffer());
+        const base_buffer = toBuffer(dic.trie.bc.getBaseBuffer());
+        const check_buffer = toBuffer(dic.trie.bc.getCheckBuffer());
+        const token_info_buffer = toBuffer(dic.token_info_dictionary.dictionary.buffer);
+        const tid_pos_buffer = toBuffer(dic.token_info_dictionary.pos_buffer.buffer);
+        const tid_map_buffer = toBuffer(dic.token_info_dictionary.targetMapToBuffer());
+        const connection_costs_buffer = toBuffer(dic.connection_costs.buffer);
+        const unk_buffer = toBuffer(dic.unknown_dictionary.dictionary.buffer);
+        const unk_pos_buffer = toBuffer(dic.unknown_dictionary.pos_buffer.buffer);
+        const unk_map_buffer = toBuffer(dic.unknown_dictionary.targetMapToBuffer());
+        const char_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.character_category_map);
+        const char_compat_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.compatible_category_map);
+        const invoke_definition_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.invoke_definition_map.toBuffer());
 
         fs.writeFileSync("./dist/dict/base.dat", base_buffer);
         fs.writeFileSync("./dist/dict/check.dat", check_buffer);
@@ -167,18 +162,16 @@ gulp.task("build-dict", function () {
     });
 });
 
-
-gulp.task("test", function () {
+gulp.task("test", () => {
     return gulp.src("./test/**/*.js", { read: false })
         .pipe(mocha({ reporter: "list" }));
 });
 
-
-gulp.task("coverage", function (done) {
+gulp.task("coverage", (done) => {
     gulp.src(["./src/**/*.js"])
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
-        .on("finish", function () {
+        .on("finish", () => {
             gulp.src(["test/**/*.js"])
                 .pipe(mocha({ reporter: "list" }))
                 .pipe(istanbul.writeReports())
@@ -186,15 +179,13 @@ gulp.task("coverage", function (done) {
         });
 });
 
-
-gulp.task("lint", function () {
+gulp.task("lint", () => {
     return gulp.src(["./src/**/*.js"])
         .pipe(jshint())
         .pipe(jshint.reporter("default"));
 });
 
-
-gulp.task("webserver", function() {
+gulp.task("webserver", () => {
     gulp.src("./")
         .pipe(webserver({
             port: 8000,
@@ -203,13 +194,11 @@ gulp.task("webserver", function() {
         }));
 });
 
-
-gulp.task("jsdoc", function () {
+gulp.task("jsdoc", () => {
     gulp.src(["./src/**/*.js"])
         .pipe(jsdoc("./jsdoc"));
 });
 
-
-gulp.task("default", function () {
+gulp.task("default", () => {
     sequence("lint", "clean", "build", "jsdoc");
 });
