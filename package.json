@@ -49,6 +49,7 @@
     "gulp-webserver": "^0.9.1",
     "mecab-ipadic-seed": "0.0.2",
     "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "^1.2.0",
     "run-sequence": "^1.0.1",
     "vinyl-source-stream": "^1.0.0"
   }

@@ -173,7 +173,7 @@ gulp.task("coverage", (done) => {
         .pipe(istanbul.hookRequire())
         .on("finish", () => {
             gulp.src(["test/**/*.js"])
-                .pipe(mocha({ reporter: "list" }))
+                .pipe(mocha({ reporter: "mocha-lcov-reporter" }))
                 .pipe(istanbul.writeReports())
                 .on("end", done);
         });
