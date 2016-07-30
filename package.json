@@ -50,6 +50,7 @@
     "gulp-util": "^3.0.1",
     "gulp-webserver": "^0.9.1",
     "jconv": "^0.1.5",
+    "mecab-ipadic-seed": "0.0.1",
     "mocha": "^2.2.5",
     "run-sequence": "^1.0.1",
     "vinyl-source-stream": "^1.0.0"
