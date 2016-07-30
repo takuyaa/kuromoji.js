@@ -1,3 +1,5 @@
+"use strict";
+
 var fs = require("fs"),
     gulp = require("gulp"),
     clean = require("gulp-clean"),
@@ -12,6 +14,9 @@ var fs = require("fs"),
     istanbul = require("gulp-istanbul"),
     webserver = require('gulp-webserver'),
     jsdoc = require("gulp-jsdoc");
+
+const IPADic = require('mecab-ipadic-seed');
+const kuromoji = require("./dist/node/kuromoji.js");
 
 
 gulp.task("clean", function () {
@@ -84,8 +89,49 @@ gulp.task("build-dict", function () {
         return buffer;
     }
 
-    var dicPromise = require("./scripts/build-dict.js");
-    dicPromise.then((dic) => {
+    const dic = new IPADic();
+    const builder = kuromoji.dictionaryBuilder();
+
+    // Build token info dictionary
+    const tokenInfoPromise = dic.readTokenInfo((line) => {
+        builder.addTokenInfoDictionary(line);
+    }).then(() => {
+        console.log('Finishied to read token info dics');
+    });
+
+    // Build connection costs matrix
+    let matrixDef = '';
+    const matrixDefPromise = dic.readMatrixDef((line) => {
+        matrixDef += line + "\n";
+    }).then(() => {
+        builder.costMatrix(matrixDef);
+        console.log('Finishied to read matrix.def');
+    });
+
+    // Build unknown dictionary
+    let unkDef = '';
+    const unkDefPromise = dic.readUnkDef((line) => {
+        unkDef += line + "\n";
+    }).then(() => {
+        builder.unkDef(unkDef);
+        console.log('Finishied to read unk.def');
+    });
+
+    // Build character definition dictionary
+    let charDef = '';
+    const charDefPromise = dic.readCharDef((line) => {
+        charDef += line + "\n";
+    }).then(() => {
+        builder.charDef(charDef);
+        console.log('Finishied to read char.def');
+    });
+
+    // Build kuromoji.js binary dictionary
+    Promise.all([tokenInfoPromise, matrixDefPromise, unkDefPromise, charDefPromise]).then(() => {
+        console.log('Finishied to read all seed dictionary files');
+        console.log('Building binary dictionary ...');
+        return builder.build();
+    }).then((dic) => {
         var base_buffer = toBuffer(dic.trie.bc.getBaseBuffer()),
             check_buffer = toBuffer(dic.trie.bc.getCheckBuffer()),
             token_info_buffer = toBuffer(dic.token_info_dictionary.dictionary.buffer),
