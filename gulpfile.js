@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const gulp = require("gulp");
-const clean = require("gulp-clean");
+const del = require('del');
 const sequence = require("run-sequence");
 const jshint = require("gulp-jshint");
 const browserify = require("browserify");
@@ -15,9 +15,8 @@ const webserver = require('gulp-webserver');
 const jsdoc = require("gulp-jsdoc");
 const bower = require('gulp-bower');
 
-gulp.task("clean", () => {
-    return gulp.src([ "dist/browser/", "dist/node/", "publish/" ])
-        .pipe(clean());
+gulp.task("clean", (done) => {
+    return del([ "dist/browser/", "dist/node/", "publish/" ], done);
 });
 
 gulp.task("build", () => {
@@ -53,12 +52,11 @@ gulp.task("watch", () => {
     gulp.watch([ "src/**/*.js", "test/**/*.js" ], [ "lint", "build", "jsdoc" ]);
 });
 
-gulp.task("clean-dict", () => {
-    gulp.src("dist/dict/")
-        .pipe(clean());
+gulp.task("clean-dict", (done) => {
+    return del([ "dist/dict/" ], done);
 });
 
-gulp.task("build-dict", () => {
+gulp.task("create-dat-files", (done) => {
     const IPADic = require('mecab-ipadic-seed');
     const kuromoji = require("./dist/node/kuromoji.js");
 
@@ -149,13 +147,22 @@ gulp.task("build-dict", () => {
         fs.writeFileSync("dist/dict/unk_compat.dat", char_compat_map_buffer);
         fs.writeFileSync("dist/dict/unk_invoke.dat", invoke_definition_map_buffer);
 
-        gulp.src("dist/dict/*.dat")
-            .pipe(gzip())
-            .pipe(gulp.dest("dist/dict/"));
-
-        gulp.src("dist/dict/*.dat")
-            .pipe(clean());
+        done();
     });
+});
+
+gulp.task("compress-dict", () => {
+    return gulp.src("dist/dict/*.dat")
+        .pipe(gzip())
+        .pipe(gulp.dest("dist/dict/"));
+});
+
+gulp.task("clean-dat-files", (done) => {
+    del([ "dist/dict/*.dat" ], done);
+});
+
+gulp.task("build-dict", () => {
+    sequence("build", "clean-dict", "create-dat-files", "compress-dict", "clean-dat-files");
 });
 
 gulp.task("test", () => {
