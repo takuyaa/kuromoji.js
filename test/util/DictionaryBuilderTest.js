@@ -41,7 +41,11 @@ describe("DictionaryBuilder", function () {
         });
 
         // Build connection costs matrix
-        builder = builder.costMatrix(fs.readFileSync(connection_costs_file, "ascii"));
+        var cc_text = fs.readFileSync(connection_costs_file, "ascii");
+        var cc_lines = cc_text.split("\n");
+        cc_lines.map(function (line) {
+            builder = builder.putCostMatrixLine(line);
+        });
 
         // Build unknown dictionary
         builder = builder.charDef(fs.readFileSync(char_def_file, "utf-8"));

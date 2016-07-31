@@ -25,7 +25,6 @@ var ConnectionCosts = require("../dict/ConnectionCosts.js");
 var UnknownDictionary = require("../dict/UnknownDictionary.js");
 var CharacterDefinition = require("../dict/CharacterDefinition.js");  // TODO Remove this dependency
 
-
 /**
  * Build dictionaries (token info, connection costs)
  *
@@ -44,7 +43,7 @@ function DictionaryBuilder() {
     this.tid_entries = [];
     this.unk_entries = [];
 
-    this.matrix_text = "0 0";
+    this.connection_costs = new ConnectionCosts();
     this.char_text = "";
 }
 
@@ -55,12 +54,11 @@ DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
 };
 
 /**
- *
- * @param {string} matrix_text Contents of file "matrix.def"
- * @returns {DictionaryBuilder}
+ * Put one line of "matrix.def" file for building ConnectionCost object
+ * @param {string} line is a line of "matrix.def"
  */
-DictionaryBuilder.prototype.costMatrix = function (matrix_text) {
-    this.matrix_text = matrix_text;
+DictionaryBuilder.prototype.putCostMatrixLine = function (line) {
+    this.connection_costs.putLine(line);
     return this;
 };
 
@@ -78,10 +76,9 @@ DictionaryBuilder.prototype.unkDef = function (text) {
 
 DictionaryBuilder.prototype.build = function () {
     var dictionaries = this.buildTokenInfoDictionary();
-    var connection_costs = this.buildConnectionCosts();
     var unknown_dictionary = this.buildUnknownDictionary();
 
-    return new DynamicDictionaries(dictionaries.trie, dictionaries.token_info_dictionary, connection_costs, unknown_dictionary);
+    return new DynamicDictionaries(dictionaries.trie, dictionaries.token_info_dictionary, this.connection_costs, unknown_dictionary);
 };
 
 /**
@@ -143,13 +140,6 @@ DictionaryBuilder.prototype.buildUnknownDictionary = function () {
 };
 
 /**
- * Build connection costs dictionary
- */
-DictionaryBuilder.prototype.buildConnectionCosts = function () {
-    return ConnectionCosts.build(this.matrix_text);
-};
-
-/**
  * Build double array trie
  *
  * @returns {DoubleArray} Double-Array trie
@@ -164,6 +154,5 @@ DictionaryBuilder.prototype.buildDoubleArray = function () {
     var builder = doublearray.builder(1024 * 1024);
     return builder.build(words);
 };
-
 
 module.exports = DictionaryBuilder;

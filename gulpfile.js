@@ -88,11 +88,9 @@ gulp.task("create-dat-files", (done) => {
     });
 
     // Build connection costs matrix
-    let matrixDef = '';
     const matrixDefPromise = dic.readMatrixDef((line) => {
-        matrixDef += line + "\n";
+        builder.putCostMatrixLine(line);
     }).then(() => {
-        builder.costMatrix(matrixDef);
         console.log('Finishied to read matrix.def');
     });
 
