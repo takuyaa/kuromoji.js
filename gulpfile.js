@@ -158,8 +158,8 @@ gulp.task("clean-dat-files", (done) => {
     return del([ "dist/dict/*.dat" ], done);
 });
 
-gulp.task("build-dict", () => {
-    sequence("build", "clean-dict", "create-dat-files", "compress-dict", "clean-dat-files");
+gulp.task("build-dict", [ "build", "clean-dict" ], () => {
+    sequence("create-dat-files", "compress-dict", "clean-dat-files");
 });
 
 gulp.task("test", [ "build" ], () => {
