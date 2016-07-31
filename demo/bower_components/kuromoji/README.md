@@ -1,8 +1,17 @@
 kuromoji.js
 ===========
 
+[![Build Status](https://travis-ci.org/takuyaa/kuromoji.js.svg?branch=master)](https://travis-ci.org/takuyaa/kuromoji.js)
+[![Coverage Status](https://coveralls.io/repos/takuyaa/kuromoji.js/badge.png)](https://coveralls.io/r/takuyaa/kuromoji.js)
+[![npm version](https://badge.fury.io/js/kuromoji.svg)](http://badge.fury.io/js/kuromoji)
+[![Bower version](https://badge.fury.io/bo/kuromoji.svg)](http://badge.fury.io/bo/kuromoji)
+[![dependencies](https://david-dm.org/takuyaa/kuromoji.js.svg)](https://david-dm.org/takuyaa/kuromoji.js)
+[![Code Climate](https://codeclimate.com/github/takuyaa/kuromoji.js/badges/gpa.svg)](https://codeclimate.com/github/takuyaa/kuromoji.js)
+
 JavaScript implementation of Japanese morphological analyzer.
-This is a pure JavaScript porting of Kuromoji from scratch.
+This is a pure JavaScript porting of [Kuromoji](http://www.atilika.com/ja/products/kuromoji.html).
+
+You can see how kuromoji.js works in [demo site](http://takuyaa.github.io/kuromoji.js/demo/tokenize.html).
 
 
 Directory
@@ -25,13 +34,13 @@ Directory tree is as follows:
 Usage
 -----
 
-You can tokenize sentences by only 5 lines of code.
-If you need working examples, see also files under demo or example directory.
+You can tokenize sentences with only 5 lines of code.
+If you need working examples, you can see the files under the demo or example directory.
 
 
 ### Node.js
 
-Install by npm package manager:
+Install with npm package manager:
 
     npm install kuromoji
 
@@ -41,7 +50,7 @@ Load this library as follows:
 
 You can prepare tokenizer like this:
 
-    kuromoji.builder({ dicPath: "path/to/dictionary/dir/" }).build(function (tokenizer) {
+    kuromoji.builder({ dicPath: "path/to/dictionary/dir/" }).build(function (err, tokenizer) {
         // tokenizer is ready
         var path = tokenizer.tokenize("すもももももももものうち");
         console.log(path);
@@ -51,13 +60,13 @@ You can prepare tokenizer like this:
 
 ### Browser
 
-Only you need dist/browser/kuromoji.js, and dist/dict/*.dat.gz files
+You only need the dist/browser/kuromoji.js and dist/dict/*.dat.gz files
 
-Install by Bower package manager:
+Install with Bower package manager:
 
     bower install kuromoji
 
-Or you can use kuromoji.js file and dictionary files from GitHub repository.
+Or you can use the kuromoji.js file and dictionary files from the GitHub repository.
 
 In your HTML:
 
@@ -65,7 +74,7 @@ In your HTML:
 
 In your JavaScript:
 
-    kuromoji.builder({ dicPath: "/url/to/dictionary/dir/" }).build(function (tokenizer) {
+    kuromoji.builder({ dicPath: "/url/to/dictionary/dir/" }).build(function (err, tokenizer) {
         // tokenizer is ready
         var path = tokenizer.tokenize("すもももももももものうち");
         console.log(path);
@@ -75,7 +84,7 @@ In your JavaScript:
 API
 ---
 
-The function tokenize() returns JSON array like this:
+The function tokenize() returns an JSON array like this:
 
     [ {
         word_id: 509800,          // 辞書内での単語ID
@@ -93,6 +102,6 @@ The function tokenize() returns JSON array like this:
         pronunciation: 'クロモジ'  // 発音
       } ]
 
-(This is defined by src/util/IpadicFormatter.js)
+(This is defined in src/util/IpadicFormatter.js)
 
-See also JSDoc under jsdoc directory.
+Also see the JSDoc under jsdoc directory.
