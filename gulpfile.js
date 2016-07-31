@@ -14,6 +14,7 @@ const istanbul = require("gulp-istanbul");
 const webserver = require('gulp-webserver');
 const jsdoc = require("gulp-jsdoc");
 const bower = require('gulp-bower');
+const ghPages = require('gulp-gh-pages');
 
 gulp.task("clean", (done) => {
     return del([ "dist/browser/", "dist/node/", "publish/" ], done);
@@ -215,6 +216,11 @@ gulp.task("copy-demo", () => {
 
 gulp.task("build-demo", [ "clean-demo", "copy-demo" ], () => {
     return bower({ cwd: 'publish/demo/' });
+});
+
+gulp.task("deploy", [ "build-demo", "jsdoc" ], () => {
+    return gulp.src('publish/**/*')
+        .pipe(ghPages());
 });
 
 gulp.task("default", () => {
