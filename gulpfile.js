@@ -17,48 +17,48 @@ const jsdoc = require("gulp-jsdoc");
 
 gulp.task("clean", () => {
     return merge(
-        gulp.src("./dist/browser/kuromoji.js")
+        gulp.src("dist/browser/kuromoji.js")
             .pipe(clean()),
-        gulp.src("./dist/node/")
+        gulp.src("dist/node/")
             .pipe(clean())
     );
 });
 
 gulp.task("build", () => {
-    if (!fs.existsSync("./dist")) {
-        fs.mkdirSync("./dist");
+    if (!fs.existsSync("dist")) {
+        fs.mkdirSync("dist");
     }
-    if (!fs.existsSync("./dist/browser/")) {
-        fs.mkdirSync("./dist/browser/");
+    if (!fs.existsSync("dist/browser/")) {
+        fs.mkdirSync("dist/browser/");
     }
-    if (!fs.existsSync("./dist/node/")) {
-        fs.mkdirSync("./dist/node/");
+    if (!fs.existsSync("dist/node/")) {
+        fs.mkdirSync("dist/node/");
     }
 
-    gulp.src("./src/**/*.js")
+    gulp.src("src/**/*.js")
         .pipe(sourcemaps.init())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest("./dist/node/"));
+        .pipe(gulp.dest("dist/node/"));
 
     const b = browserify({
-        entries: ["./src/kuromoji.js"],
+        entries: ["src/kuromoji.js"],
         standalone: "kuromoji" // window.kuromoji
     });
     // replace NodeDictionaryLoader to BrowserDictionaryLoader
-    b.require(__dirname + "/src/loader/BrowserDictionaryLoader.js", {expose: "./loader/NodeDictionaryLoader.js"});
+    b.require(__dirname + "/src/loader/BrowserDictionaryLoader.js", {expose: "loader/NodeDictionaryLoader.js"});
     b.bundle()
         .pipe(source("kuromoji.js"))
-        .pipe(gulp.dest("./dist/browser/"));
+        .pipe(gulp.dest("dist/browser/"));
 
     console.log("Build done");
 });
 
 gulp.task("watch", () => {
-    gulp.watch([ "./src/**/*.js", "./test/**/*.js" ], [ "lint", "build", "jsdoc" ]);
+    gulp.watch([ "src/**/*.js", "test/**/*.js" ], [ "lint", "build", "jsdoc" ]);
 });
 
 gulp.task("clean-dict", () => {
-    gulp.src("./dist/dict/")
+    gulp.src("dist/dict/")
         .pipe(clean());
 });
 
@@ -66,11 +66,11 @@ gulp.task("build-dict", () => {
     const IPADic = require('mecab-ipadic-seed');
     const kuromoji = require("./dist/node/kuromoji.js");
 
-    if (!fs.existsSync("./dist/")) {
-        fs.mkdirSync("./dist/");
+    if (!fs.existsSync("dist/")) {
+        fs.mkdirSync("dist/");
     }
-    if (!fs.existsSync("./dist/dict/")) {
-        fs.mkdirSync("./dist/dict/");
+    if (!fs.existsSync("dist/dict/")) {
+        fs.mkdirSync("dist/dict/");
     }
 
     // To node.js Buffer
@@ -140,35 +140,35 @@ gulp.task("build-dict", () => {
         const char_compat_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.compatible_category_map);
         const invoke_definition_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.invoke_definition_map.toBuffer());
 
-        fs.writeFileSync("./dist/dict/base.dat", base_buffer);
-        fs.writeFileSync("./dist/dict/check.dat", check_buffer);
-        fs.writeFileSync("./dist/dict/tid.dat", token_info_buffer);
-        fs.writeFileSync("./dist/dict/tid_pos.dat", tid_pos_buffer);
-        fs.writeFileSync("./dist/dict/tid_map.dat", tid_map_buffer);
-        fs.writeFileSync("./dist/dict/cc.dat", connection_costs_buffer);
-        fs.writeFileSync("./dist/dict/unk.dat", unk_buffer);
-        fs.writeFileSync("./dist/dict/unk_pos.dat", unk_pos_buffer);
-        fs.writeFileSync("./dist/dict/unk_map.dat", unk_map_buffer);
-        fs.writeFileSync("./dist/dict/unk_char.dat", char_map_buffer);
-        fs.writeFileSync("./dist/dict/unk_compat.dat", char_compat_map_buffer);
-        fs.writeFileSync("./dist/dict/unk_invoke.dat", invoke_definition_map_buffer);
+        fs.writeFileSync("dist/dict/base.dat", base_buffer);
+        fs.writeFileSync("dist/dict/check.dat", check_buffer);
+        fs.writeFileSync("dist/dict/tid.dat", token_info_buffer);
+        fs.writeFileSync("dist/dict/tid_pos.dat", tid_pos_buffer);
+        fs.writeFileSync("dist/dict/tid_map.dat", tid_map_buffer);
+        fs.writeFileSync("dist/dict/cc.dat", connection_costs_buffer);
+        fs.writeFileSync("dist/dict/unk.dat", unk_buffer);
+        fs.writeFileSync("dist/dict/unk_pos.dat", unk_pos_buffer);
+        fs.writeFileSync("dist/dict/unk_map.dat", unk_map_buffer);
+        fs.writeFileSync("dist/dict/unk_char.dat", char_map_buffer);
+        fs.writeFileSync("dist/dict/unk_compat.dat", char_compat_map_buffer);
+        fs.writeFileSync("dist/dict/unk_invoke.dat", invoke_definition_map_buffer);
 
-        gulp.src("./dist/dict/*.dat")
+        gulp.src("dist/dict/*.dat")
             .pipe(gzip())
-            .pipe(gulp.dest("./dist/dict/"));
+            .pipe(gulp.dest("dist/dict/"));
 
-        gulp.src("./dist/dict/*.dat")
+        gulp.src("dist/dict/*.dat")
             .pipe(clean());
     });
 });
 
 gulp.task("test", () => {
-    return gulp.src("./test/**/*.js", { read: false })
+    return gulp.src("test/**/*.js", { read: false })
         .pipe(mocha({ reporter: "list" }));
 });
 
 gulp.task("coverage", (done) => {
-    gulp.src(["./src/**/*.js"])
+    gulp.src(["src/**/*.js"])
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
         .on("finish", () => {
@@ -180,7 +180,7 @@ gulp.task("coverage", (done) => {
 });
 
 gulp.task("lint", () => {
-    return gulp.src(["./src/**/*.js"])
+    return gulp.src(["src/**/*.js"])
         .pipe(jshint())
         .pipe(jshint.reporter("default"));
 });
@@ -195,8 +195,12 @@ gulp.task("webserver", () => {
 });
 
 gulp.task("jsdoc", () => {
-    gulp.src(["./src/**/*.js"])
-        .pipe(jsdoc("./publish/jsdoc"));
+    gulp.src(["src/**/*.js"])
+        .pipe(jsdoc("publish/jsdoc"));
+});
+
+gulp.task("deploy", () => {
+
 });
 
 gulp.task("default", () => {
