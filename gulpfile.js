@@ -3,7 +3,6 @@
 const fs = require("fs");
 const gulp = require("gulp");
 const clean = require("gulp-clean");
-const merge = require("event-stream").merge;
 const sequence = require("run-sequence");
 const jshint = require("gulp-jshint");
 const browserify = require("browserify");
@@ -14,14 +13,11 @@ const mocha = require("gulp-mocha");
 const istanbul = require("gulp-istanbul");
 const webserver = require('gulp-webserver');
 const jsdoc = require("gulp-jsdoc");
+const bower = require('gulp-bower');
 
 gulp.task("clean", () => {
-    return merge(
-        gulp.src("dist/browser/kuromoji.js")
-            .pipe(clean()),
-        gulp.src("dist/node/")
-            .pipe(clean())
-    );
+    return gulp.src([ "dist/browser/", "dist/node/", "publish/" ])
+        .pipe(clean());
 });
 
 gulp.task("build", () => {
@@ -186,7 +182,7 @@ gulp.task("lint", () => {
 });
 
 gulp.task("webserver", () => {
-    gulp.src("./")
+    gulp.src("publish/")
         .pipe(webserver({
             port: 8000,
             livereload: true,
@@ -194,13 +190,28 @@ gulp.task("webserver", () => {
         }));
 });
 
-gulp.task("jsdoc", () => {
+gulp.task("clean-jsdoc", () => {
+    return gulp.src([ "publish/jsdoc/" ])
+        .pipe(clean());
+});
+
+gulp.task("jsdoc", ["clean-jsdoc"], () => {
     gulp.src(["src/**/*.js"])
         .pipe(jsdoc("publish/jsdoc"));
 });
 
-gulp.task("deploy", () => {
+gulp.task("clean-demo", () => {
+    return gulp.src([ "publish/demo/" ])
+        .pipe(clean());
+});
 
+gulp.task("copy-demo", () => {
+    return gulp.src('demo/**/*')
+        .pipe(gulp.dest('publish/demo/'));
+});
+
+gulp.task("build-demo", ["clean-demo", "copy-demo"], () => {
+    return bower({ cwd: 'publish/demo/' });
 });
 
 gulp.task("default", () => {
