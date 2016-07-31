@@ -30,5 +30,8 @@ components
 # Gulp
 gulp.1
 
+# For GitHub Pages (gh-pages branch)
+publish
+
 # Others
 .DS_Store

@@ -196,7 +196,7 @@ gulp.task("webserver", () => {
 
 gulp.task("jsdoc", () => {
     gulp.src(["./src/**/*.js"])
-        .pipe(jsdoc("./jsdoc"));
+        .pipe(jsdoc("./publish/jsdoc"));
 });
 
 gulp.task("default", () => {
