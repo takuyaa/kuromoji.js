@@ -197,9 +197,8 @@ gulp.task("webserver", () => {
         }));
 });
 
-gulp.task("clean-jsdoc", () => {
-    return gulp.src([ "publish/jsdoc/" ])
-        .pipe(clean());
+gulp.task("clean-jsdoc", (done) => {
+    return del([ "publish/jsdoc/" ], done);
 });
 
 gulp.task("jsdoc", [ "clean-jsdoc" ], () => {
@@ -207,9 +206,8 @@ gulp.task("jsdoc", [ "clean-jsdoc" ], () => {
         .pipe(jsdoc("publish/jsdoc"));
 });
 
-gulp.task("clean-demo", () => {
-    return gulp.src([ "publish/demo/" ])
-        .pipe(clean());
+gulp.task("clean-demo", (done) => {
+    return del([ "publish/demo/" ], done);
 });
 
 gulp.task("copy-demo", () => {
