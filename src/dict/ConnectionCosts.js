@@ -21,47 +21,14 @@
  * Connection costs matrix from cc.dat file.
  * 2 dimension matrix [forward_id][backward_id] -> cost
  * @constructor
+ * @param {number} forward_dimension
+ * @param {number} backward_dimension
  */
-function ConnectionCosts() {
-    this.lines = 0;
-    this.forward_dimension = 0;
-    this.backward_dimension = 0;
-    this.buffer = null;
+function ConnectionCosts(forward_dimension, backward_dimension) {
+    this.forward_dimension = forward_dimension;
+    this.backward_dimension = backward_dimension;
+    this.buffer = new Int16Array(forward_dimension * backward_dimension);
 }
-
-ConnectionCosts.prototype.putLine = function (line) {
-    if (this.lines === 0) {
-        var dimensions = line.split(' ');
-        this.forward_dimension = dimensions[0];
-        this.backward_dimension = dimensions[1];
-        if (this.forward_dimension < 0 || this.backward_dimension < 0) {
-            throw "Parse error of matrix.def";
-        }
-        this.buffer = new Int16Array(this.forward_dimension * this.backward_dimension);
-        this.lines++;
-        return this;
-    }
-
-    var costs = line.split(" ");
-
-    if (costs.length !== 3) {
-        return this;
-    }
-
-    var forward_id = parseInt(costs[0]);
-    var backward_id = parseInt(costs[1]);
-    var cost = parseInt(costs[2]);
-
-    if (forward_id < 0 || backward_id < 0
-        || !isFinite(forward_id) || !isFinite(backward_id)
-        || this.forward_dimension <= forward_id || this.backward_dimension <= backward_id) {
-        throw "Parse error of matrix.def";
-    }
-
-    this.put(forward_id, backward_id, cost);
-    this.lines++;
-    return this;
-};
 
 ConnectionCosts.prototype.put = function (forward_id, backward_id, cost) {
     var index = forward_id * this.backward_dimension + backward_id;

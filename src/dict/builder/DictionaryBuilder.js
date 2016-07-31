@@ -20,7 +20,7 @@
 var doublearray = require("doublearray");
 var DynamicDictionaries = require("../DynamicDictionaries");
 var TokenInfoDictionary = require("../TokenInfoDictionary");
-var ConnectionCosts = require("../ConnectionCosts");
+var ConnectionCostsBuilder = require("./ConnectionCostsBuilder");
 var UnknownDictionary = require("../UnknownDictionary");
 var CharacterDefinition = require("../CharacterDefinition");  // TODO Remove this dependency
 
@@ -42,7 +42,7 @@ function DictionaryBuilder() {
     this.tid_entries = [];
     this.unk_entries = [];
 
-    this.connection_costs = new ConnectionCosts();
+    this.cc_builder = new ConnectionCostsBuilder();
     this.char_text = "";
 }
 
@@ -57,7 +57,7 @@ DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
  * @param {string} line is a line of "matrix.def"
  */
 DictionaryBuilder.prototype.putCostMatrixLine = function (line) {
-    this.connection_costs.putLine(line);
+    this.cc_builder.putLine(line);
     return this;
 };
 
@@ -77,7 +77,7 @@ DictionaryBuilder.prototype.build = function () {
     var dictionaries = this.buildTokenInfoDictionary();
     var unknown_dictionary = this.buildUnknownDictionary();
 
-    return new DynamicDictionaries(dictionaries.trie, dictionaries.token_info_dictionary, this.connection_costs, unknown_dictionary);
+    return new DynamicDictionaries(dictionaries.trie, dictionaries.token_info_dictionary, this.cc_builder.build(), unknown_dictionary);
 };
 
 /**
