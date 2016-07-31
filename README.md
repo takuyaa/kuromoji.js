@@ -26,8 +26,6 @@ Directory tree is as follows:
       dict/      -- Dictionaries for tokenizer (gzipped)
       node/      -- JavaScript file for Node.js
     example/     -- Examples to use in Node.js
-    jsdoc/       -- API Documentation
-    scripts/     -- Node.js scripts
     src/         -- JavaScript source
     test/        -- Unit test
 
@@ -105,4 +103,4 @@ The function tokenize() returns an JSON array like this:
 
 (This is defined in src/util/IpadicFormatter.js)
 
-Also see the JSDoc under jsdoc directory.
+See also [JSDoc page](https://takuyaa.github.io/kuromoji.js/jsdoc/) in details.
