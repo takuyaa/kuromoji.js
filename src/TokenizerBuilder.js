@@ -17,8 +17,8 @@
 
 "use strict";
 
-var Tokenizer = require("./Tokenizer.js");
-var DictionaryLoader = require("./loader/NodeDictionaryLoader.js");
+var Tokenizer = require("./Tokenizer");
+var DictionaryLoader = require("./loader/NodeDictionaryLoader");
 
 
 /**

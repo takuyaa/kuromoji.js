@@ -17,7 +17,7 @@
 
 "use strict";
 
-var ByteBuffer = require("../util/ByteBuffer.js");
+var ByteBuffer = require("../util/ByteBuffer");
 
 
 /**

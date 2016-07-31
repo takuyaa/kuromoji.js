@@ -16,8 +16,8 @@
  */
 
 var expect = require("chai").expect;
-var DictionaryLoader = require("../../src/loader/NodeDictionaryLoader.js");
-var ViterbiBuilder = require("../../src/viterbi/ViterbiBuilder.js");
+var DictionaryLoader = require("../../src/loader/NodeDictionaryLoader");
+var ViterbiBuilder = require("../../src/viterbi/ViterbiBuilder");
 
 var DIC_DIR = "dist/dict/";
 

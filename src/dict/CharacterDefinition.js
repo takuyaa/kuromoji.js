@@ -17,9 +17,9 @@
 
 "use strict";
 
-var InvokeDefinitionMap = require("./InvokeDefinitionMap.js");
-var CharacterClass = require("./CharacterClass.js");
-var SurrogateAwareString = require("../util/SurrogateAwareString.js");
+var InvokeDefinitionMap = require("./InvokeDefinitionMap");
+var CharacterClass = require("./CharacterClass");
+var SurrogateAwareString = require("../util/SurrogateAwareString");
 
 var DEFAULT_CATEGORY = "DEFAULT";
 var RETURN_PATTERN = /\r|\n|\r\n/;

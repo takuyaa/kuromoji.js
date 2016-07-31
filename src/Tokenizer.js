@@ -17,9 +17,9 @@
 
 "use strict";
 
-var ViterbiBuilder = require("./viterbi/ViterbiBuilder.js");
-var ViterbiSearcher = require("./viterbi/ViterbiSearcher.js");
-var IpadicFormatter = require("./util/IpadicFormatter.js");
+var ViterbiBuilder = require("./viterbi/ViterbiBuilder");
+var ViterbiSearcher = require("./viterbi/ViterbiSearcher");
+var IpadicFormatter = require("./util/IpadicFormatter");
 
 var PUNCTUATION = /、|。/;
 

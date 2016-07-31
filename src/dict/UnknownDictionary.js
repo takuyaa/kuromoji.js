@@ -17,9 +17,9 @@
 
 "use strict";
 
-var TokenInfoDictionary = require("./TokenInfoDictionary.js");
-var CharacterDefinition = require("./CharacterDefinition.js");
-var ByteBuffer = require("../util/ByteBuffer.js");
+var TokenInfoDictionary = require("./TokenInfoDictionary");
+var CharacterDefinition = require("./CharacterDefinition");
+var ByteBuffer = require("../util/ByteBuffer");
 
 
 /**

@@ -17,7 +17,7 @@
 
 var expect = require("chai").expect;
 var kuromoji = require("../dist/node/kuromoji.js");  // Not to be browserifiy-ed
-var Tokenizer = require("../src/Tokenizer.js");
+var Tokenizer = require("../src/Tokenizer");
 
 var DIC_DIR = "dist/dict/";
 

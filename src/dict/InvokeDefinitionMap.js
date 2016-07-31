@@ -17,8 +17,8 @@
 
 "use strict";
 
-var ByteBuffer = require("../util/ByteBuffer.js");
-var CharacterClass = require("./CharacterClass.js");
+var ByteBuffer = require("../util/ByteBuffer");
+var CharacterClass = require("./CharacterClass");
 
 
 /**

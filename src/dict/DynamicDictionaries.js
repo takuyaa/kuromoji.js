@@ -19,9 +19,9 @@
 
 var doublearray = require("doublearray");
 
-var TokenInfoDictionary = require("./TokenInfoDictionary.js");
-var ConnectionCosts = require("./ConnectionCosts.js");
-var UnknownDictionary = require("./UnknownDictionary.js");
+var TokenInfoDictionary = require("./TokenInfoDictionary");
+var ConnectionCosts = require("./ConnectionCosts");
+var UnknownDictionary = require("./UnknownDictionary");
 
 
 /**

@@ -17,7 +17,7 @@
 
 "use strict";
 
-var ViterbiNode = require("./ViterbiNode.js");
+var ViterbiNode = require("./ViterbiNode");
 
 
 /**

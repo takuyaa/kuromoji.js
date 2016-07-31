@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-var CharacterDefinition = require("../../src/dict/CharacterDefinition.js");
-var InvokeDefinitionMap = require("../../src/dict/InvokeDefinitionMap.js");
+var CharacterDefinition = require("../../src/dict/CharacterDefinition");
+var InvokeDefinitionMap = require("../../src/dict/InvokeDefinitionMap");
 
 var fs = require("fs");
 var expect = require("chai").expect;

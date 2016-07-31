@@ -17,8 +17,8 @@
 
 "use strict";
 
-var TokenizerBuilder = require("./TokenizerBuilder.js");
-var DictionaryBuilder = require("./dict/builder/DictionaryBuilder.js");
+var TokenizerBuilder = require("./TokenizerBuilder");
+var DictionaryBuilder = require("./dict/builder/DictionaryBuilder");
 
 // Public methods
 var kuromoji = {

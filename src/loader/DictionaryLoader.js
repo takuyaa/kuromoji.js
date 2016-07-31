@@ -19,7 +19,7 @@
 
 var path = require("path");
 var async = require("async");
-var DynamicDictionaries = require("../dict/DynamicDictionaries.js");
+var DynamicDictionaries = require("../dict/DynamicDictionaries");
 
 
 /**
