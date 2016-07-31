@@ -41,11 +41,9 @@ gulp.task("build", () => {
     });
     // replace NodeDictionaryLoader to BrowserDictionaryLoader
     b.require(__dirname + "/src/loader/BrowserDictionaryLoader.js", { expose: "loader/NodeDictionaryLoader.js" });
-    b.bundle()
+    return b.bundle()
         .pipe(source("kuromoji.js"))
         .pipe(gulp.dest("dist/browser/"));
-
-    console.log("Build done");
 });
 
 gulp.task("watch", () => {
@@ -158,7 +156,7 @@ gulp.task("compress-dict", () => {
 });
 
 gulp.task("clean-dat-files", (done) => {
-    del([ "dist/dict/*.dat" ], done);
+    return del([ "dist/dict/*.dat" ], done);
 });
 
 gulp.task("build-dict", () => {
@@ -202,7 +200,7 @@ gulp.task("clean-jsdoc", (done) => {
 });
 
 gulp.task("jsdoc", [ "clean-jsdoc" ], () => {
-    gulp.src([ "src/**/*.js" ])
+    return gulp.src([ "src/**/*.js" ])
         .pipe(jsdoc("publish/jsdoc"));
 });
 
