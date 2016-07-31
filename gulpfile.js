@@ -37,11 +37,11 @@ gulp.task("build", () => {
         .pipe(gulp.dest("dist/node/"));
 
     const b = browserify({
-        entries: ["src/kuromoji.js"],
+        entries: [ "src/kuromoji.js" ],
         standalone: "kuromoji" // window.kuromoji
     });
     // replace NodeDictionaryLoader to BrowserDictionaryLoader
-    b.require(__dirname + "/src/loader/BrowserDictionaryLoader.js", {expose: "loader/NodeDictionaryLoader.js"});
+    b.require(__dirname + "/src/loader/BrowserDictionaryLoader.js", { expose: "loader/NodeDictionaryLoader.js" });
     b.bundle()
         .pipe(source("kuromoji.js"))
         .pipe(gulp.dest("dist/browser/"));
@@ -118,7 +118,7 @@ gulp.task("build-dict", () => {
     });
 
     // Build kuromoji.js binary dictionary
-    Promise.all([tokenInfoPromise, matrixDefPromise, unkDefPromise, charDefPromise]).then(() => {
+    Promise.all([ tokenInfoPromise, matrixDefPromise, unkDefPromise, charDefPromise ]).then(() => {
         console.log('Finishied to read all seed dictionary files');
         console.log('Building binary dictionary ...');
         return builder.build();
@@ -164,11 +164,11 @@ gulp.task("test", () => {
 });
 
 gulp.task("coverage", (done) => {
-    gulp.src(["src/**/*.js"])
+    gulp.src([ "src/**/*.js" ])
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
         .on("finish", () => {
-            gulp.src(["test/**/*.js"])
+            gulp.src([ "test/**/*.js" ])
                 .pipe(mocha({ reporter: "mocha-lcov-reporter" }))
                 .pipe(istanbul.writeReports())
                 .on("end", done);
@@ -176,7 +176,7 @@ gulp.task("coverage", (done) => {
 });
 
 gulp.task("lint", () => {
-    return gulp.src(["src/**/*.js"])
+    return gulp.src([ "src/**/*.js" ])
         .pipe(jshint())
         .pipe(jshint.reporter("default"));
 });
@@ -195,8 +195,8 @@ gulp.task("clean-jsdoc", () => {
         .pipe(clean());
 });
 
-gulp.task("jsdoc", ["clean-jsdoc"], () => {
-    gulp.src(["src/**/*.js"])
+gulp.task("jsdoc", [ "clean-jsdoc" ], () => {
+    gulp.src([ "src/**/*.js" ])
         .pipe(jsdoc("publish/jsdoc"));
 });
 
@@ -210,7 +210,7 @@ gulp.task("copy-demo", () => {
         .pipe(gulp.dest('publish/demo/'));
 });
 
-gulp.task("build-demo", ["clean-demo", "copy-demo"], () => {
+gulp.task("build-demo", [ "clean-demo", "copy-demo" ], () => {
     return bower({ cwd: 'publish/demo/' });
 });
 
