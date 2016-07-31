@@ -18,8 +18,8 @@
 var fs = require("fs");
 var expect = require("chai").expect;
 
-var kuromoji = require("../../src/kuromoji.js");
-var Tokenizer = require("../../src/Tokenizer.js");
+var kuromoji = require("../../../src/kuromoji");
+var Tokenizer = require("../../../src/Tokenizer");
 
 var DIC_DIR = "test/resource/minimum-dic/";
 var connection_costs_file = DIC_DIR + "matrix.def";

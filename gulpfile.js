@@ -162,7 +162,7 @@ gulp.task("build-dict", () => {
     sequence("build", "clean-dict", "create-dat-files", "compress-dict", "clean-dat-files");
 });
 
-gulp.task("test", () => {
+gulp.task("test", [ "build" ], () => {
     return gulp.src("test/**/*.js", { read: false })
         .pipe(mocha({ reporter: "list" }));
 });

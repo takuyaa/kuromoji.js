@@ -18,12 +18,11 @@
 "use strict";
 
 var doublearray = require("doublearray");
-
-var DynamicDictionaries = require("../dict/DynamicDictionaries.js");
-var TokenInfoDictionary = require("../dict/TokenInfoDictionary.js");
-var ConnectionCosts = require("../dict/ConnectionCosts.js");
-var UnknownDictionary = require("../dict/UnknownDictionary.js");
-var CharacterDefinition = require("../dict/CharacterDefinition.js");  // TODO Remove this dependency
+var DynamicDictionaries = require("../DynamicDictionaries");
+var TokenInfoDictionary = require("../TokenInfoDictionary");
+var ConnectionCosts = require("../ConnectionCosts");
+var UnknownDictionary = require("../UnknownDictionary");
+var CharacterDefinition = require("../CharacterDefinition");  // TODO Remove this dependency
 
 /**
  * Build dictionaries (token info, connection costs)
