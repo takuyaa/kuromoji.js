@@ -21,8 +21,6 @@ var ViterbiBuilder = require("../../src/viterbi/ViterbiBuilder");
 
 var DIC_DIR = "dist/dict/";
 
-
-
 describe("ViterbiBuilder", function () {
     var viterbi_builder = null;  // target object
 
@@ -36,17 +34,16 @@ describe("ViterbiBuilder", function () {
     });
 
     it("Unknown word", function () {
+        // lattice to have "ト", "トト", "トトロ"
         var lattice = viterbi_builder.build("トトロ");
-        for (var i = 0; i <= lattice.eos_pos; i++) {
+        for (var i = 1; i < lattice.eos_pos; i++) {
             var nodes = lattice.nodes_end_at[i];
             if (nodes == null) {
                 continue;
             }
-            for (var j = 0; j < nodes.length; j++) {
-                // console.log(nodes[j].name + " " + nodes[j].surface_form);
-            }
+            expect(nodes.map(function (node) {
+                return node.surface_form;
+            })).to.include("トトロ".slice(0, i));
         }
-
-        // expect(lattice).to.have.length(7);
     });
 });
