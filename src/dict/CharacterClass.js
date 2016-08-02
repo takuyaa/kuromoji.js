@@ -34,5 +34,4 @@ function CharacterClass(class_id, class_name, is_always_invoke, is_grouping, max
     this.max_length = max_length;
 }
 
-
 module.exports = CharacterClass;

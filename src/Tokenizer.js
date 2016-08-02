@@ -23,7 +23,6 @@ var IpadicFormatter = require("./util/IpadicFormatter");
 
 var PUNCTUATION = /、|。/;
 
-
 /**
  * Tokenizer
  * @param {DynamicDictionaries} dic Dictionaries used by this tokenizer
@@ -126,6 +125,5 @@ Tokenizer.prototype.tokenizeForSentence = function (sentence, tokens) {
 Tokenizer.prototype.getLattice = function (text) {
     return this.viterbi_builder.build(text);
 };
-
 
 module.exports = Tokenizer;

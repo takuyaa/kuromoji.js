@@ -21,7 +21,6 @@ var TokenInfoDictionary = require("./TokenInfoDictionary");
 var CharacterDefinition = require("./CharacterDefinition");
 var ByteBuffer = require("../util/ByteBuffer");
 
-
 /**
  * UnknownDictionary
  * @constructor
@@ -57,6 +56,5 @@ UnknownDictionary.prototype.loadUnknownDictionaries = function (unk_buffer, unk_
     this.loadTargetMap(unk_map_buffer);
     this.character_definition = CharacterDefinition.load(cat_map_buffer, compat_cat_map_buffer, invoke_def_buffer);
 };
-
 
 module.exports = UnknownDictionary;

@@ -37,7 +37,6 @@ function SurrogateAwareString(str) {
     this.length = this.index_mapping.length;
 }
 
-
 SurrogateAwareString.prototype.slice = function (index) {
     if (this.index_mapping.length <= index) {
         return "";
@@ -45,7 +44,6 @@ SurrogateAwareString.prototype.slice = function (index) {
     var surrogate_aware_index = this.index_mapping[index];
     return this.str.slice(surrogate_aware_index);
 };
-
 
 SurrogateAwareString.prototype.charAt = function (index) {
     if (this.str.length <= index) {
@@ -59,7 +57,6 @@ SurrogateAwareString.prototype.charAt = function (index) {
     }
     return this.str.slice(surrogate_aware_start_index, surrogate_aware_end_index);
 };
-
 
 SurrogateAwareString.prototype.charCodeAt = function (index) {
     if (this.index_mapping.length <= index) {
@@ -77,11 +74,9 @@ SurrogateAwareString.prototype.charCodeAt = function (index) {
     return upper;
 };
 
-
 SurrogateAwareString.prototype.toString = function () {
     return this.str;
 };
-
 
 SurrogateAwareString.isSurrogatePair = function (ch) {
     var utf16_code = ch.charCodeAt(0);
@@ -92,6 +87,5 @@ SurrogateAwareString.isSurrogatePair = function (ch) {
         return false;
     }
 };
-
 
 module.exports = SurrogateAwareString;

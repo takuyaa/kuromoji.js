@@ -64,5 +64,4 @@ IpadicFormatter.prototype.formatUnknownEntry = function (word_id, position, type
     return token;
 };
 
-
 module.exports = IpadicFormatter;

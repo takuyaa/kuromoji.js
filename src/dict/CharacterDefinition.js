@@ -27,7 +27,6 @@ var CATEGORY_DEF_PATTERN = /^(\w+)\s+(\d)\s+(\d)\s+(\d)/;
 var CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
 var RANGE_CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})\.\.(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
 
-
 /**
  * CharacterDefinition represents char.def file and
  * defines behavior of unknown word processing
@@ -37,7 +36,6 @@ function CharacterDefinition() {
     this.character_category_map = new Uint8Array(65536);  // for all UCS2 code points
     this.compatible_category_map = new Uint32Array(65536);  // for all UCS2 code points
     this.invoke_definition_map = null;
-
 }
 
 /**
@@ -255,6 +253,5 @@ CharacterDefinition.prototype.lookup = function (ch) {
 
     return this.invoke_definition_map.getCharacterClass(class_id);
 };
-
 
 module.exports = CharacterDefinition;

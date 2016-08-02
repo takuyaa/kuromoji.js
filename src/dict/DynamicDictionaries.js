@@ -18,11 +18,9 @@
 "use strict";
 
 var doublearray = require("doublearray");
-
 var TokenInfoDictionary = require("./TokenInfoDictionary");
 var ConnectionCosts = require("./ConnectionCosts");
 var UnknownDictionary = require("./UnknownDictionary");
-
 
 /**
  * Dictionaries container for Tokenizer
@@ -80,6 +78,5 @@ DynamicDictionaries.prototype.loadUnknownDictionaries = function (unk_buffer, un
     this.unknown_dictionary.loadUnknownDictionaries(unk_buffer, unk_pos_buffer, unk_map_buffer, cat_map_buffer, compat_cat_map_buffer, invoke_def_buffer);
     return this;
 };
-
 
 module.exports = DynamicDictionaries;

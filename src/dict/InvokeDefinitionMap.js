@@ -20,7 +20,6 @@
 var ByteBuffer = require("../util/ByteBuffer");
 var CharacterClass = require("./CharacterClass");
 
-
 /**
  * InvokeDefinitionMap represents invoke definition a part of char.def
  * @constructor
@@ -107,6 +106,5 @@ InvokeDefinitionMap.prototype.toBuffer = function () {
     buffer.shrink();
     return buffer.buffer;
 };
-
 
 module.exports = InvokeDefinitionMap;

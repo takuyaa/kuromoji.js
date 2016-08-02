@@ -82,7 +82,6 @@ var stringToUtf8Bytes = function (str) {
     return bytes.subarray(0, j);
 };
 
-
 /**
  * Convert UTF-8 ArrayBuffer to String (UTF-16)
  *
@@ -132,7 +131,6 @@ var utf8BytesToString = function (bytes) {
 
     return str;
 };
-
 
 /**
  * Utilities to manipulate byte sequence
@@ -283,6 +281,5 @@ ByteBuffer.prototype.getString = function (index) {
     this.position = index;
     return utf8BytesToString(buf);
 };
-
 
 module.exports = ByteBuffer;

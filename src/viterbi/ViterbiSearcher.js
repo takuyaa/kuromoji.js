@@ -99,5 +99,4 @@ ViterbiSearcher.prototype.backward = function (lattice) {
     return shortest_path.reverse();
 };
 
-
 module.exports = ViterbiSearcher;

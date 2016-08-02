@@ -21,7 +21,6 @@ var path = require("path");
 var async = require("async");
 var DynamicDictionaries = require("../dict/DynamicDictionaries");
 
-
 /**
  * DictionaryLoader base constructor
  * @param {string} dic_path Dictionary path
@@ -35,6 +34,7 @@ function DictionaryLoader(dic_path) {
 DictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
     throw new Error("DictionaryLoader#loadArrayBuffer should be overwrite");
 };
+
 /**
  * Load dictionary files
  * @param {DictionaryLoader~onLoad} load_callback Callback function called after loaded
@@ -126,7 +126,6 @@ DictionaryLoader.prototype.load = function (load_callback) {
         load_callback(err, dic);
     });
 };
-
 
 /**
  * Callback

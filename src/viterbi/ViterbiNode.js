@@ -46,5 +46,4 @@ function ViterbiNode(node_name, node_cost, start_pos, length, type, left_id, rig
     this.type = type;
 }
 
-
 module.exports = ViterbiNode;

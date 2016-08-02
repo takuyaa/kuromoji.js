@@ -20,7 +20,6 @@
 var Tokenizer = require("./Tokenizer");
 var DictionaryLoader = require("./loader/NodeDictionaryLoader");
 
-
 /**
  * TokenizerBuilder create Tokenizer instance.
  * @param {Object} option JSON object which have key-value pairs settings
@@ -52,7 +51,5 @@ TokenizerBuilder.prototype.build = function (callback) {
  * @param {Object} err Error object
  * @param {Tokenizer} tokenizer Prepared Tokenizer
  */
-
-
 
 module.exports = TokenizerBuilder;
