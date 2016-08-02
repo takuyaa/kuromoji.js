@@ -47,7 +47,7 @@ function DynamicDictionaries(trie, token_info_dictionary, connection_costs, unkn
         this.connection_costs = connection_costs;
     } else {
         // backward_size * backward_size
-        this.connection_costs = new ConnectionCosts(0);
+        this.connection_costs = new ConnectionCosts(0, 0);
     }
     if (unknown_dictionary != null) {
         this.unknown_dictionary = unknown_dictionary;
