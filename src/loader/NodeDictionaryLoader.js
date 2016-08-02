@@ -57,4 +57,5 @@ NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
  * @param {Object} err Error object
  * @param {Uint8Array} buffer Loaded buffer
  */
+
 module.exports = NodeDictionaryLoader;
