@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+"use strict";
+
 var fs = require("fs");
 var node_zlib = require("zlib");
 var DictionaryLoader = require("./DictionaryLoader");
