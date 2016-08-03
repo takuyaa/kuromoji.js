@@ -163,7 +163,7 @@ gulp.task("test", [ "build" ], () => {
         .pipe(mocha({ reporter: "list" }));
 });
 
-gulp.task("coverage", [ "build" ], (done) => {
+gulp.task("coverage", [ "test" ], (done) => {
     gulp.src([ "src/**/*.js" ])
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
