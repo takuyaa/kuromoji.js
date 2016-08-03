@@ -50,6 +50,16 @@
     "url": "https://github.com/takuyaa/kuromoji.js.git"
   },
   "scripts": {
-    "test": "mocha -R spec --recursive"
+    "build": "gulp build",
+    "build-demo": "gulp build-demo",
+    "build-dict": "gulp build-dict",
+    "clean": "gulp clean",
+    "coverage": "gulp coverage",
+    "deploy": "gulp deploy",
+    "jsdoc": "gulp jsdoc",
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "watch": "gulp watch",
+    "webserver": "gulp webserver"
   }
 }
