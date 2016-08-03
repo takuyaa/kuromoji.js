@@ -23,7 +23,6 @@ var TokenInfoDictionary = require("../TokenInfoDictionary");
 var ConnectionCostsBuilder = require("./ConnectionCostsBuilder");
 var CharacterDefinitionBuilder = require("./CharacterDefinitionBuilder");
 var UnknownDictionary = require("../UnknownDictionary");
-var CharacterDefinition = require("../CharacterDefinition");  // TODO Remove this dependency
 
 /**
  * Build dictionaries (token info, connection costs)
