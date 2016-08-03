@@ -53,7 +53,7 @@ DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
 };
 
 /**
- * Put one line of "matrix.def" file for building ConnectionCost object
+ * Put one line of "matrix.def" file for building ConnectionCosts object
  * @param {string} line is a line of "matrix.def"
  */
 DictionaryBuilder.prototype.putCostMatrixLine = function (line) {
