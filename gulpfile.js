@@ -216,7 +216,3 @@ gulp.task("deploy", [ "build-demo", "jsdoc" ], () => {
     return gulp.src('publish/**/*')
         .pipe(ghPages());
 });
-
-gulp.task("default", () => {
-    sequence("lint", "clean", "build", "jsdoc");
-});
