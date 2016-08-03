@@ -1,28 +1,10 @@
 {
   "name": "kuromoji",
+  "description": "JavaScript implementation of Japanese morphological analyzer",
   "version": "0.0.5",
   "author": "Takuya Asano <takuya.a@gmail.com>",
-  "description": "JavaScript implementation of Japanese morphological analyzer",
-  "main": "./dist/node/kuromoji.js",
   "browser": {
     "./dist/node/loader/NodeDictionaryLoader.js": "./dist/node/loader/BrowserDictionaryLoader.js"
-  },
-  "keywords": [
-    "morphological analyzer",
-    "tokenizer",
-    "japanese",
-    "pos",
-    "pos tagger",
-    "nlp"
-  ],
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/takuyaa/kuromoji.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/takuyaa/kuromoji.js.git"
-  },
-  "scripts": {
-    "test": "mocha -R spec --recursive"
   },
   "bugs": {
     "url": "https://github.com/takuyaa/kuromoji.js/issues"
@@ -53,5 +35,23 @@
     "mocha-lcov-reporter": "^1.2.0",
     "run-sequence": "^1.0.1",
     "vinyl-source-stream": "^1.0.0"
+  },
+  "homepage": "https://github.com/takuyaa/kuromoji.js",
+  "keywords": [
+    "japanese",
+    "morphological analyzer",
+    "nlp",
+    "pos",
+    "pos tagger",
+    "tokenizer"
+  ],
+  "license": "Apache-2.0",
+  "main": "./dist/node/kuromoji.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/takuyaa/kuromoji.js.git"
+  },
+  "scripts": {
+    "test": "mocha -R spec --recursive"
   }
 }
