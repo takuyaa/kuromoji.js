@@ -44,11 +44,11 @@ describe("DictionaryBuilder", function () {
         var cc_text = fs.readFileSync(connection_costs_file, "ascii");
         var cc_lines = cc_text.split("\n");
         cc_lines.map(function (line) {
-            builder = builder.putCostMatrixLine(line);
+            builder.putCostMatrixLine(line);
         });
 
         // Build unknown dictionary
-        builder = builder.charDef(fs.readFileSync(char_def_file, "utf-8"));
+        builder.charDef(fs.readFileSync(char_def_file, "utf-8"));
         var unk_text = fs.readFileSync(unk_def_file, "utf-8");
         var unk_lines = unk_text.split("\n");
         unk_lines.map(function (line) {
