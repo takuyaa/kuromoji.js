@@ -17,7 +17,13 @@ const bower = require('gulp-bower');
 const ghPages = require('gulp-gh-pages');
 
 gulp.task("clean", (done) => {
-    return del([ "dist/browser/", "dist/node/", "publish/" ], done);
+    return del([
+        ".publish/",
+        "coverage/",
+        "dist/browser/",
+        "dist/node/",
+        "publish/"
+    ], done);
 });
 
 gulp.task("build", [ "clean" ], () => {
