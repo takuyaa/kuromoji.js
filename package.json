@@ -34,7 +34,7 @@
     "mecab-ipadic-seed": "0.0.2",
     "mocha-lcov-reporter": "^1.2.0",
     "run-sequence": "^1.0.1",
-    "vinyl-source-stream": "^1.0.0"
+    "vinyl-source-stream": "^1.1.0"
   },
   "homepage": "https://github.com/takuyaa/kuromoji.js",
   "keywords": [
