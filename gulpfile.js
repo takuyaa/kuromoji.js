@@ -181,15 +181,6 @@ gulp.task("lint", () => {
         .pipe(jshint.reporter("default"));
 });
 
-gulp.task("webserver", () => {
-    gulp.src("publish/")
-        .pipe(webserver({
-            port: 8000,
-            livereload: true,
-            directoryListing: true
-        }));
-});
-
 gulp.task("clean-jsdoc", (done) => {
     return del([ "publish/jsdoc/" ], done);
 });
@@ -210,6 +201,15 @@ gulp.task("copy-demo", () => {
 
 gulp.task("build-demo", [ "clean-demo", "copy-demo" ], () => {
     return bower({ cwd: 'publish/demo/' });
+});
+
+gulp.task("webserver", [ "build-demo", "jsdoc" ], () => {
+    gulp.src("publish/")
+        .pipe(webserver({
+            port: 8000,
+            livereload: true,
+            directoryListing: true
+        }));
 });
 
 gulp.task("deploy", [ "build-demo", "jsdoc" ], () => {
