@@ -194,12 +194,12 @@ gulp.task("clean-demo", (done) => {
     return del([ "publish/demo/" ], done);
 });
 
-gulp.task("copy-demo", () => {
+gulp.task("copy-demo", [ "clean-demo" ], () => {
     return gulp.src('demo/**/*')
         .pipe(gulp.dest('publish/demo/'));
 });
 
-gulp.task("build-demo", [ "clean-demo", "copy-demo" ], () => {
+gulp.task("build-demo", [ "copy-demo" ], () => {
     return bower({ cwd: 'publish/demo/' });
 });
 
