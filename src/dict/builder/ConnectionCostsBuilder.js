@@ -30,7 +30,7 @@ function ConnectionCostsBuilder() {
 
 ConnectionCostsBuilder.prototype.putLine = function (line) {
     if (this.lines === 0) {
-        var dimensions = line.split(' ');
+        var dimensions = line.split(" ");
         var forward_dimension = dimensions[0];
         var backward_dimension = dimensions[1];
 

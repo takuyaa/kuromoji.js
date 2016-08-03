@@ -17,8 +17,8 @@
 
 "use strict";
 
-var CharacterDefinition = require('../CharacterDefinition');
-var InvokeDefinitionMap = require('../InvokeDefinitionMap');
+var CharacterDefinition = require("../CharacterDefinition");
+var InvokeDefinitionMap = require("../InvokeDefinitionMap");
 
 var CATEGORY_DEF_PATTERN = /^(\w+)\s+(\d)\s+(\d)\s+(\d)/;
 var CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
