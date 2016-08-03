@@ -20,7 +20,7 @@ gulp.task("clean", (done) => {
     return del([ "dist/browser/", "dist/node/", "publish/" ], done);
 });
 
-gulp.task("build", () => {
+gulp.task("build", [ "clean" ], () => {
     if (!fs.existsSync("dist")) {
         fs.mkdirSync("dist");
     }
@@ -163,7 +163,7 @@ gulp.task("test", [ "build" ], () => {
         .pipe(mocha({ reporter: "list" }));
 });
 
-gulp.task("coverage", (done) => {
+gulp.task("coverage", [ "build" ], (done) => {
     gulp.src([ "src/**/*.js" ])
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
