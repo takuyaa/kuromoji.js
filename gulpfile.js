@@ -102,11 +102,9 @@ gulp.task("create-dat-files", (done) => {
     });
 
     // Build character definition dictionary
-    let charDef = '';
     const charDefPromise = dic.readCharDef((line) => {
-        charDef += line + "\n";
+        builder.putCharDefLine(line);
     }).then(() => {
-        builder.charDef(charDef);
         console.log('Finishied to read char.def');
     });
 

@@ -22,10 +22,6 @@ var CharacterClass = require("./CharacterClass");
 var SurrogateAwareString = require("../util/SurrogateAwareString");
 
 var DEFAULT_CATEGORY = "DEFAULT";
-var RETURN_PATTERN = /\r|\n|\r\n/;
-var CATEGORY_DEF_PATTERN = /^(\w+)\s+(\d)\s+(\d)\s+(\d)/;
-var CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
-var RANGE_CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})\.\.(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
 
 /**
  * CharacterDefinition represents char.def file and
@@ -50,54 +46,6 @@ CharacterDefinition.load = function (cat_map_buffer, compat_cat_map_buffer, invo
     char_def.character_category_map = cat_map_buffer;
     char_def.compatible_category_map = compat_cat_map_buffer;
     char_def.invoke_definition_map = InvokeDefinitionMap.load(invoke_def_buffer);
-    return char_def;
-};
-
-/**
- * Factory method of CharacterDefinition
- * @param {string} text Contents of char.def
- */
-CharacterDefinition.readCharacterDefinition = function (text) {
-    var lines = text.split(RETURN_PATTERN);
-    var line;
-    var character_category_definition = [];
-    var category_mapping = [];
-
-
-    for (var i = 0; i < lines.length; i++) {
-        line = lines[i];
-        if (line == null) {
-            continue;
-        }
-        var parsed_category_def = CATEGORY_DEF_PATTERN.exec(line);
-        if (parsed_category_def != null) {
-            var class_id = character_category_definition.length;
-            var char_class = CharacterDefinition.parseCharCategory(class_id, parsed_category_def);
-            if (char_class == null) {
-                continue;
-            }
-            character_category_definition.push(char_class);
-            continue;
-        }
-        var parsed_category_mapping = CATEGORY_MAPPING_PATTERN.exec(line);
-        if (parsed_category_mapping != null) {
-            var mapping = CharacterDefinition.parseCategoryMapping(parsed_category_mapping);
-            category_mapping.push(mapping);
-        }
-        var parsed_range_category_mapping = RANGE_CATEGORY_MAPPING_PATTERN.exec(line);
-        if (parsed_range_category_mapping != null) {
-            var range_mapping = CharacterDefinition.parseRangeCategoryMapping(parsed_range_category_mapping);
-            category_mapping.push(range_mapping);
-        }
-    }
-
-    // TODO If DEFAULT category does not exist, throw error
-
-    var char_def = new CharacterDefinition();
-    char_def.invoke_definition_map = new InvokeDefinitionMap();
-    char_def.invoke_definition_map.init(character_category_definition);
-    char_def.initCategoryMappings(category_mapping);
-
     return char_def;
 };
 

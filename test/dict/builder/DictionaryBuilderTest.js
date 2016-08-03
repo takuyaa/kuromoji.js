@@ -48,7 +48,11 @@ describe("DictionaryBuilder", function () {
         });
 
         // Build unknown dictionary
-        builder.charDef(fs.readFileSync(char_def_file, "utf-8"));
+        var cd_text = fs.readFileSync(char_def_file, "utf-8");
+        var cd_lines = cd_text.split("\n");
+        cd_lines.map(function (line) {
+            builder.putCharDefLine(line);
+        });
         var unk_text = fs.readFileSync(unk_def_file, "utf-8");
         var unk_lines = unk_text.split("\n");
         unk_lines.map(function (line) {

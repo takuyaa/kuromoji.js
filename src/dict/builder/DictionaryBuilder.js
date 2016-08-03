@@ -21,6 +21,7 @@ var doublearray = require("doublearray");
 var DynamicDictionaries = require("../DynamicDictionaries");
 var TokenInfoDictionary = require("../TokenInfoDictionary");
 var ConnectionCostsBuilder = require("./ConnectionCostsBuilder");
+var CharacterDefinitionBuilder = require("./CharacterDefinitionBuilder");
 var UnknownDictionary = require("../UnknownDictionary");
 var CharacterDefinition = require("../CharacterDefinition");  // TODO Remove this dependency
 
@@ -41,9 +42,8 @@ function DictionaryBuilder() {
     // (0: surface form, 1: left id, 2: right id, 3: word cost, 4: part of speech id, 5-: other features)
     this.tid_entries = [];
     this.unk_entries = [];
-
     this.cc_builder = new ConnectionCostsBuilder();
-    this.char_text = "";
+    this.cd_builder = new CharacterDefinitionBuilder();
 }
 
 DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
@@ -61,8 +61,8 @@ DictionaryBuilder.prototype.putCostMatrixLine = function (line) {
     return this;
 };
 
-DictionaryBuilder.prototype.charDef = function (char_text) {
-    this.char_text = char_text;
+DictionaryBuilder.prototype.putCharDefLine = function (line) {
+    this.cd_builder.putLine(line);
     return this;
 };
 
@@ -121,7 +121,7 @@ DictionaryBuilder.prototype.buildUnknownDictionary = function () {
     // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
     var dictionary_entries = unk_dictionary.buildDictionary(this.unk_entries);
 
-    var char_def = CharacterDefinition.readCharacterDefinition(this.char_text); // Create CharacterDefinition (factory method)
+    var char_def = this.cd_builder.build(); // Create CharacterDefinition
 
     unk_dictionary.characterDefinition(char_def);
 

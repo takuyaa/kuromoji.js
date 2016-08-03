@@ -17,6 +17,7 @@
 
 var CharacterDefinition = require("../../src/dict/CharacterDefinition");
 var InvokeDefinitionMap = require("../../src/dict/InvokeDefinitionMap");
+var CharacterDefinitionBuilder = require("../../src/dict/builder/CharacterDefinitionBuilder");
 
 var fs = require("fs");
 var expect = require("chai").expect;
@@ -27,8 +28,11 @@ describe("CharacterDefinition from char.def", function () {
     var char_def;  // target object
 
     before("Create CharacterDefinition", function (done) {
-        var text = fs.readFileSync(DIC_DIR + "char.def", "utf-8");
-        char_def = CharacterDefinition.readCharacterDefinition(text);
+        var cd_builder = new CharacterDefinitionBuilder();
+        fs.readFileSync(DIC_DIR + "char.def", "utf-8").split("\n").map(function (line) {
+            cd_builder.putLine(line);
+        });
+        char_def = cd_builder.build();
         done();
     });
 
