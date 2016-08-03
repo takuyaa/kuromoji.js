@@ -28,7 +28,7 @@
     "url": "https://github.com/takuyaa/kuromoji.js/issues"
   },
   "dependencies": {
-    "async": "^1.4.0",
+    "async": "^2.0.1",
     "doublearray": "0.0.2",
     "zlibjs": "^0.2.0"
   },
