@@ -45,7 +45,7 @@
     "gulp-istanbul": "^0.10.0",
     "gulp-jsdoc": "^0.1.4",
     "gulp-jshint": "^1.9.0",
-    "gulp-mocha": "^2.0.0",
+    "gulp-mocha": "^3.0.0",
     "gulp-sourcemaps": "^1.2.8",
     "gulp-util": "^3.0.1",
     "gulp-webserver": "^0.9.1",
