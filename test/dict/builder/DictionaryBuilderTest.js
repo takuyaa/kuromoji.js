@@ -49,7 +49,11 @@ describe("DictionaryBuilder", function () {
 
         // Build unknown dictionary
         builder = builder.charDef(fs.readFileSync(char_def_file, "utf-8"));
-        builder = builder.unkDef(fs.readFileSync(unk_def_file, "utf-8"));
+        var unk_text = fs.readFileSync(unk_def_file, "utf-8");
+        var unk_lines = unk_text.split("\n");
+        unk_lines.map(function (line) {
+            builder.putUnkDefLine(line);
+        });
 
         kuromoji_dic = builder.build();
 

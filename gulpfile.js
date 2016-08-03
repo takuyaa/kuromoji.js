@@ -95,11 +95,9 @@ gulp.task("create-dat-files", (done) => {
     });
 
     // Build unknown dictionary
-    let unkDef = '';
     const unkDefPromise = dic.readUnkDef((line) => {
-        unkDef += line + "\n";
+        builder.putUnkDefLine(line);
     }).then(() => {
-        builder.unkDef(unkDef);
         console.log('Finishied to read unk.def');
     });
 

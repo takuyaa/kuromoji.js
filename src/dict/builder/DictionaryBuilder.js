@@ -66,10 +66,12 @@ DictionaryBuilder.prototype.charDef = function (char_text) {
     return this;
 };
 
-DictionaryBuilder.prototype.unkDef = function (text) {
-    this.unk_entries = text.split(/\n/).map(function (row) {
-        return row.split(",");
-    });
+/**
+ * Put one line of "unk.def" file for building UnknownDictionary object
+ * @param {string} line is a line of "unk.def"
+ */
+DictionaryBuilder.prototype.putUnkDefLine = function (line) {
+    this.unk_entries.push(line.split(","));
     return this;
 };
 
