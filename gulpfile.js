@@ -4,11 +4,11 @@ const fs = require("fs");
 const gulp = require("gulp");
 const del = require('del');
 const sequence = require("run-sequence");
+const merge = require('event-stream').merge;
 const jshint = require("gulp-jshint");
 const browserify = require("browserify");
 const source = require("vinyl-source-stream");
 const gzip = require("gulp-gzip");
-const sourcemaps = require("gulp-sourcemaps");
 const mocha = require("gulp-mocha");
 const istanbul = require("gulp-istanbul");
 const webserver = require('gulp-webserver');
@@ -23,31 +23,19 @@ gulp.task("clean", (done) => {
     return del([
         ".publish/",
         "coverage/",
-        "dist/browser/",
-        "dist/node/",
+        "build/",
         "publish/"
     ], done);
 });
 
-gulp.task("build-browser", () => {
+gulp.task("build", [ "clean" ], () => {
     return browserify({
         entries: [ "src/kuromoji.js" ],
         standalone: "kuromoji" // window.kuromoji
     })
         .bundle()
         .pipe(source("kuromoji.js"))
-        .pipe(gulp.dest("dist/browser/"));
-});
-
-gulp.task("build-node", () => {
-    return gulp.src("src/**/*.js")
-        .pipe(sourcemaps.init())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest("dist/node/"));
-});
-
-gulp.task("build", [ "clean" ], () => {
-    sequence("build-node", "build-browser");
+        .pipe(gulp.dest("build/"));
 });
 
 gulp.task("watch", () => {
@@ -55,18 +43,15 @@ gulp.task("watch", () => {
 });
 
 gulp.task("clean-dict", (done) => {
-    return del([ "dist/dict/" ], done);
+    return del([ "dict/" ], done);
 });
 
 gulp.task("create-dat-files", (done) => {
     const IPADic = require('mecab-ipadic-seed');
-    const kuromoji = require("./dist/node/kuromoji.js");
+    const kuromoji = require("./src/kuromoji.js");
 
-    if (!fs.existsSync("dist/")) {
-        fs.mkdirSync("dist/");
-    }
-    if (!fs.existsSync("dist/dict/")) {
-        fs.mkdirSync("dist/dict/");
+    if (!fs.existsSync("dict/")) {
+        fs.mkdirSync("dict/");
     }
 
     // To node.js Buffer
@@ -130,31 +115,31 @@ gulp.task("create-dat-files", (done) => {
         const char_compat_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.compatible_category_map);
         const invoke_definition_map_buffer = toBuffer(dic.unknown_dictionary.character_definition.invoke_definition_map.toBuffer());
 
-        fs.writeFileSync("dist/dict/base.dat", base_buffer);
-        fs.writeFileSync("dist/dict/check.dat", check_buffer);
-        fs.writeFileSync("dist/dict/tid.dat", token_info_buffer);
-        fs.writeFileSync("dist/dict/tid_pos.dat", tid_pos_buffer);
-        fs.writeFileSync("dist/dict/tid_map.dat", tid_map_buffer);
-        fs.writeFileSync("dist/dict/cc.dat", connection_costs_buffer);
-        fs.writeFileSync("dist/dict/unk.dat", unk_buffer);
-        fs.writeFileSync("dist/dict/unk_pos.dat", unk_pos_buffer);
-        fs.writeFileSync("dist/dict/unk_map.dat", unk_map_buffer);
-        fs.writeFileSync("dist/dict/unk_char.dat", char_map_buffer);
-        fs.writeFileSync("dist/dict/unk_compat.dat", char_compat_map_buffer);
-        fs.writeFileSync("dist/dict/unk_invoke.dat", invoke_definition_map_buffer);
+        fs.writeFileSync("dict/base.dat", base_buffer);
+        fs.writeFileSync("dict/check.dat", check_buffer);
+        fs.writeFileSync("dict/tid.dat", token_info_buffer);
+        fs.writeFileSync("dict/tid_pos.dat", tid_pos_buffer);
+        fs.writeFileSync("dict/tid_map.dat", tid_map_buffer);
+        fs.writeFileSync("dict/cc.dat", connection_costs_buffer);
+        fs.writeFileSync("dict/unk.dat", unk_buffer);
+        fs.writeFileSync("dict/unk_pos.dat", unk_pos_buffer);
+        fs.writeFileSync("dict/unk_map.dat", unk_map_buffer);
+        fs.writeFileSync("dict/unk_char.dat", char_map_buffer);
+        fs.writeFileSync("dict/unk_compat.dat", char_compat_map_buffer);
+        fs.writeFileSync("dict/unk_invoke.dat", invoke_definition_map_buffer);
 
         done();
     });
 });
 
 gulp.task("compress-dict", () => {
-    return gulp.src("dist/dict/*.dat")
+    return gulp.src("dict/*.dat")
         .pipe(gzip())
-        .pipe(gulp.dest("dist/dict/"));
+        .pipe(gulp.dest("dict/"));
 });
 
 gulp.task("clean-dat-files", (done) => {
-    return del([ "dist/dict/*.dat" ], done);
+    return del([ "dict/*.dat" ], done);
 });
 
 gulp.task("build-dict", [ "build", "clean-dict" ], () => {
@@ -197,9 +182,14 @@ gulp.task("clean-demo", (done) => {
     return del([ "publish/demo/" ], done);
 });
 
-gulp.task("copy-demo", [ "clean-demo" ], () => {
-    return gulp.src('demo/**/*')
-        .pipe(gulp.dest('publish/demo/'));
+gulp.task("copy-demo", [ "clean-demo", "build" ], () => {
+    return merge(
+        gulp.src('demo/**/*')
+            .pipe(gulp.dest('publish/demo/')),
+        gulp.src('build/**/*')
+            .pipe(gulp.dest('publish/demo/kuromoji/build/')),
+        gulp.src('dict/**/*')
+            .pipe(gulp.dest('publish/demo/kuromoji/dict/')));
 });
 
 gulp.task("build-demo", [ "copy-demo" ], () => {
