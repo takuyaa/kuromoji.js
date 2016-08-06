@@ -58,7 +58,7 @@ You can prepare tokenizer like this:
 
 ### Browser
 
-You only need the dist/browser/kuromoji.js and dist/dict/*.dat.gz files
+You only need the build/kuromoji.js and dict/*.dat.gz files
 
 Install with Bower package manager:
 
