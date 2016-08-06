@@ -16,11 +16,10 @@
  */
 
 var expect = require("chai").expect;
-var kuromoji = require("../dist/node/kuromoji.js");  // Not to be browserifiy-ed
+var kuromoji = require("../src/kuromoji.js");  // Not to be browserifiy-ed
 var Tokenizer = require("../src/Tokenizer");
 
-var DIC_DIR = "dist/dict/";
-
+var DIC_DIR = "dict/";
 
 describe("Tokenizer static method test", function () {
     it("splitByPunctuation", function () {
