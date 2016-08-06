@@ -20,14 +20,13 @@ Directory
 
 Directory tree is as follows:
 
-    demo/        -- Demo
-    dist/        -- Released objects
-      browser/   -- JavaScript file for browser (Browserified)
-      dict/      -- Dictionaries for tokenizer (gzipped)
-      node/      -- JavaScript file for Node.js
-    example/     -- Examples to use in Node.js
-    src/         -- JavaScript source
-    test/        -- Unit test
+    build/
+      kuromoji.js -- JavaScript file for browser (Browserified)
+    demo/         -- Demo
+    dict/         -- Dictionaries for tokenizer (gzipped)
+    example/      -- Examples to use in Node.js
+    src/          -- JavaScript source
+    test/         -- Unit test
 
 
 Usage
