@@ -6,19 +6,19 @@
   ],
   "description": "JavaScript implementation of Japanese morphological analyzer",
   "main": [
-    "dist/browser/kuromoji.js",
-    "dist/dict/base.dat.gz",
-    "dist/dict/cc.dat.gz",
-    "dist/dict/check.dat.gz",
-    "dist/dict/tid.dat.gz",
-    "dist/dict/tid_map.dat.gz",
-    "dist/dict/tid_pos.dat.gz",
-    "dist/dict/unk.dat.gz",
-    "dist/dict/unk_char.dat.gz",
-    "dist/dict/unk_compat.dat.gz",
-    "dist/dict/unk_invoke.dat.gz",
-    "dist/dict/unk_map.dat.gz",
-    "dist/dict/unk_pos.dat.gz"
+    "build/kuromoji.js",
+    "dict/base.dat.gz",
+    "dict/cc.dat.gz",
+    "dict/check.dat.gz",
+    "dict/tid.dat.gz",
+    "dict/tid_map.dat.gz",
+    "dict/tid_pos.dat.gz",
+    "dict/unk.dat.gz",
+    "dict/unk_char.dat.gz",
+    "dict/unk_compat.dat.gz",
+    "dict/unk_invoke.dat.gz",
+    "dict/unk_map.dat.gz",
+    "dict/unk_pos.dat.gz"
   ],
   "keywords": [
     "morphological analyzer",
@@ -38,10 +38,8 @@
     "example",
     "jsdoc",
     "node_modules",
-    "scripts",
     "src",
     "test",
-    "dist/node",
     "gulpfile.js",
     "package.json"
   ]
