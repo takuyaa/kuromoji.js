@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "author": "Takuya Asano <takuya.a@gmail.com>",
   "browser": {
-    "./dist/node/loader/NodeDictionaryLoader.js": "./dist/node/loader/BrowserDictionaryLoader.js"
+    "./src/loader/NodeDictionaryLoader.js": "./src/loader/BrowserDictionaryLoader.js"
   },
   "bugs": {
     "url": "https://github.com/takuyaa/kuromoji.js/issues"

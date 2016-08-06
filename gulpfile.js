@@ -29,31 +29,25 @@ gulp.task("clean", (done) => {
     ], done);
 });
 
-gulp.task("build", [ "clean" ], () => {
-    if (!fs.existsSync("dist")) {
-        fs.mkdirSync("dist");
-    }
-    if (!fs.existsSync("dist/browser/")) {
-        fs.mkdirSync("dist/browser/");
-    }
-    if (!fs.existsSync("dist/node/")) {
-        fs.mkdirSync("dist/node/");
-    }
+gulp.task("build-browser", () => {
+    return browserify({
+        entries: [ "src/kuromoji.js" ],
+        standalone: "kuromoji" // window.kuromoji
+    })
+        .bundle()
+        .pipe(source("kuromoji.js"))
+        .pipe(gulp.dest("dist/browser/"));
+});
 
-    gulp.src("src/**/*.js")
+gulp.task("build-node", () => {
+    return gulp.src("src/**/*.js")
         .pipe(sourcemaps.init())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("dist/node/"));
+});
 
-    const b = browserify({
-        entries: [ "src/kuromoji.js" ],
-        standalone: "kuromoji" // window.kuromoji
-    });
-    // replace NodeDictionaryLoader to BrowserDictionaryLoader
-    b.require(__dirname + "/src/loader/BrowserDictionaryLoader.js", { expose: "loader/NodeDictionaryLoader.js" });
-    return b.bundle()
-        .pipe(source("kuromoji.js"))
-        .pipe(gulp.dest("dist/browser/"));
+gulp.task("build", [ "clean" ], () => {
+    sequence("build-node", "build-browser");
 });
 
 gulp.task("watch", () => {
