@@ -17,6 +17,7 @@ const bower = require('gulp-bower');
 const ghPages = require('gulp-gh-pages');
 const bump = require('gulp-bump');
 const argv = require('minimist')(process.argv.slice(2));
+const git = require('gulp-git');
 
 gulp.task("clean", (done) => {
     return del([
@@ -239,4 +240,25 @@ gulp.task("version", function () {
     return gulp.src([ './bower.json', './package.json' ])
         .pipe(bump({ type: type }))
         .pipe(gulp.dest('./'));
+});
+
+gulp.task("release-commit", function () {
+    var version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+    return gulp.src('.')
+        .pipe(git.add())
+        .pipe(git.commit(`chore: release ${version}`));
+});
+
+gulp.task("release-tag", function (callback) {
+    var version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+    git.tag(version, `${version} release`, function (error) {
+        if (error) {
+            return callback(error);
+        }
+        callback(); // git.push('origin', 'master', {args: '--tags'}, callback);
+    });
+});
+
+gulp.task("release", [ "test" ], () => {
+    sequence("release-commit", "release-tag");
 });
