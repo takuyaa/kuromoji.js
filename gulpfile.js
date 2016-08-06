@@ -15,6 +15,8 @@ const webserver = require('gulp-webserver');
 const jsdoc = require("gulp-jsdoc");
 const bower = require('gulp-bower');
 const ghPages = require('gulp-gh-pages');
+const bump = require('gulp-bump');
+const argv = require('minimist')(process.argv.slice(2));
 
 gulp.task("clean", (done) => {
     return del([
@@ -221,4 +223,20 @@ gulp.task("webserver", [ "build-demo", "jsdoc" ], () => {
 gulp.task("deploy", [ "build-demo", "jsdoc" ], () => {
     return gulp.src('publish/**/*')
         .pipe(ghPages());
+});
+
+gulp.task("version", function () {
+    let type = 'patch';
+    if (argv['minor']) {
+        type = 'minor';
+    }
+    if (argv['major']) {
+        type = 'major';
+    }
+    if (argv['prerelease']) {
+        type = 'prerelease';
+    }
+    return gulp.src([ './bower.json', './package.json' ])
+        .pipe(bump({ type: type }))
+        .pipe(gulp.dest('./'));
 });
