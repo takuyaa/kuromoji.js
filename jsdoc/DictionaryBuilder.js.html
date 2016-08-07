@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: util/DictionaryBuilder.js</title>
+    <title>JSDoc: Source: dict/builder/DictionaryBuilder.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: util/DictionaryBuilder.js</h1>
+    <h1 class="page-title">Source: dict/builder/DictionaryBuilder.js</h1>
 
     
 
@@ -45,13 +45,11 @@
 "use strict";
 
 var doublearray = require("doublearray");
-
-var DynamicDictionaries = require("../dict/DynamicDictionaries.js");
-var TokenInfoDictionary = require("../dict/TokenInfoDictionary.js");
-var ConnectionCosts = require("../dict/ConnectionCosts.js");
-var UnknownDictionary = require("../dict/UnknownDictionary.js");
-var CharacterDefinition = require("../dict/CharacterDefinition.js");  // TODO Remove this dependency
-
+var DynamicDictionaries = require("../DynamicDictionaries");
+var TokenInfoDictionary = require("../TokenInfoDictionary");
+var ConnectionCostsBuilder = require("./ConnectionCostsBuilder");
+var CharacterDefinitionBuilder = require("./CharacterDefinitionBuilder");
+var UnknownDictionary = require("../UnknownDictionary");
 
 /**
  * Build dictionaries (token info, connection costs)
@@ -70,9 +68,8 @@ function DictionaryBuilder() {
     // (0: surface form, 1: left id, 2: right id, 3: word cost, 4: part of speech id, 5-: other features)
     this.tid_entries = [];
     this.unk_entries = [];
-
-    this.matrix_text = "0 0";
-    this.char_text = "";
+    this.cc_builder = new ConnectionCostsBuilder();
+    this.cd_builder = new CharacterDefinitionBuilder();
 }
 
 DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
@@ -82,33 +79,33 @@ DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
 };
 
 /**
- *
- * @param {string} matrix_text Contents of file "matrix.def"
- * @returns {DictionaryBuilder}
+ * Put one line of "matrix.def" file for building ConnectionCosts object
+ * @param {string} line is a line of "matrix.def"
  */
-DictionaryBuilder.prototype.costMatrix = function (matrix_text) {
-    this.matrix_text = matrix_text;
+DictionaryBuilder.prototype.putCostMatrixLine = function (line) {
+    this.cc_builder.putLine(line);
     return this;
 };
 
-DictionaryBuilder.prototype.charDef = function (char_text) {
-    this.char_text = char_text;
+DictionaryBuilder.prototype.putCharDefLine = function (line) {
+    this.cd_builder.putLine(line);
     return this;
 };
 
-DictionaryBuilder.prototype.unkDef = function (text) {
-    this.unk_entries = text.split(/\n/).map(function (row) {
-        return row.split(",");
-    });
+/**
+ * Put one line of "unk.def" file for building UnknownDictionary object
+ * @param {string} line is a line of "unk.def"
+ */
+DictionaryBuilder.prototype.putUnkDefLine = function (line) {
+    this.unk_entries.push(line.split(","));
     return this;
 };
 
 DictionaryBuilder.prototype.build = function () {
     var dictionaries = this.buildTokenInfoDictionary();
-    var connection_costs = this.buildConnectionCosts();
     var unknown_dictionary = this.buildUnknownDictionary();
 
-    return new DynamicDictionaries(dictionaries.trie, dictionaries.token_info_dictionary, connection_costs, unknown_dictionary);
+    return new DynamicDictionaries(dictionaries.trie, dictionaries.token_info_dictionary, this.cc_builder.build(), unknown_dictionary);
 };
 
 /**
@@ -150,7 +147,7 @@ DictionaryBuilder.prototype.buildUnknownDictionary = function () {
     // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
     var dictionary_entries = unk_dictionary.buildDictionary(this.unk_entries);
 
-    var char_def = CharacterDefinition.readCharacterDefinition(this.char_text); // Create CharacterDefinition (factory method)
+    var char_def = this.cd_builder.build(); // Create CharacterDefinition
 
     unk_dictionary.characterDefinition(char_def);
 
@@ -170,13 +167,6 @@ DictionaryBuilder.prototype.buildUnknownDictionary = function () {
 };
 
 /**
- * Build connection costs dictionary
- */
-DictionaryBuilder.prototype.buildConnectionCosts = function () {
-    return ConnectionCosts.build(this.matrix_text);
-};
-
-/**
  * Build double array trie
  *
  * @returns {DoubleArray} Double-Array trie
@@ -192,7 +182,6 @@ DictionaryBuilder.prototype.buildDoubleArray = function () {
     return builder.build(words);
 };
 
-
 module.exports = DictionaryBuilder;
 </code></pre>
         </article>
@@ -204,13 +193,13 @@ module.exports = DictionaryBuilder;
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="CharacterDefinitionBuilder.html">CharacterDefinitionBuilder</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="ConnectionCostsBuilder.html">ConnectionCostsBuilder</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Jul 31 2016 19:01:36 GMT+0900 (JST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 07 2016 15:22:30 GMT+0900 (JST)
 </footer>
 
 <script> prettyPrint(); </script>

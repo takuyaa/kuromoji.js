@@ -39,7 +39,7 @@
     
         
 <dt>
-    <h4 class="name" id="ConnectionCosts"><span class="type-signature"></span>new ConnectionCosts<span class="signature">(initial_size)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ConnectionCosts"><span class="type-signature"></span>new ConnectionCosts<span class="signature">(forward_dimension, backward_dimension)</span><span class="type-signature"></span></h4>
 
     
 </dt>
@@ -82,7 +82,7 @@
 
         <tr>
             
-                <td class="name"><code>initial_size</code></td>
+                <td class="name"><code>forward_dimension</code></td>
             
 
             <td class="type">
@@ -98,134 +98,20 @@
 
             
 
-            <td class="description last">Initial size of buffer</td>
+            <td class="description last"></td>
         </tr>
 
-    
-    </tbody>
-</table>
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ConnectionCosts.js.html">dict/ConnectionCosts.js</a>, <a href="ConnectionCosts.js.html#line26">line 26</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<dt>
-    <h4 class="name" id="build"><span class="type-signature">&lt;static> </span>build<span class="signature">(matrix_text)</span><span class="type-signature"> &rarr; {<a href="ConnectionCosts.html">ConnectionCosts</a>}</span></h4>
-
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Parse and build ConnectionCosts from contents of "matrix.def"
-    </div>
-    
-
-    
-
-    
-
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>matrix_text</code></td>
+                <td class="name"><code>backward_dimension</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
             
@@ -235,7 +121,7 @@
 
             
 
-            <td class="description last">Text contents of "matrix.def"</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -266,7 +152,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ConnectionCosts.js.html">dict/ConnectionCosts.js</a>, <a href="ConnectionCosts.js.html#line61">line 61</a>
+        <a href="ConnectionCosts.js.html">dict/ConnectionCosts.js</a>, <a href="ConnectionCosts.js.html#line27">line 27</a>
     </li></ul></dd>
     
 
@@ -289,29 +175,25 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="ConnectionCosts.html">ConnectionCosts</a></span>
-
-
-    </dd>
-</dl>
-
-        
 
     
 </dd>
 
-        </dl>
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -327,13 +209,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="CharacterDefinitionBuilder.html">CharacterDefinitionBuilder</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="ConnectionCostsBuilder.html">ConnectionCostsBuilder</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Jul 31 2016 19:01:36 GMT+0900 (JST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 07 2016 15:22:30 GMT+0900 (JST)
 </footer>
 
 <script> prettyPrint(); </script>

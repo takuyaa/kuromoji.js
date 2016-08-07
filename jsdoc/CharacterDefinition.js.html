@@ -44,16 +44,11 @@
 
 "use strict";
 
-var InvokeDefinitionMap = require("./InvokeDefinitionMap.js");
-var CharacterClass = require("./CharacterClass.js");
-var SurrogateAwareString = require("../util/SurrogateAwareString.js");
+var InvokeDefinitionMap = require("./InvokeDefinitionMap");
+var CharacterClass = require("./CharacterClass");
+var SurrogateAwareString = require("../util/SurrogateAwareString");
 
 var DEFAULT_CATEGORY = "DEFAULT";
-var RETURN_PATTERN = /\r|\n|\r\n/;
-var CATEGORY_DEF_PATTERN = /^(\w+)\s+(\d)\s+(\d)\s+(\d)/;
-var CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
-var RANGE_CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})\.\.(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
-
 
 /**
  * CharacterDefinition represents char.def file and
@@ -64,7 +59,6 @@ function CharacterDefinition() {
     this.character_category_map = new Uint8Array(65536);  // for all UCS2 code points
     this.compatible_category_map = new Uint32Array(65536);  // for all UCS2 code points
     this.invoke_definition_map = null;
-
 }
 
 /**
@@ -79,54 +73,6 @@ CharacterDefinition.load = function (cat_map_buffer, compat_cat_map_buffer, invo
     char_def.character_category_map = cat_map_buffer;
     char_def.compatible_category_map = compat_cat_map_buffer;
     char_def.invoke_definition_map = InvokeDefinitionMap.load(invoke_def_buffer);
-    return char_def;
-};
-
-/**
- * Factory method of CharacterDefinition
- * @param {string} text Contents of char.def
- */
-CharacterDefinition.readCharacterDefinition = function (text) {
-    var lines = text.split(RETURN_PATTERN);
-    var line;
-    var character_category_definition = [];
-    var category_mapping = [];
-
-
-    for (var i = 0; i &lt; lines.length; i++) {
-        line = lines[i];
-        if (line == null) {
-            continue;
-        }
-        var parsed_category_def = CATEGORY_DEF_PATTERN.exec(line);
-        if (parsed_category_def != null) {
-            var class_id = character_category_definition.length;
-            var char_class = CharacterDefinition.parseCharCategory(class_id, parsed_category_def);
-            if (char_class == null) {
-                continue;
-            }
-            character_category_definition.push(char_class);
-            continue;
-        }
-        var parsed_category_mapping = CATEGORY_MAPPING_PATTERN.exec(line);
-        if (parsed_category_mapping != null) {
-            var mapping = CharacterDefinition.parseCategoryMapping(parsed_category_mapping);
-            category_mapping.push(mapping);
-        }
-        var parsed_range_category_mapping = RANGE_CATEGORY_MAPPING_PATTERN.exec(line);
-        if (parsed_range_category_mapping != null) {
-            var range_mapping = CharacterDefinition.parseRangeCategoryMapping(parsed_range_category_mapping);
-            category_mapping.push(range_mapping);
-        }
-    }
-
-    // TODO If DEFAULT category does not exist, throw error
-
-    var char_def = new CharacterDefinition();
-    char_def.invoke_definition_map = new InvokeDefinitionMap();
-    char_def.invoke_definition_map.init(character_category_definition);
-    char_def.initCategoryMappings(category_mapping);
-
     return char_def;
 };
 
@@ -283,7 +229,6 @@ CharacterDefinition.prototype.lookup = function (ch) {
     return this.invoke_definition_map.getCharacterClass(class_id);
 };
 
-
 module.exports = CharacterDefinition;
 </code></pre>
         </article>
@@ -295,13 +240,13 @@ module.exports = CharacterDefinition;
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="CharacterDefinitionBuilder.html">CharacterDefinitionBuilder</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="ConnectionCostsBuilder.html">ConnectionCostsBuilder</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Jul 31 2016 19:01:36 GMT+0900 (JST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 07 2016 15:22:30 GMT+0900 (JST)
 </footer>
 
 <script> prettyPrint(); </script>

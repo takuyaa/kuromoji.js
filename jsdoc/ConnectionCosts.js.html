@@ -47,19 +47,22 @@
 /**
  * Connection costs matrix from cc.dat file.
  * 2 dimension matrix [forward_id][backward_id] -> cost
- * @param {number} initial_size Initial size of buffer
  * @constructor
+ * @param {number} forward_dimension
+ * @param {number} backward_dimension
  */
-function ConnectionCosts(initial_size) {
-    this.dimension = 0;
-    this.buffer = new Int16Array(initial_size);
+function ConnectionCosts(forward_dimension, backward_dimension) {
+    this.forward_dimension = forward_dimension;
+    this.backward_dimension = backward_dimension;
+
+    // leading 2 integers for forward_dimension, backward_dimension, respectively
+    this.buffer = new Int16Array(forward_dimension * backward_dimension + 2);
+    this.buffer[0] = forward_dimension;
+    this.buffer[1] = backward_dimension;
 }
 
 ConnectionCosts.prototype.put = function (forward_id, backward_id, cost) {
-    if (!isFinite(forward_id)) {
-        console.log(forward_id + " " + backward_id + " " + cost);
-    }
-    var index = forward_id * this.dimension + backward_id;
+    var index = forward_id * this.backward_dimension + backward_id + 2;
     if (this.buffer.length &lt; index + 1) {
         throw "ConnectionCosts buffer overflow";
     }
@@ -67,7 +70,7 @@ ConnectionCosts.prototype.put = function (forward_id, backward_id, cost) {
 };
 
 ConnectionCosts.prototype.get = function (forward_id, backward_id) {
-    var index = forward_id * this.dimension + backward_id;
+    var index = forward_id * this.backward_dimension + backward_id + 2;
     if (this.buffer.length &lt; index + 1) {
         throw "ConnectionCosts buffer overflow";
     }
@@ -75,49 +78,10 @@ ConnectionCosts.prototype.get = function (forward_id, backward_id) {
 };
 
 ConnectionCosts.prototype.loadConnectionCosts = function (connection_costs_buffer) {
-    // TODO Read dimension from connection_costs_buffer
-    this.dimension = 1316;
+    this.forward_dimension = connection_costs_buffer[0];
+    this.backward_dimension = connection_costs_buffer[1];
     this.buffer = connection_costs_buffer;
 };
-
-/**
- * Parse and build ConnectionCosts from contents of "matrix.def"
- * @param {string} matrix_text Text contents of "matrix.def"
- * @returns {ConnectionCosts}
- */
-ConnectionCosts.build = function (matrix_text) {
-    var rows = matrix_text.split(/\n/).map(function (row) {
-        return row.split(" ");
-    });
-
-    // Row 1
-    // var forward_size = rows[0][0];
-    var backward_size = rows[0][1];
-
-    // id and cost must be a short value
-    var costs = new ConnectionCosts(backward_size * backward_size);
-    costs.dimension = backward_size;
-
-    for (var i = 1; i &lt; rows.length; i++) {
-        if (rows[i].length &lt; 3) {
-            continue;
-        }
-
-        var forward_id = parseInt(rows[i][0]);
-        var backward_id = parseInt(rows[i][1]);
-        var cost = parseInt(rows[i][2]);
-
-        // Assertion
-        if (forward_id &lt; 0 || backward_id &lt; 0) {
-            console.log("Error in:" + rows[i]);
-        }
-
-        costs.put(forward_id, backward_id, cost);
-    }
-
-    return costs;
-};
-
 
 module.exports = ConnectionCosts;
 </code></pre>
@@ -130,13 +94,13 @@ module.exports = ConnectionCosts;
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BrowserDictionaryLoader.html">BrowserDictionaryLoader</a></li><li><a href="ByteBuffer.html">ByteBuffer</a></li><li><a href="CharacterClass.html">CharacterClass</a></li><li><a href="CharacterDefinition.html">CharacterDefinition</a></li><li><a href="CharacterDefinitionBuilder.html">CharacterDefinitionBuilder</a></li><li><a href="ConnectionCosts.html">ConnectionCosts</a></li><li><a href="ConnectionCostsBuilder.html">ConnectionCostsBuilder</a></li><li><a href="DictionaryLoader.html">DictionaryLoader</a></li><li><a href="DynamicDictionaries.html">DynamicDictionaries</a></li><li><a href="InvokeDefinitionMap.html">InvokeDefinitionMap</a></li><li><a href="IpadicFormatter.html">IpadicFormatter</a></li><li><a href="NodeDictionaryLoader.html">NodeDictionaryLoader</a></li><li><a href="SurrogateAwareString.html">SurrogateAwareString</a></li><li><a href="TokenInfoDictionary.html">TokenInfoDictionary</a></li><li><a href="Tokenizer.html">Tokenizer</a></li><li><a href="TokenizerBuilder.html">TokenizerBuilder</a></li><li><a href="UnknownDictionary.html">UnknownDictionary</a></li><li><a href="ViterbiBuilder.html">ViterbiBuilder</a></li><li><a href="ViterbiLattice.html">ViterbiLattice</a></li><li><a href="ViterbiNode.html">ViterbiNode</a></li><li><a href="ViterbiSearcher.html">ViterbiSearcher</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Jul 31 2016 19:01:36 GMT+0900 (JST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 07 2016 15:22:30 GMT+0900 (JST)
 </footer>
 
 <script> prettyPrint(); </script>
