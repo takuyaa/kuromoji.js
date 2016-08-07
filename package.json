@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "author": "Takuya Asano <takuya.a@gmail.com>",
   "browser": {
-    "./dist/node/loader/NodeDictionaryLoader.js": "./dist/node/loader/BrowserDictionaryLoader.js"
+    "./src/loader/NodeDictionaryLoader.js": "./src/loader/BrowserDictionaryLoader.js"
   },
   "bugs": {
     "url": "https://github.com/takuyaa/kuromoji.js/issues"
@@ -19,6 +19,7 @@
     "chai": "^3.2.0",
     "coveralls": "^2.11.2",
     "del": "^2.2.1",
+    "event-stream": "^3.3.4",
     "gulp": "^3.8.10",
     "gulp-bower": "0.0.13",
     "gulp-bump": "^2.2.0",
@@ -30,7 +31,6 @@
     "gulp-jsdoc": "^0.1.4",
     "gulp-jshint": "^2.0.1",
     "gulp-mocha": "^3.0.0",
-    "gulp-sourcemaps": "^1.2.8",
     "gulp-webserver": "^0.9.1",
     "mecab-ipadic-seed": "0.0.2",
     "minimist": "^1.2.0",
@@ -48,7 +48,7 @@
     "tokenizer"
   ],
   "license": "Apache-2.0",
-  "main": "./dist/node/kuromoji.js",
+  "main": "./src/kuromoji.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/takuyaa/kuromoji.js.git"

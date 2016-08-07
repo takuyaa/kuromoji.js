@@ -19,7 +19,7 @@ var expect = require("chai").expect;
 var DictionaryLoader = require("../../src/loader/NodeDictionaryLoader");
 var ViterbiBuilder = require("../../src/viterbi/ViterbiBuilder");
 
-var DIC_DIR = "dist/dict/";
+var DIC_DIR = "dict/";
 
 describe("ViterbiBuilder", function () {
     var viterbi_builder = null;  // target object

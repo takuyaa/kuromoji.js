@@ -18,7 +18,7 @@
 // require vue as MVVM framework
 // require kuromoji
 
-var DIC_URL = "bower_components/kuromoji/dist/dict/";
+var DIC_URL = "kuromoji/dict/";
 
 var tokenizer = null;
 // var lattice;  // Very large object. Unwatch this object from Model.

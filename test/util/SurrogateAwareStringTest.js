@@ -18,7 +18,6 @@
 var expect = require("chai").expect;
 var SurrogateAwareString = require("../../src/util/SurrogateAwareString");
 
-
 describe("SurrogateAwareString", function () {
     it("length 1", function () {
         var str = new SurrogateAwareString("𠮷");  // target object
