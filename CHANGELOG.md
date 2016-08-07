@@ -1,3 +1,16 @@
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/takuyaa/kuromoji.js/compare/0.1.0...0.1.1) (2016-08-07)
+
+### Breaking Changes
+
+* dictionary directory path is changed from `dist/dict/` to `dict/`, and browserified file `kuromoji.js` is moved from `dist/browser/kuromoji.js` to `build/kuromoji.js` ([#13](https://github.com/takuyaa/kuromoji.js/pull/13))
+
+### Bug Fixes
+
+* browserified `kuromoji.js` does not work in browser ([#13](https://github.com/takuyaa/kuromoji.js/pull/13))
+
+
+
 <a name="0.1.0"></a>
 ## [0.1.0](https://github.com/takuyaa/kuromoji.js/compare/0.0.5...0.1.0) (2016-08-06)
 
