@@ -239,7 +239,7 @@ gulp.task("release-tag", function (callback) {
         if (error) {
             return callback(error);
         }
-        callback(); // git.push('origin', 'master', {args: '--tags'}, callback);
+        callback();
     });
 });
 
