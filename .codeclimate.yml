@@ -1,0 +1,8 @@
+languages:
+  JavaScript: true
+exclude_paths:
+- "build/**"
+- "demo/**"
+- "dict/**"
+- "example/**"
+- "test/**"
