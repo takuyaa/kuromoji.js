@@ -6,3 +6,4 @@ exclude_paths:
 - "dict/**"
 - "example/**"
 - "test/**"
+- "gulpfile.js"
