@@ -68,7 +68,7 @@ Or you can use the kuromoji.js file and dictionary files from the GitHub reposit
 
 In your HTML:
 
-    <script src="url/to/kuromoji.js"></script>
+    <script src="/path/to/kuromoji.js"></script>
 
 In your JavaScript:
 
