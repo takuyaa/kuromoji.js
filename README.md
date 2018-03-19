@@ -10,7 +10,7 @@ kuromoji.js
 [![Downloads](https://img.shields.io/npm/dm/kuromoji.svg)](https://www.npmjs.com/package/kuromoji)
 
 JavaScript implementation of Japanese morphological analyzer.
-This is a pure JavaScript porting of [Kuromoji](http://www.atilika.com/ja/products/kuromoji.html).
+This is a pure JavaScript porting of [Kuromoji](https://www.atilika.com/ja/kuromoji/).
 
 You can see how kuromoji.js works in [demo site](http://takuyaa.github.io/kuromoji.js/demo/tokenize.html).
 
