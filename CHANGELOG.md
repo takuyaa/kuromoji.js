@@ -1,3 +1,16 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/takuyaa/kuromoji.js/compare/0.1.1...0.1.2) (2018-03-20)
+
+### Bug Fixes
+
+* tokenization of `研/究` ([#16](https://github.com/takuyaa/kuromoji.js/pull/16)) and `協/会` ([#23](https://github.com/takuyaa/kuromoji.js/pull/23)) is not valid
+
+### Bump deps
+
+* update dependencies and devDependencies in package.json
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/takuyaa/kuromoji.js/compare/0.1.0...0.1.1) (2016-08-07)
 
