@@ -172,6 +172,10 @@ describe("Tokenizer for IPADic", function () {
         var path = tokenizer.tokenize("となりのトトロ");
         expect(path).to.have.length(3);
     });
+    it("研究 is not split", function () {
+        var path = tokenizer.tokenize("研究");
+        expect(path).to.have.length(1);
+    });
     it("Blank input", function () {
         var path = tokenizer.tokenize("");
         expect(path).to.have.length(0);
