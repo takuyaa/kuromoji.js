@@ -12,7 +12,7 @@ const gzip = require("gulp-gzip");
 const mocha = require("gulp-mocha");
 const istanbul = require("gulp-istanbul");
 const webserver = require('gulp-webserver');
-const jsdoc = require("gulp-jsdoc");
+const jsdoc = require("gulp-jsdoc3");
 const bower = require('gulp-bower');
 const ghPages = require('gulp-gh-pages');
 const bump = require('gulp-bump');
@@ -173,9 +173,10 @@ gulp.task("clean-jsdoc", (done) => {
     return del([ "publish/jsdoc/" ], done);
 });
 
-gulp.task("jsdoc", [ "clean-jsdoc" ], () => {
-    return gulp.src([ "src/**/*.js" ])
-        .pipe(jsdoc("publish/jsdoc"));
+gulp.task("jsdoc", [ "clean-jsdoc" ], (cb) => {
+    var config = require('./jsdoc.json');
+    gulp.src([ "src/**/*.js" ], {read: false})
+        .pipe(jsdoc(config, cb));
 });
 
 gulp.task("clean-demo", (done) => {

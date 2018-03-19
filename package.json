@@ -28,7 +28,7 @@
     "gulp-git": "^2.5.2",
     "gulp-gzip": "^1.2.0",
     "gulp-istanbul": "^1.0.0",
-    "gulp-jsdoc": "^0.1.4",
+    "gulp-jsdoc3": "^1.0.1",
     "gulp-jshint": "^2.1.0",
     "gulp-mocha": "^5.0.0",
     "gulp-webserver": "^0.9.1",
