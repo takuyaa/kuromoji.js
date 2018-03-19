@@ -15,7 +15,11 @@ describe('cli', function() {
   });
 
   it('does not throw when being executed', function(done) {
-    cp.exec('node ' + root + '/bin/modernizr -f adownload', done);
+    cp.exec('node ' + root + '/bin/modernizr -f adownload -d modernizr-test.js', done);
+  });
+
+  it('does not throw when setClasses is used as an option', function(done) {
+    cp.exec('node ' + root + '/bin/modernizr -o setClasses', done);
   });
 
 });

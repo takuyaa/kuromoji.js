@@ -15,15 +15,32 @@ define(['Modernizr', 'addTest', 'docElement', 'createElement', 'test/video'], fu
 
   Modernizr.addAsyncTest(function() {
     var timeout;
-    var waitTime = 300;
+    var waitTime = 200;
+    var retries = 5;
+    var currentTry = 0;
     var elem = createElement('video');
     var elemStyle = elem.style;
 
     function testAutoplay(arg) {
+      currentTry++;
       clearTimeout(timeout);
+
+      var result = arg && arg.type === 'playing' || elem.currentTime !== 0;
+
+      if (!result && currentTry < retries) {
+        //Detection can be flaky if the browser is slow, so lets retry in a little bit
+        timeout = setTimeout(testAutoplay, waitTime);
+        return;
+      }
+
       elem.removeEventListener('playing', testAutoplay, false);
-      addTest('videoautoplay', arg && arg.type === 'playing' || elem.currentTime !== 0);
-      elem.parentNode.removeChild(elem);
+      addTest('videoautoplay', result);
+
+      // Cleanup, but don't assume elem is still in the page -
+      // an extension (eg Flashblock) may already have removed it.
+      if (elem.parentNode) {
+        elem.parentNode.removeChild(elem);
+      }
     }
 
     //skip the test if video itself, or the autoplay
@@ -56,7 +73,7 @@ define(['Modernizr', 'addTest', 'docElement', 'createElement', 'test/video'], fu
     }
 
     elem.setAttribute('autoplay', '');
-    elem.style.cssText = 'display:none';
+    elemStyle.cssText = 'display:none';
     docElement.appendChild(elem);
     // wait for the next tick to add the listener, otherwise the element may
     // not have time to play in high load situations (e.g. the test suite)

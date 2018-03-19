@@ -14,13 +14,11 @@
   }]
 }
 !*/
-define(['Modernizr', 'testStyles'], function(Modernizr, testStyles) {
+define(['Modernizr', 'testStyles', 'computedStyle', 'roundedEquals'], function(Modernizr, testStyles, computedStyle, roundedEquals) {
   testStyles('#modernizr { width: 50vw; }', function(elem) {
     var width = parseInt(window.innerWidth / 2, 10);
-    var compStyle = parseInt((window.getComputedStyle ?
-                              getComputedStyle(elem, null) :
-                              elem.currentStyle).width, 10);
+    var compStyle = parseInt(computedStyle(elem, null, 'width'), 10);
 
-    Modernizr.addTest('cssvwunit', compStyle == width);
+    Modernizr.addTest('cssvwunit', roundedEquals(compStyle, width));
   });
 });

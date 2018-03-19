@@ -14,12 +14,11 @@
   }]
 }
 !*/
-define(['Modernizr', 'testStyles'], function(Modernizr, testStyles) {
+define(['Modernizr', 'testStyles', 'computedStyle', 'roundedEquals'], function(Modernizr, testStyles, computedStyle, roundedEquals) {
   testStyles('#modernizr { height: 50vh; }', function(elem) {
     var height = parseInt(window.innerHeight / 2, 10);
-    var compStyle = parseInt((window.getComputedStyle ?
-                              getComputedStyle(elem, null) :
-                              elem.currentStyle).height, 10);
-    Modernizr.addTest('cssvhunit', compStyle == height);
+    var compStyle = parseInt(computedStyle(elem, null, 'height'), 10);
+
+    Modernizr.addTest('cssvhunit', roundedEquals(compStyle, height));
   });
 });

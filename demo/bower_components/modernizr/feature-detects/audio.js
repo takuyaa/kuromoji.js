@@ -23,16 +23,17 @@ define(['Modernizr', 'createElement'], function(Modernizr, createElement) {
   //   It was live in FF3.5.0 and 3.5.1, but fixed in 3.5.2
   //   It was also live in Safari 4.0.0 - 4.0.4, but fixed in 4.0.5
   Modernizr.addTest('audio', function() {
-    /* jshint -W053 */
     var elem = createElement('audio');
     var bool = false;
 
     try {
-      if (bool = !!elem.canPlayType) {
+      bool = !!elem.canPlayType
+      if (bool) {
         bool      = new Boolean(bool);
-        bool.ogg  = elem.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, '');
-        bool.mp3  = elem.canPlayType('audio/mpeg; codecs="mp3"')  .replace(/^no$/, '');
-        bool.opus  = elem.canPlayType('audio/ogg; codecs="opus"') .replace(/^no$/, '');
+        bool.ogg  = elem.canPlayType('audio/ogg; codecs="vorbis"') .replace(/^no$/, '');
+        bool.mp3  = elem.canPlayType('audio/mpeg; codecs="mp3"')   .replace(/^no$/, '');
+        bool.opus  = elem.canPlayType('audio/ogg; codecs="opus"')  ||
+                     elem.canPlayType('audio/webm; codecs="opus"') .replace(/^no$/, '');
 
         // Mimetypes accepted:
         //   developer.mozilla.org/En/Media_formats_supported_by_the_audio_and_video_elements

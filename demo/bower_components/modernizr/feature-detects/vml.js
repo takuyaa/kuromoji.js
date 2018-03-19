@@ -26,7 +26,9 @@ define(['Modernizr', 'createElement', 'isSVG'], function(Modernizr, createElemen
     if (!isSVG) {
       containerDiv.innerHTML = '<v:shape id="vml_flag1" adj="1" />';
       shape = containerDiv.firstChild;
-      shape.style.behavior = 'url(#default#VML)';
+      if ('style' in shape) {
+        shape.style.behavior = 'url(#default#VML)';
+      }
       supports = shape ? typeof shape.adj == 'object' : true;
     }
 
