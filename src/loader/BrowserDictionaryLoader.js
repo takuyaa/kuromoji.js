@@ -41,8 +41,9 @@ BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
     xhr.open("GET", url, true);
     xhr.responseType = "arraybuffer";
     xhr.onload = function () {
-        if (this.status !== 200) {
+        if (this.status > 0 && this.status !== 200) {
             callback(xhr.statusText, null);
+            return;
         }
         var arraybuffer = this.response;
 
