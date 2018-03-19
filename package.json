@@ -24,7 +24,7 @@
     "gulp-bower": "0.0.14",
     "gulp-bump": "^3.1.0",
     "gulp-conventional-changelog": "^1.1.0",
-    "gulp-gh-pages": "^0.5.4",
+    "gulp-gh-pages-will": "^0.5.5",
     "gulp-git": "^2.5.2",
     "gulp-gzip": "^1.2.0",
     "gulp-istanbul": "^1.0.0",
