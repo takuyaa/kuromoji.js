@@ -25,6 +25,14 @@ describe("ByteBuffer static methods", function () {
         byteBuffer = new ByteBuffer(50);
     });
 
+    it("putShort() and getShort()", function () {
+        var v = -413;
+        byteBuffer.putShort(v);
+        expect(byteBuffer.position).equals(2);
+        var got = byteBuffer.getShort(0);
+        expect(got).equals(v);
+    });
+
     it("putString() and getString() 2 bytes UTF-8", function () {
         var str = "âbcde";
         byteBuffer.putString(str);
