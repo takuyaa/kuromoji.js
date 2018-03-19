@@ -215,7 +215,7 @@ ByteBuffer.prototype.getShort = function (index) {
     if (value & 0x8000) {
 	value = -((value - 1) ^ 0xFFFF);
     }
-    return value
+    return value;
 };
 
 // Write integer to buffer by little endian
