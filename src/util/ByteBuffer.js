@@ -211,7 +211,11 @@ ByteBuffer.prototype.getShort = function (index) {
     }
     var lower = this.buffer[index];
     var upper = this.buffer[index + 1];
-    return (upper << 8) + lower;
+    var value = (upper << 8) + lower;
+    if (value & 0x8000) {
+	value = -((value - 1) ^ 0xFFFF);
+    }
+    return value
 };
 
 // Write integer to buffer by little endian
