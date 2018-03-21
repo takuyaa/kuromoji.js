@@ -41,6 +41,7 @@
     "src",
     "test",
     "gulpfile.js",
+    "package-lock.json",
     "package.json"
   ]
 }
