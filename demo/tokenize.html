@@ -91,7 +91,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-repeat="token: tokens">
+                        <tr v-for="token in tokens">
                             <td>{{token.surface_form}}</td>
                             <td>{{token.pos}}</td>
                             <td>{{token.pos_detail_1}}</td>
@@ -110,7 +110,7 @@
                     <a href="#" v-on="click: drawGraph" v-show="svgStyle=='hidden'" class="radius button">ラティスを表示する</a>
                     -->
 
-                    <svg v-style="visibility: svgStyle" width="100%" height="800px">
+                    <svg v-bind:style="{ visibility: svgStyle }" width="100%" height="800px">
                         <g id="lattice" transform="translate(20,20)"></g>
                     </svg>
 
