@@ -18,7 +18,15 @@
 "use strict";
 
 var Tokenizer = require("./Tokenizer");
-var DictionaryLoader = require("./loader/NodeDictionaryLoader");
+var NodeDictionaryLoader = require("./loader/NodeDictionaryLoader");
+var BrowserDictionaryLoader = require("./loader/BrowserDictionaryLoader");
+var DictionaryLoader = undefined;
+
+if (typeof window === 'undefined') {
+    DictionaryLoader = NodeDictionaryLoader;
+} else {
+    DictionaryLoader = BrowserDictionaryLoader;
+}
 
 /**
  * TokenizerBuilder create Tokenizer instance.

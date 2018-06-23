@@ -1,5 +1,5 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.kuromoji = f()}})(function(){var define,module,exports;return (function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
-(function (process,global){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.kuromoji = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function (process,global,setImmediate){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -666,10 +666,13 @@ var reIsUint = /^(?:0|[1-9]\d*)$/;
  * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
  */
 function isIndex(value, length) {
+  var type = typeof value;
   length = length == null ? MAX_SAFE_INTEGER$1 : length;
+
   return !!length &&
-    (typeof value == 'number' || reIsUint.test(value)) &&
-    (value > -1 && value % 1 == 0 && value < length);
+    (type == 'number' ||
+      (type != 'symbol' && reIsUint.test(value))) &&
+        (value > -1 && value % 1 == 0 && value < length);
 }
 
 /** `Object#toString` result references. */
@@ -755,6 +758,14 @@ var freeProcess = moduleExports$1 && freeGlobal.process;
 /** Used to access faster Node.js helpers. */
 var nodeUtil = (function() {
   try {
+    // Use `util.types` for Node.js 10+.
+    var types = freeModule$1 && freeModule$1.require && freeModule$1.require('util').types;
+
+    if (types) {
+      return types;
+    }
+
+    // Legacy `process.binding('util')` for Node.js < 10.
     return freeProcess && freeProcess.binding && freeProcess.binding('util');
   } catch (e) {}
 }());
@@ -970,6 +981,7 @@ function _eachOfLimit(limit) {
         var nextElem = iterator(obj);
         var done = false;
         var running = 0;
+        var looping = false;
 
         function iterateeCallback(err, value) {
             running -= 1;
@@ -981,12 +993,13 @@ function _eachOfLimit(limit) {
                 done = true;
                 return callback(null);
             }
-            else {
+            else if (!looping) {
                 replenish();
             }
         }
 
         function replenish () {
+            looping = true;
             while (running < limit && !done) {
                 var elem = nextElem();
                 if (elem === null) {
@@ -999,6 +1012,7 @@ function _eachOfLimit(limit) {
                 running += 1;
                 iteratee(elem.value, elem.key, onlyOnce(iterateeCallback));
             }
+            looping = false;
         }
 
         replenish();
@@ -3819,7 +3833,7 @@ function memoize(fn, hasher) {
 
 /**
  * Calls `callback` on a later loop around the event loop. In Node.js this just
- * calls `process.nextTicl`.  In the browser it will use `setImmediate` if
+ * calls `process.nextTick`.  In the browser it will use `setImmediate` if
  * available, otherwise `setTimeout(callback, 0)`, which means other higher
  * priority events may precede the execution of `callback`.
  *
@@ -5596,8 +5610,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":4}],2:[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
+},{"_process":4,"timers":5}],2:[function(require,module,exports){
 // Copyright (c) 2014 Takuya Asano All Rights Reserved.
 
 (function () {
@@ -6392,6 +6406,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 },{}],3:[function(require,module,exports){
 (function (process){
+// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
+// backported and transplited with Babel, with backwards-compat fixes
+
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6442,14 +6459,6 @@ function normalizeArray(parts, allowAboveRoot) {
 
   return parts;
 }
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
 
 // path.resolve([from ...], to)
 // posix version
@@ -6566,37 +6575,120 @@ exports.relative = function(from, to) {
 exports.sep = '/';
 exports.delimiter = ':';
 
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
+exports.dirname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  if (path.length === 0) return '.';
+  var code = path.charCodeAt(0);
+  var hasRoot = code === 47 /*/*/;
+  var end = -1;
+  var matchedSlash = true;
+  for (var i = path.length - 1; i >= 1; --i) {
+    code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        if (!matchedSlash) {
+          end = i;
+          break;
+        }
+      } else {
+      // We saw the first non-path separator
+      matchedSlash = false;
+    }
   }
 
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
+  if (end === -1) return hasRoot ? '/' : '.';
+  if (hasRoot && end === 1) {
+    // return '//';
+    // Backwards-compat fix:
+    return '/';
   }
-
-  return root + dir;
+  return path.slice(0, end);
 };
 
+function basename(path) {
+  if (typeof path !== 'string') path = path + '';
 
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
+  var start = 0;
+  var end = -1;
+  var matchedSlash = true;
+  var i;
+
+  for (i = path.length - 1; i >= 0; --i) {
+    if (path.charCodeAt(i) === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          start = i + 1;
+          break;
+        }
+      } else if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // path component
+      matchedSlash = false;
+      end = i + 1;
+    }
+  }
+
+  if (end === -1) return '';
+  return path.slice(start, end);
+}
+
+// Uses a mixed approach for backwards-compatibility, as ext behavior changed
+// in new Node.js versions, so only basename() above is backported here
+exports.basename = function (path, ext) {
+  var f = basename(path);
   if (ext && f.substr(-1 * ext.length) === ext) {
     f = f.substr(0, f.length - ext.length);
   }
   return f;
 };
 
+exports.extname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  var startDot = -1;
+  var startPart = 0;
+  var end = -1;
+  var matchedSlash = true;
+  // Track the state of characters (if any) we see before our first dot and
+  // after any path separator we find
+  var preDotState = 0;
+  for (var i = path.length - 1; i >= 0; --i) {
+    var code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          startPart = i + 1;
+          break;
+        }
+        continue;
+      }
+    if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // extension
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code === 46 /*.*/) {
+        // If this is our first dot, mark it as the start of our extension
+        if (startDot === -1)
+          startDot = i;
+        else if (preDotState !== 1)
+          preDotState = 1;
+    } else if (startDot !== -1) {
+      // We saw a non-dot and non-path separator before our dot, so we should
+      // have a good chance at having a non-empty extension
+      preDotState = -1;
+    }
+  }
 
-exports.extname = function(path) {
-  return splitPath(path)[3];
+  if (startDot === -1 || end === -1 ||
+      // We saw a non-dot character immediately before the dot
+      preDotState === 0 ||
+      // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    return '';
+  }
+  return path.slice(startDot, end);
 };
 
 function filter (xs, f) {
@@ -6805,6 +6897,85 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],5:[function(require,module,exports){
+(function (setImmediate,clearImmediate){
+var nextTick = require('process/browser.js').nextTick;
+var apply = Function.prototype.apply;
+var slice = Array.prototype.slice;
+var immediateIds = {};
+var nextImmediateId = 0;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) { timeout.close(); };
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// That's not how node.js implements it but the exposed api is the same.
+exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+  var id = nextImmediateId++;
+  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+  immediateIds[id] = true;
+
+  nextTick(function onNextTick() {
+    if (immediateIds[id]) {
+      // fn.call() is faster so we optimize for the common use-case
+      // @see http://jsperf.com/call-apply-segu
+      if (args) {
+        fn.apply(null, args);
+      } else {
+        fn.call(null);
+      }
+      // Prevent ids from leaking
+      exports.clearImmediate(id);
+    }
+  });
+
+  return id;
+};
+
+exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+  delete immediateIds[id];
+};
+}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
+},{"process/browser.js":4,"timers":5}],6:[function(require,module,exports){
 /** @license zlib.js 2012 - imaya [ https://github.com/imaya/zlib.js ] The MIT License */(function() {'use strict';function n(e){throw e;}var p=void 0,aa=this;function t(e,b){var d=e.split("."),c=aa;!(d[0]in c)&&c.execScript&&c.execScript("var "+d[0]);for(var a;d.length&&(a=d.shift());)!d.length&&b!==p?c[a]=b:c=c[a]?c[a]:c[a]={}};var x="undefined"!==typeof Uint8Array&&"undefined"!==typeof Uint16Array&&"undefined"!==typeof Uint32Array&&"undefined"!==typeof DataView;new (x?Uint8Array:Array)(256);var y;for(y=0;256>y;++y)for(var A=y,ba=7,A=A>>>1;A;A>>>=1)--ba;function B(e,b,d){var c,a="number"===typeof b?b:b=0,f="number"===typeof d?d:e.length;c=-1;for(a=f&7;a--;++b)c=c>>>8^C[(c^e[b])&255];for(a=f>>3;a--;b+=8)c=c>>>8^C[(c^e[b])&255],c=c>>>8^C[(c^e[b+1])&255],c=c>>>8^C[(c^e[b+2])&255],c=c>>>8^C[(c^e[b+3])&255],c=c>>>8^C[(c^e[b+4])&255],c=c>>>8^C[(c^e[b+5])&255],c=c>>>8^C[(c^e[b+6])&255],c=c>>>8^C[(c^e[b+7])&255];return(c^4294967295)>>>0}
 var D=[0,1996959894,3993919788,2567524794,124634137,1886057615,3915621685,2657392035,249268274,2044508324,3772115230,2547177864,162941995,2125561021,3887607047,2428444049,498536548,1789927666,4089016648,2227061214,450548861,1843258603,4107580753,2211677639,325883990,1684777152,4251122042,2321926636,335633487,1661365465,4195302755,2366115317,997073096,1281953886,3579855332,2724688242,1006888145,1258607687,3524101629,2768942443,901097722,1119000684,3686517206,2898065728,853044451,1172266101,3705015759,
 2882616665,651767980,1373503546,3369554304,3218104598,565507253,1454621731,3485111705,3099436303,671266974,1594198024,3322730930,2970347812,795835527,1483230225,3244367275,3060149565,1994146192,31158534,2563907772,4023717930,1907459465,112637215,2680153253,3904427059,2013776290,251722036,2517215374,3775830040,2137656763,141376813,2439277719,3865271297,1802195444,476864866,2238001368,4066508878,1812370925,453092731,2181625025,4111451223,1706088902,314042704,2344532202,4240017532,1658658271,366619977,
@@ -6832,7 +7003,7 @@ $.prototype.g=function(){for(var e=this.input.length;this.c<e;){var b=new E,d=p,
 b.name=m.join("")}if(0<(b.h&16)){m=[];for(l=0;0<(k=g[h++]);)m[l++]=String.fromCharCode(k);b.J=m.join("")}0<(b.h&2)&&(b.B=B(g,0,h)&65535,b.B!==(g[h++]|g[h++]<<8)&&n(Error("invalid header crc16")));d=g[g.length-4]|g[g.length-3]<<8|g[g.length-2]<<16|g[g.length-1]<<24;g.length-h-4-4<512*d&&(f=d);c=new L(g,{index:h,bufferSize:f});b.data=a=c.g();h=c.c;b.K=q=(g[h++]|g[h++]<<8|g[h++]<<16|g[h++]<<24)>>>0;B(a,p,p)!==q&&n(Error("invalid CRC-32 checksum: 0x"+B(a,p,p).toString(16)+" / 0x"+q.toString(16)));b.L=
 d=(g[h++]|g[h++]<<8|g[h++]<<16|g[h++]<<24)>>>0;(a.length&4294967295)!==d&&n(Error("invalid input size: "+(a.length&4294967295)+" / "+d));this.m.push(b);this.c=h}this.s=!0;var v=this.m,s,F,H=0,w=0,z;s=0;for(F=v.length;s<F;++s)w+=v[s].data.length;if(x){z=new Uint8Array(w);for(s=0;s<F;++s)z.set(v[s].data,H),H+=v[s].data.length}else{z=[];for(s=0;s<F;++s)z[s]=v[s].data;z=Array.prototype.concat.apply([],z)}return z};t("Zlib.Gunzip",$);t("Zlib.Gunzip.prototype.decompress",$.prototype.g);t("Zlib.Gunzip.prototype.getMembers",$.prototype.F);t("Zlib.GunzipMember",E);t("Zlib.GunzipMember.prototype.getName",E.prototype.getName);t("Zlib.GunzipMember.prototype.getData",E.prototype.getData);t("Zlib.GunzipMember.prototype.getMtime",E.prototype.G);}).call(this);
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -6963,7 +7134,7 @@ Tokenizer.prototype.getLattice = function (text) {
 
 module.exports = Tokenizer;
 
-},{"./util/IpadicFormatter":22,"./viterbi/ViterbiBuilder":24,"./viterbi/ViterbiSearcher":27}],7:[function(require,module,exports){
+},{"./util/IpadicFormatter":23,"./viterbi/ViterbiBuilder":25,"./viterbi/ViterbiSearcher":28}],8:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -6984,7 +7155,15 @@ module.exports = Tokenizer;
 "use strict";
 
 var Tokenizer = require("./Tokenizer");
-var DictionaryLoader = require("./loader/NodeDictionaryLoader");
+var NodeDictionaryLoader = require("./loader/NodeDictionaryLoader");
+var BrowserDictionaryLoader = require("./loader/BrowserDictionaryLoader");
+var DictionaryLoader = undefined;
+
+if (typeof window === 'undefined') {
+    DictionaryLoader = NodeDictionaryLoader;
+} else {
+    DictionaryLoader = BrowserDictionaryLoader;
+}
 
 /**
  * TokenizerBuilder create Tokenizer instance.
@@ -7020,7 +7199,7 @@ TokenizerBuilder.prototype.build = function (callback) {
 
 module.exports = TokenizerBuilder;
 
-},{"./Tokenizer":6,"./loader/NodeDictionaryLoader":19}],8:[function(require,module,exports){
+},{"./Tokenizer":7,"./loader/BrowserDictionaryLoader":20,"./loader/NodeDictionaryLoader":20}],9:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7059,7 +7238,7 @@ function CharacterClass(class_id, class_name, is_always_invoke, is_grouping, max
 
 module.exports = CharacterClass;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7266,7 +7445,7 @@ CharacterDefinition.prototype.lookup = function (ch) {
 
 module.exports = CharacterDefinition;
 
-},{"../util/SurrogateAwareString":23,"./CharacterClass":8,"./InvokeDefinitionMap":12}],10:[function(require,module,exports){
+},{"../util/SurrogateAwareString":24,"./CharacterClass":9,"./InvokeDefinitionMap":13}],11:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7327,7 +7506,7 @@ ConnectionCosts.prototype.loadConnectionCosts = function (connection_costs_buffe
 
 module.exports = ConnectionCosts;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7411,7 +7590,7 @@ DynamicDictionaries.prototype.loadUnknownDictionaries = function (unk_buffer, un
 
 module.exports = DynamicDictionaries;
 
-},{"./ConnectionCosts":10,"./TokenInfoDictionary":13,"./UnknownDictionary":14,"doublearray":2}],12:[function(require,module,exports){
+},{"./ConnectionCosts":11,"./TokenInfoDictionary":14,"./UnknownDictionary":15,"doublearray":2}],13:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7523,7 +7702,7 @@ InvokeDefinitionMap.prototype.toBuffer = function () {
 
 module.exports = InvokeDefinitionMap;
 
-},{"../util/ByteBuffer":21,"./CharacterClass":8}],13:[function(require,module,exports){
+},{"../util/ByteBuffer":22,"./CharacterClass":9}],14:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7677,7 +7856,7 @@ TokenInfoDictionary.prototype.getFeatures = function (token_info_id_str) {
 
 module.exports = TokenInfoDictionary;
 
-},{"../util/ByteBuffer":21}],14:[function(require,module,exports){
+},{"../util/ByteBuffer":22}],15:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7737,7 +7916,7 @@ UnknownDictionary.prototype.loadUnknownDictionaries = function (unk_buffer, unk_
 
 module.exports = UnknownDictionary;
 
-},{"../util/ByteBuffer":21,"./CharacterDefinition":9,"./TokenInfoDictionary":13}],15:[function(require,module,exports){
+},{"../util/ByteBuffer":22,"./CharacterDefinition":10,"./TokenInfoDictionary":14}],16:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7807,7 +7986,7 @@ CharacterDefinitionBuilder.prototype.build = function () {
 
 module.exports = CharacterDefinitionBuilder;
 
-},{"../CharacterDefinition":9,"../InvokeDefinitionMap":12}],16:[function(require,module,exports){
+},{"../CharacterDefinition":10,"../InvokeDefinitionMap":13}],17:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7879,7 +8058,7 @@ ConnectionCostsBuilder.prototype.build = function () {
 
 module.exports = ConnectionCostsBuilder;
 
-},{"../ConnectionCosts":10}],17:[function(require,module,exports){
+},{"../ConnectionCosts":11}],18:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8039,7 +8218,7 @@ DictionaryBuilder.prototype.buildDoubleArray = function () {
 
 module.exports = DictionaryBuilder;
 
-},{"../DynamicDictionaries":11,"../TokenInfoDictionary":13,"../UnknownDictionary":14,"./CharacterDefinitionBuilder":15,"./ConnectionCostsBuilder":16,"doublearray":2}],18:[function(require,module,exports){
+},{"../DynamicDictionaries":12,"../TokenInfoDictionary":14,"../UnknownDictionary":15,"./CharacterDefinitionBuilder":16,"./ConnectionCostsBuilder":17,"doublearray":2}],19:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8074,7 +8253,7 @@ var kuromoji = {
 
 module.exports = kuromoji;
 
-},{"./TokenizerBuilder":7,"./dict/builder/DictionaryBuilder":17}],19:[function(require,module,exports){
+},{"./TokenizerBuilder":8,"./dict/builder/DictionaryBuilder":18}],20:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8143,7 +8322,7 @@ BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
 
 module.exports = BrowserDictionaryLoader;
 
-},{"./DictionaryLoader":20,"zlibjs/bin/gunzip.min.js":5}],20:[function(require,module,exports){
+},{"./DictionaryLoader":21,"zlibjs/bin/gunzip.min.js":6}],21:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8189,12 +8368,15 @@ DictionaryLoader.prototype.load = function (load_callback) {
     var dic = this.dic;
     var dic_path = this.dic_path;
     var loadArrayBuffer = this.loadArrayBuffer;
+    var usingWebpack = typeof this.dic_path === 'object';
 
     async.parallel([
         // Trie
         function (callback) {
             async.map([ "base.dat.gz", "check.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
+                loadArrayBuffer(usingWebpack
+                    ? dic_path[filename]
+                    : path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -8214,7 +8396,9 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Token info dictionaries
         function (callback) {
             async.map([ "tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
+                loadArrayBuffer(usingWebpack
+                        ? dic_path[filename]
+                        : path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -8234,7 +8418,9 @@ DictionaryLoader.prototype.load = function (load_callback) {
         },
         // Connection cost matrix
         function (callback) {
-            loadArrayBuffer(path.join(dic_path, "cc.dat.gz"), function (err, buffer) {
+            loadArrayBuffer(usingWebpack
+                ? dic_path["cc.dat.gz"]
+                : path.join(dic_path, "cc.dat.gz"), function (err, buffer) {
                 if(err) {
                     return callback(err);
                 }
@@ -8246,7 +8432,9 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Unknown dictionaries
         function (callback) {
             async.map([ "unk.dat.gz", "unk_pos.dat.gz", "unk_map.dat.gz", "unk_char.dat.gz", "unk_compat.dat.gz", "unk_invoke.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
+                loadArrayBuffer(usingWebpack
+                    ? dic_path[filename]
+                    : path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -8282,7 +8470,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
 
 module.exports = DictionaryLoader;
 
-},{"../dict/DynamicDictionaries":11,"async":1,"path":3}],21:[function(require,module,exports){
+},{"../dict/DynamicDictionaries":12,"async":1,"path":3}],22:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8573,7 +8761,7 @@ ByteBuffer.prototype.getString = function (index) {
 
 module.exports = ByteBuffer;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8642,7 +8830,7 @@ IpadicFormatter.prototype.formatUnknownEntry = function (word_id, position, type
 
 module.exports = IpadicFormatter;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8735,7 +8923,7 @@ SurrogateAwareString.isSurrogatePair = function (ch) {
 
 module.exports = SurrogateAwareString;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8838,7 +9026,7 @@ ViterbiBuilder.prototype.build = function (sentence_str) {
 
 module.exports = ViterbiBuilder;
 
-},{"../util/SurrogateAwareString":23,"./ViterbiLattice":25,"./ViterbiNode":26}],25:[function(require,module,exports){
+},{"../util/SurrogateAwareString":24,"./ViterbiLattice":26,"./ViterbiNode":27}],26:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8900,7 +9088,7 @@ ViterbiLattice.prototype.appendEos = function () {
 
 module.exports = ViterbiLattice;
 
-},{"./ViterbiNode":26}],26:[function(require,module,exports){
+},{"./ViterbiNode":27}],27:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8951,7 +9139,7 @@ function ViterbiNode(node_name, node_cost, start_pos, length, type, left_id, rig
 
 module.exports = ViterbiNode;
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -9055,5 +9243,5 @@ ViterbiSearcher.prototype.backward = function (lattice) {
 
 module.exports = ViterbiSearcher;
 
-},{}]},{},[18])(18)
+},{}]},{},[19])(19)
 });
