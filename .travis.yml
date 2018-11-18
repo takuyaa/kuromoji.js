@@ -3,10 +3,6 @@ branches:
   only:
     - master
     - /^greenkeeper/.*$/
-cache:
-  yarn: true
-  directories:
-    - node_modules
 notifications:
   email: false
 node_js:
