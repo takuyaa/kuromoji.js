@@ -3,6 +3,7 @@ branches:
   only:
     - master
     - /^greenkeeper/.*$/
+cache: npm
 notifications:
   email: false
 node_js:
