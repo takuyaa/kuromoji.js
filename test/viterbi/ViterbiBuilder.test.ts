@@ -25,7 +25,7 @@ describe('ViterbiBuilder', () => {
 
   beforeAll(done => {
     const loader = new DictionaryLoader(DIC_DIR)
-    loader.load(function(_: any, dic: any) {
+    loader.load((_: any, dic: any) => {
       viterbi_builder = new ViterbiBuilder(dic)
       done()
     })
@@ -40,7 +40,7 @@ describe('ViterbiBuilder', () => {
         continue
       }
       expect(
-        nodes.map(function(node: any) {
+        nodes.map((node: any) => {
           return node.surface_form
         })
       ).toContain('トトロ'.slice(0, i))

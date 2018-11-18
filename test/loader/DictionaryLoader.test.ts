@@ -23,7 +23,7 @@ describe('DictionaryLoader', () => {
 
   beforeAll(done => {
     const loader = new DictionaryLoader(DIC_DIR)
-    loader.load(function(_: any, dic: any) {
+    loader.load((_: any, dic: any) => {
       dictionaries = dic
       done()
     })
@@ -46,17 +46,17 @@ describe('DictionaryLoader', () => {
 describe('DictionaryLoader about loading', () => {
   const DictionaryLoader = require('../../src/loader/NodeDictionaryLoader')
 
-  it('could load directory path without suffix /', function(done) {
+  it('could load directory path without suffix /', done => {
     const loader = new DictionaryLoader('dict') // not have suffix /
-    loader.load(function(err: any, dic: any) {
+    loader.load((err: any, dic: any) => {
       expect(err).toBeNull()
       expect(dic).not.toBeNull()
       done()
     })
   })
-  it("couldn't load dictionary, then call with error", function(done) {
+  it("couldn't load dictionary, then call with error", done => {
     const loader = new DictionaryLoader('not_exist_dictionary')
-    loader.load(function(err: any, _: any) {
+    loader.load((err: any, _: any) => {
       expect(err).not.toBeNull()
       done()
     })

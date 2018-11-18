@@ -23,7 +23,7 @@ describe('Tokenizer for IPADic', () => {
   let tokenizer: any = null
 
   beforeAll(async done => {
-    kuromoji.builder({ dicPath: DIC_DIR }).build(function(_: any, _tokenizer: any) {
+    kuromoji.builder({ dicPath: DIC_DIR }).build((_: any, _tokenizer: any) => {
       tokenizer = _tokenizer
       expect(tokenizer).not.toBeNull()
       done()

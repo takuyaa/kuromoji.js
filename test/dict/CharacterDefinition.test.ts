@@ -28,7 +28,7 @@ describe('CharacterDefinition from char.def', () => {
     const cd_builder = new CharacterDefinitionBuilder()
     fs.readFileSync(DIC_DIR + 'char.def', 'utf-8')
       .split('\n')
-      .map(function(line) {
+      .map(line => {
         cd_builder.putLine(line)
       })
     char_def = cd_builder.build()
