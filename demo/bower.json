@@ -16,6 +16,6 @@
   ],
   "dependencies": {
     "foundation": "~5.4.7",
-    "vue": "~0.10.6"
+    "vue": "^2.5.16"
   }
 }
