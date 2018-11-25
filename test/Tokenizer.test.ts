@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-describe('Tokenizer static method test', () => {
-  const Tokenizer = require('../src/Tokenizer')
+import { Tokenizer } from '../src/tokenizer'
 
+describe('Tokenizer static method test', () => {
   it('splitByPunctuation', () => {
     expect(Tokenizer.splitByPunctuation('すもももももももものうち')).toEqual([
       'すもももももももものうち'

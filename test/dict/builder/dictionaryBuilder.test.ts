@@ -17,10 +17,9 @@
 
 import * as fs from 'fs'
 import kuromoji from '../../../src/kuromoji'
+import { Tokenizer } from '../../../src/tokenizer'
 
 describe('DictionaryBuilder', () => {
-  const Tokenizer = require('../../../src/Tokenizer')
-
   const DIC_DIR = 'test/resource/minimum-dic/'
   const connection_costs_file = DIC_DIR + 'matrix.def'
   const char_def_file = DIC_DIR + 'char.def'

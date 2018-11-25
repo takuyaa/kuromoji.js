@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-const Tokenizer = require('./Tokenizer')
+import { Tokenizer } from './tokenizer'
 const DictionaryLoader = require('./loader/NodeDictionaryLoader')
 
 /**
