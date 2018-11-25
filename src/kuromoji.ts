@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-const TokenizerBuilder = require('./TokenizerBuilder')
+import { TokenizerBuilder } from './tokenizerBuilder'
 const DictionaryBuilder = require('./dict/builder/DictionaryBuilder')
 
 // Public methods
