@@ -1,13 +1,16 @@
 language: node_js
+branches:
+  only:
+    - master
+    - /^greenkeeper/.*$/
+cache: npm
+notifications:
+  email: false
 node_js:
-  - 4.4.7
-
-before_install:
-  - npm install -g gulp
-
+  - node
 script:
-  - gulp test
-
-after_script:
-  - gulp coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-  - bash <(curl -s https://codecov.io/bash)
+  - npm run test:prod && npm run build
+after_success:
+  - npm run report-coverage
+  - npm run deploy-docs
+  - npm run semantic-release

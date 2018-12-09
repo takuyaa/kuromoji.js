@@ -1,45 +1,7 @@
 {
   "name": "kuromoji",
-  "description": "JavaScript implementation of Japanese morphological analyzer",
   "version": "0.1.2",
-  "author": "Takuya Asano <takuya.a@gmail.com>",
-  "browser": {
-    "./src/loader/NodeDictionaryLoader.js": "./src/loader/BrowserDictionaryLoader.js"
-  },
-  "bugs": {
-    "url": "https://github.com/takuyaa/kuromoji.js/issues"
-  },
-  "dependencies": {
-    "async": "^2.0.1",
-    "doublearray": "0.0.2",
-    "zlibjs": "^0.3.1"
-  },
-  "devDependencies": {
-    "browserify": "^16.1.1",
-    "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
-    "del": "^3.0.0",
-    "event-stream": "^3.3.4",
-    "gulp": "^3.8.10",
-    "gulp-bower": "0.0.14",
-    "gulp-bump": "^3.1.0",
-    "gulp-conventional-changelog": "^1.1.0",
-    "gulp-gh-pages-will": "^0.5.5",
-    "gulp-git": "^2.5.2",
-    "gulp-gzip": "^1.2.0",
-    "gulp-istanbul": "^1.0.0",
-    "gulp-jsdoc3": "^1.0.1",
-    "gulp-jshint": "^2.1.0",
-    "gulp-mocha": "^5.0.0",
-    "gulp-webserver": "^0.9.1",
-    "jshint": "^2.9.5",
-    "mecab-ipadic-seed": "0.0.2",
-    "minimist": "^1.2.0",
-    "mocha-lcov-reporter": "^1.2.0",
-    "run-sequence": "^2.2.1",
-    "vinyl-source-stream": "^2.0.0"
-  },
-  "homepage": "https://github.com/takuyaa/kuromoji.js",
+  "description": "JavaScript implementation of Japanese morphological analyzer",
   "keywords": [
     "japanese",
     "morphological analyzer",
@@ -48,25 +10,131 @@
     "pos tagger",
     "tokenizer"
   ],
-  "license": "Apache-2.0",
-  "main": "./src/kuromoji.js",
+  "main": "dist/kuromoji.umd.js",
+  "module": "dist/kuromoji.es5.js",
+  "typings": "dist/types/kuromoji.d.ts",
+  "files": [
+    "dist"
+  ],
+  "browser": {
+    "./src/loader/NodeDictionaryLoader.js": "./src/loader/BrowserDictionaryLoader.js"
+  },
+  "author": "Takuya Asano <takuya.a@gmail.com>",
+  "emal": "takuya.a@gmail.com",
+  "homepage": "https://github.com/takuyaa/kuromoji.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/takuyaa/kuromoji.js.git"
   },
+  "bugs": {
+    "url": "https://github.com/takuyaa/kuromoji.js/issues"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "scripts": {
-    "build": "gulp build",
-    "build-demo": "gulp build-demo",
-    "build-dict": "gulp build-dict",
-    "clean": "gulp clean",
-    "coverage": "gulp coverage",
-    "deploy": "gulp deploy",
-    "jsdoc": "gulp jsdoc",
-    "lint": "gulp lint",
-    "release": "gulp release",
-    "test": "gulp test",
-    "version": "gulp version",
-    "watch": "gulp watch",
-    "webserver": "gulp webserver"
+    "lint": "tslint --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "prebuild": "rimraf dist",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "start": "rollup -c rollup.config.ts -w",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
+    "deploy-docs": "ts-node tools/gh-pages-publish",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "precommit": "lint-staged",
+    "prepublishOnly": "npm test && npm run build"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts}"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "dependencies": {
+    "async": "^2.0.1",
+    "doublearray": "0.0.2",
+    "tslib": "1.9.3",
+    "zlibjs": "^0.3.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@types/jest": "^23.3.7",
+    "@types/node": "^10.12.0",
+    "colors": "^1.3.2",
+    "commitizen": "^3.0.0",
+    "coveralls": "^3.0.2",
+    "cross-env": "^5.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^1.0.1",
+    "jest": "^23.6.0",
+    "jest-config": "^23.6.0",
+    "lint-staged": "^7.3.0",
+    "lodash.camelcase": "^4.3.0",
+    "mecab-ipadic-seed": "0.0.2",
+    "prettier": "^1.14.3",
+    "prompt": "^1.0.0",
+    "replace-in-file": "^3.4.2",
+    "rimraf": "2.6.2",
+    "rollup": "^0.66.2",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.17.0",
+    "semantic-release": "^15.9.16",
+    "ts-jest": "^23.10.4",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "typedoc": "^0.13.0",
+    "typescript": "^3.1.3"
   }
 }

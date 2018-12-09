@@ -15,19 +15,18 @@
  * limitations under the License.
  */
 
-"use strict";
-
-var TokenizerBuilder = require("./TokenizerBuilder");
-var DictionaryBuilder = require("./dict/builder/DictionaryBuilder");
+import { TokenizerBuilder } from './tokenizerBuilder'
+import { DictionaryBuilder } from './dict/builder/dictionaryBuilder'
 
 // Public methods
-var kuromoji = {
-    builder: function (option) {
-        return new TokenizerBuilder(option);
-    },
-    dictionaryBuilder: function () {
-        return new DictionaryBuilder();
-    }
-};
+class Kuromoji {
+  builder(option: any) {
+    return new TokenizerBuilder(option)
+  }
+  dictionaryBuilder() {
+    return new DictionaryBuilder()
+  }
+}
 
-module.exports = kuromoji;
+const kuromoji = new Kuromoji()
+export default kuromoji
