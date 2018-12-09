@@ -16,7 +16,7 @@
  */
 
 import { TokenizerBuilder } from './tokenizerBuilder'
-const DictionaryBuilder = require('./dict/builder/DictionaryBuilder')
+import { DictionaryBuilder } from './dict/builder/dictionaryBuilder'
 
 // Public methods
 class Kuromoji {
