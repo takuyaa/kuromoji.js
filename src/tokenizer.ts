@@ -82,9 +82,6 @@ export class Tokenizer {
   }
 
   tokenizeForSentence(sentence: string, tokens: any[]) {
-    if (tokens == null) {
-      tokens = []
-    }
     const lattice = this.getLattice(sentence)
     const best_path = this.viterbi_searcher.search(lattice)
     let last_pos = 0
