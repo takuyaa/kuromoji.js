@@ -22,7 +22,7 @@ var DictionaryLoader = require("./DictionaryLoader");
 
 /**
  * BrowserDictionaryLoader inherits DictionaryLoader, using jQuery XHR for download
- * @param {object} options Options for the dictionary
+ * @param {object} options Options for the dictionary (only dic_path for now)
  * @constructor
  */
 function BrowserDictionaryLoader(options) {

@@ -24,7 +24,7 @@ var Tokenizer = require("../Tokenizer");
 
 /**
  * DictionaryLoader base constructor
- * @param {string} dic_path Dictionary path
+ * @param {object} options Options for the dictionary (only dic_path for now)
  * @constructor
  */
 function DictionaryLoader(options) {
