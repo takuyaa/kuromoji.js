@@ -27,7 +27,7 @@ describe("DictionaryLoader", function () {
     before(function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
 
-        var loader = new DictionaryLoader(DIC_DIR);
+        var loader = new DictionaryLoader({ dic_path: DIC_DIR });
         loader.load(function (err, dic) {
             dictionaries = dic;
             done();
@@ -51,8 +51,8 @@ describe("DictionaryLoader", function () {
 describe("DictionaryLoader about loading", function () {
     it("could load directory path without suffix /", function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
-        
-        var loader = new DictionaryLoader("dict"); // not have suffix /
+
+        var loader = new DictionaryLoader({ dic_path: "dict" }); // not have suffix /
         loader.load(function (err, dic) {
             expect(err).to.be.null;
             expect(dic).to.not.be.undefined;
@@ -60,7 +60,7 @@ describe("DictionaryLoader about loading", function () {
         });
     });
     it("couldn't load dictionary, then call with error", function (done) {
-        var loader = new DictionaryLoader("non-exist/dictionaries");
+        var loader = new DictionaryLoader({ dic_path: "non-exist/dictionaries"});
         loader.load(function (err, dic) {
             expect(err).to.be.an.instanceof(Error);
             done();

@@ -49,7 +49,7 @@ describe("Tokenizer for IPADic", function () {
 
     before(function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
-        kuromoji.builder({ dicPath: DIC_DIR }).build(function (error, _tokenizer) {
+        kuromoji.loader({ dic_path: DIC_DIR }).load(function (error, _tokenizer) {
             tokenizer = _tokenizer;
             expect(tokenizer).to.be.a("object");
             done();

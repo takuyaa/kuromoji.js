@@ -23,11 +23,11 @@ var DictionaryLoader = require("./DictionaryLoader");
 
 /**
  * NodeDictionaryLoader inherits DictionaryLoader
- * @param {string} dic_path Dictionary path
+ * @param {object} options Options for the dictionary (only dic_path for now)
  * @constructor
  */
-function NodeDictionaryLoader(dic_path) {
-    DictionaryLoader.apply(this, [ dic_path ]);
+function NodeDictionaryLoader(options) {
+    DictionaryLoader.call(this, options);
 }
 
 NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);

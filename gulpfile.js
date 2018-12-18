@@ -66,7 +66,7 @@ gulp.task("create-dat-files", (done) => {
     }
 
     const dic = new IPADic();
-    const builder = kuromoji.dictionaryBuilder();
+    const builder = kuromoji.builder();
 
     // Build token info dictionary
     const tokenInfoPromise = dic.readTokenInfo((line) => {

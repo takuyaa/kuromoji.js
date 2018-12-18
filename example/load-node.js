@@ -21,7 +21,7 @@ var kuromoji = require("../src/kuromoji");
 var DIC_DIR = "dict/";
 
 // Load dictionaries from file, and prepare tokenizer
-kuromoji.builder({ dicPath: DIC_DIR }).build(function (error, tokenizer) {
+kuromoji.loader({ dic_path: DIC_DIR }).load(function (error, tokenizer) {
     var path = tokenizer.tokenize("すもももももももものうち");
     console.log(path);
     module.exports = tokenizer;

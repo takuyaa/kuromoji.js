@@ -71,7 +71,7 @@ vm.$watch("inputText", function (value) {
 
 
 // Load and prepare tokenizer
-kuromoji.builder({ dicPath: DIC_URL }).build(function (error, _tokenizer) {
+kuromoji.loader({ dic_path: DIC_URL }).load(function (error, _tokenizer) {
     if (error != null) {
         console.log(error);
     }
