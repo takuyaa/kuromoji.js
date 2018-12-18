@@ -26,9 +26,9 @@ describe("ViterbiBuilder", function () {
 
     before(function (done) {
         this.timeout(5 * 60 * 1000); // 5 min
-        var loader = new DictionaryLoader(DIC_DIR);
-        loader.load(function (err, dic) {
-            viterbi_builder = new ViterbiBuilder(dic);
+        var loader = new DictionaryLoader({ dic_path: DIC_DIR });
+        loader.load(function (err, tokenizer) {
+            viterbi_builder = tokenizer.viterbi_builder;
             done();
         });
     });

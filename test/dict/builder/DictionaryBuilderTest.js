@@ -34,7 +34,7 @@ describe("DictionaryBuilder", function () {
 
     before("Build", function (done) {
         // Build token info dictionary
-        var builder = kuromoji.dictionaryBuilder();
+        var builder = kuromoji.builder();
         var tokenInfo = fs.readFileSync(tid_dic_file, "utf-8");
         tokenInfo.split("\n").map(function (line) {
             builder.addTokenInfoDictionary(line);
