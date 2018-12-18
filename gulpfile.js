@@ -8,7 +8,6 @@ const merge = require('event-stream').merge;
 const jshint = require("gulp-jshint");
 const browserify = require("browserify");
 const source = require("vinyl-source-stream");
-const gzip = require("gulp-gzip");
 const mocha = require("gulp-mocha");
 const istanbul = require("gulp-istanbul");
 const webserver = require('gulp-webserver');
@@ -132,18 +131,12 @@ gulp.task("create-dat-files", (done) => {
     });
 });
 
-gulp.task("compress-dict", () => {
-    return gulp.src("dict/*.dat")
-        .pipe(gzip())
-        .pipe(gulp.dest("dict/"));
-});
-
 gulp.task("clean-dat-files", (done) => {
     return del([ "dict/*.dat" ], done);
 });
 
 gulp.task("build-dict", [ "build", "clean-dict" ], () => {
-    sequence("create-dat-files", "compress-dict", "clean-dat-files");
+    sequence("create-dat-files", "clean-dat-files");
 });
 
 gulp.task("test", [ "build" ], () => {

@@ -22,7 +22,7 @@ Directory tree is as follows:
     build/
       kuromoji.js -- JavaScript file for browser (Browserified)
     demo/         -- Demo
-    dict/         -- Dictionaries for tokenizer (gzipped)
+    dict/         -- Dictionaries for tokenizer (uncompressed)
     example/      -- Examples to use in Node.js
     src/          -- JavaScript source
     test/         -- Unit test
@@ -57,7 +57,7 @@ You can prepare tokenizer like this:
 
 ### Browser
 
-You only need the build/kuromoji.js and dict/*.dat.gz files
+You only need the build/kuromoji.js and dict/*.dat files
 
 Install with Bower package manager:
 
@@ -77,6 +77,10 @@ In your JavaScript:
         console.log(path);
     });
 
+On your server:
+
+    Host the dictionary files and compress them using either gzip or brotli. Make sure to
+    set the `Content-Type` header so they are automatically decompressed by the browser.
 
 API
 ---
