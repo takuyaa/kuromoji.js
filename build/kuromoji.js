@@ -8114,24 +8114,19 @@ BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
  * @param {BrowserDictionaryLoader~onLoad} callback Callback function
  */
 BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "arraybuffer";
-    xhr.onload = function () {
-        if (this.status > 0 && this.status !== 200) {
-            callback(xhr.statusText, null);
-            return;
+    fetch(url).then(function (response) {
+        if (!response.ok){
+            callback(response.statusText, null);
         }
-        var arraybuffer = this.response;
 
-        var gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer));
-        var typed_array = gz.decompress();
-        callback(null, typed_array.buffer);
-    };
-    xhr.onerror = function (err) {
-        callback(err, null);
-    };
-    xhr.send();
+        response.arrayBuffer().then(function (arraybuffer) {
+            var gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer));
+            var typed_array = gz.decompress();
+            callback(null, typed_array.buffer);
+        });
+    }).catch(function (exception) {
+        callback(exception, null);
+    });
 };
 
 /**
