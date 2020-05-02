@@ -47,7 +47,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
     async.parallel([
         // Trie
         function (callback) {
-            async.map([ "base.dat.gz", "check.dat.gz" ], function (filename, _callback) {
+            async.map([ "base.dat", "check.dat" ], function (filename, _callback) {
                 loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
@@ -67,7 +67,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         },
         // Token info dictionaries
         function (callback) {
-            async.map([ "tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz" ], function (filename, _callback) {
+            async.map([ "tid.dat", "tid_pos.dat", "tid_map.dat" ], function (filename, _callback) {
                 loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
@@ -88,7 +88,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         },
         // Connection cost matrix
         function (callback) {
-            loadArrayBuffer(path.join(dic_path, "cc.dat.gz"), function (err, buffer) {
+            loadArrayBuffer(path.join(dic_path, "cc.dat"), function (err, buffer) {
                 if(err) {
                     return callback(err);
                 }
@@ -99,7 +99,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         },
         // Unknown dictionaries
         function (callback) {
-            async.map([ "unk.dat.gz", "unk_pos.dat.gz", "unk_map.dat.gz", "unk_char.dat.gz", "unk_compat.dat.gz", "unk_invoke.dat.gz" ], function (filename, _callback) {
+            async.map([ "unk.dat", "unk_pos.dat", "unk_map.dat", "unk_char.dat", "unk_compat.dat", "unk_invoke.dat" ], function (filename, _callback) {
                 loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
