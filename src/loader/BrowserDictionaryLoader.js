@@ -19,6 +19,12 @@
 
 var DictionaryLoader = require("./DictionaryLoader");
 
+if (!window.kuromoji) {
+    window.kuromoji = {
+        cached_dics: []
+    };
+}
+
 /**
  * BrowserDictionaryLoader inherits DictionaryLoader, using jQuery XHR for download
  * @param {string} dic_path Dictionary path
@@ -36,14 +42,31 @@ BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
  * @param {BrowserDictionaryLoader~onLoad} callback Callback function
  */
 BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
-    fetch(url).then(function (response) {
-        if (!response.ok){
-            callback(response.statusText, null);
-        }
+    var cached_dic = window.kuromoji.cached_dics.find(function (cached_dic) {
+        return cached_dic.url === url;
+    });
 
-        response.arrayBuffer().then(function (arraybuffer) {
-            callback(null, arraybuffer);
-        });
+    if (!cached_dic) {
+        cached_dic = {
+            fetch: fetch(url).then(function (response) {
+                return new Promise(function (resolve, reject) {
+                    if (!response.ok) {
+                        reject(response.statusText);
+                    }
+
+                    response.arrayBuffer().then(function (arraybuffer) {
+                        resolve(arraybuffer);
+                    });
+                });
+            }),
+            url
+        };
+
+        window.kuromoji.cached_dics.push(cached_dic);
+    }
+
+    cached_dic.fetch.then(function (arraybuffer) {
+        callback(null, arraybuffer);
     }).catch(function (exception) {
         callback(exception, null);
     });
