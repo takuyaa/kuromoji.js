@@ -114,7 +114,11 @@ DictionaryLoader.prototype.load = function (load_callback) {
                 var unk_pos_buffer = new Uint8Array(buffers[1]);
                 var unk_map_buffer = new Uint8Array(buffers[2]);
                 var cat_map_buffer = new Uint8Array(buffers[3]);
-                var compat_cat_map_buffer = new DataView(buffers[4]).setUint32();
+                var byteLength = buffers[4].byteLength;
+                var alignment = Uint32Array.BYTES_PER_ELEMENT;
+                var alignedLength = byteLength - (byteLength % alignment);
+                var alignedBuffer = buffers[4].slice(0, alignedLength);
+                var compat_cat_map_buffer = new Uint32Array(alignedBuffer);
                 var invoke_def_buffer = new Uint8Array(buffers[5]);
 
                 dic.loadUnknownDictionaries(unk_buffer, unk_pos_buffer, unk_map_buffer, cat_map_buffer, compat_cat_map_buffer, invoke_def_buffer);
