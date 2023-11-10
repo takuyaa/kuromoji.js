@@ -30,7 +30,7 @@
     "gulp-jsdoc3": "^1.0.1",
     "gulp-jshint": "^2.1.0",
     "gulp-mocha": "^10.0.0",
-    "gulp-webserver": "^0.5.0",
+    "gulp-webserver": "^0.9.1",
     "jshint": "^2.9.5",
     "mecab-ipadic-seed": "0.0.2",
     "merge-stream": "^2.0.0",
