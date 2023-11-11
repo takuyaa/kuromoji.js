@@ -26,7 +26,6 @@
     "gulp-gh-pages-will": "^0.5.5",
     "gulp-git": "^2.10.1",
     "gulp-gzip": "^1.4.2",
-    "gulp-jsdoc3": "^3.0.0",
     "gulp-jshint": "^2.1.0",
     "gulp-mocha": "^10.0.0",
     "jsdoc": "^4.0.2",
