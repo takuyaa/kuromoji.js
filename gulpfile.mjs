@@ -11,7 +11,6 @@ import browserify from "browserify";
 import source from "vinyl-source-stream";
 import gzip from "gulp-gzip";
 import mocha from "gulp-mocha";
-import jsdoc from "gulp-jsdoc3";
 import ghPages from 'gulp-gh-pages-will';
 import bump from 'gulp-bump';
 import connect from 'gulp-connect';
@@ -43,7 +42,8 @@ export const build_task = series( clean_task, function build() {
 });
 
 export const watch_task = () => {
-  watch([ "src/**/*.js", "test/**/*.js" ], series(lint_task, build_task, jsdoc_task));
+  watch([ "src/**/*.js", "test/**/*.js" ], series(lint_task, build_task));
+  // TODO:gulp-jsdoc3依存をなくすためjsdoc生成のタスクをなくした。将来的にwatchの仕方を変える
 };
 
 const clean_dict_task = () => {
@@ -157,15 +157,9 @@ export const lint_task = () => {
     .pipe(_reporter("default"));
 };
 
-const clean_jsdoc_task = () => {
+export const clean_jsdoc_task = () => {
   return deleteAsync([ "publish/jsdoc/" ]);
 };
-
-export const jsdoc_task = series(clean_jsdoc_task, (cb) => {
-  const config = JSON.parse(readFileSync('./jsdoc.json', 'utf8'));
-  src([ "src/**/*.js" ], {read: false})
-    .pipe(jsdoc(config, cb));
-});
 
 const clean_demo_task = () => {
   return deleteAsync([ "publish/demo/" ]);
@@ -181,19 +175,19 @@ export const copy_demo_task = series(clean_demo_task, build_task, function copy_
       .pipe(dest('publish/demo/kuromoji/dict/')));
 });
 
-export const webserver_task = series(jsdoc_task, () => {
+export const webserver_task = () => {
   connect.server({
     root: 'publish/',
     port: 8000,
     livereload: true,
     directoryListing: true
   })
-});
+};
 
-export const deploy_task = series(jsdoc_task, () => {
+export const deploy_task = () => {
   return src('publish/**/*')
     .pipe(ghPages());
-});
+};
 
 export const version_task = () => {
   let type = 'patch';

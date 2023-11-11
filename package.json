@@ -29,6 +29,7 @@
     "gulp-jsdoc3": "^3.0.0",
     "gulp-jshint": "^2.1.0",
     "gulp-mocha": "^10.0.0",
+    "jsdoc": "^4.0.2",
     "jshint": "^2.13.6",
     "mecab-ipadic-seed": "0.0.2",
     "merge-stream": "^2.0.0",
@@ -63,14 +64,14 @@
     "build-dict": "gulp build_dict_task",
     "clean": "gulp clean_task",
     "coverage": "nyc --reporter=lcov mocha",
-    "deploy": "npm run build-demo && gulp deploy_task",
-    "jsdoc": "gulp jsdoc_task",
+    "deploy": "npm run build-demo && npm run jsdoc && gulp deploy_task",
+    "jsdoc": "gulp clean_jsdoc_task && jsdoc -c jsdoc.json -r src",
     "lint": "gulp lint_task",
     "release": "gulp release_task",
     "test": "gulp test_task",
     "version": "gulp version_task",
     "watch": "gulp watch_task",
-    "webserver": "npm run build-demo && gulp webserver_task",
+    "webserver": "npm run build-demo && npm run jsdoc && gulp webserver_task",
     "update-libraries": "npx npm-check-updates -u"
   }
 }
