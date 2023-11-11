@@ -11,10 +11,10 @@ import browserify from "browserify";
 import source from "vinyl-source-stream";
 import gzip from "gulp-gzip";
 import mocha from "gulp-mocha";
-import webserver from 'gulp-webserver';
 import jsdoc from "gulp-jsdoc3";
 import ghPages from 'gulp-gh-pages-will';
 import bump from 'gulp-bump';
+import connect from 'gulp-connect';
 import minimist from 'minimist';
 import IPADic from 'mecab-ipadic-seed';
 import kuromoji from './src/kuromoji.js';
@@ -182,12 +182,12 @@ export const copy_demo_task = series(clean_demo_task, build_task, function copy_
 });
 
 export const webserver_task = series(jsdoc_task, () => {
-  src("publish/")
-    .pipe(webserver({
-      port: 8000,
-      livereload: true,
-      directoryListing: true
-    }));
+  connect.server({
+    root: 'publish/',
+    port: 8000,
+    livereload: true,
+    directoryListing: true
+  })
 });
 
 export const deploy_task = series(jsdoc_task, () => {
