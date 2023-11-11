@@ -3,6 +3,7 @@
     "ipadic",
     "kuromoji",
     "lcov",
-    "mecab"
+    "mecab",
+    "preinstall"
   ]
 }

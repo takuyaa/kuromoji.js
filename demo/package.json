@@ -1,21 +1,18 @@
 {
   "name": "kuromoji-demo",
   "homepage": "https://github.com/takuyaa/kuromoji.js",
-  "authors": [
-    "Takuya Asano <takuya.a@gmail.com>"
-  ],
+  "author": "Takuya Asano <takuya.a@gmail.com>",
   "description": "kuromoji.js demo",
   "license": "MIT",
   "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
     "test",
     "tests"
   ],
   "dependencies": {
-    "foundation": "~5.4.7",
+    "foundation": "^4.2.1-1",
     "vue": "^2.5.16"
   }
 }

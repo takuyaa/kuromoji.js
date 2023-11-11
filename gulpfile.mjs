@@ -11,11 +11,8 @@ import browserify from "browserify";
 import source from "vinyl-source-stream";
 import gzip from "gulp-gzip";
 import mocha from "gulp-mocha";
-import istanbul from 'gulp-istanbul';
-const { hookRequire, writeReports } = istanbul;
 import webserver from 'gulp-webserver';
 import jsdoc from "gulp-jsdoc3";
-import bower from 'gulp-bower';
 import ghPages from 'gulp-gh-pages-will';
 import bump from 'gulp-bump';
 import minimist from 'minimist';
@@ -28,7 +25,7 @@ const { add, commit, tag } = pkg_git;
 
 export const clean_task = (done) => {
   return deleteAsync([
-    ".publish/",
+    "publish/",
     "coverage/",
     "build/",
     "publish/"
@@ -174,7 +171,7 @@ const clean_demo_task = () => {
   return deleteAsync([ "publish/demo/" ]);
 };
 
-const copy_demo_task = series(clean_demo_task, build_task, function copy_demo() {
+export const copy_demo_task = series(clean_demo_task, build_task, function copy_demo() {
   return merge(
     src('demo/**/*')
       .pipe(dest('publish/demo/')),
@@ -184,11 +181,7 @@ const copy_demo_task = series(clean_demo_task, build_task, function copy_demo() 
       .pipe(dest('publish/demo/kuromoji/dict/')));
 });
 
-export const build_demo_task = series(copy_demo_task, function build_demo() {
-  return bower({ cwd: 'publish/demo/' });
-});
-
-export const webserver_task = series(build_demo_task, jsdoc_task, () => {
+export const webserver_task = series(jsdoc_task, () => {
   src("publish/")
     .pipe(webserver({
       port: 8000,
@@ -197,7 +190,7 @@ export const webserver_task = series(build_demo_task, jsdoc_task, () => {
     }));
 });
 
-export const deploy_task = series(build_demo_task, jsdoc_task, () => {
+export const deploy_task = series(jsdoc_task, () => {
   return src('publish/**/*')
     .pipe(ghPages());
 });

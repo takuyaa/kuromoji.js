@@ -30,6 +30,9 @@ components
 # Gulp
 gulp.1
 
+#nyc
+.nyc_output
+
 # For GitHub Pages (gh-pages branch)
 .publish
 publish

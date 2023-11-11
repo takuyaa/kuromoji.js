@@ -10,35 +10,36 @@
     "url": "https://github.com/takuyaa/kuromoji.js/issues"
   },
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^3.2.5",
     "doublearray": "0.0.2",
     "zlibjs": "^0.3.1"
   },
   "devDependencies": {
-    "browserify": "^16.1.1",
-    "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
+    "browserify": "^17.0.0",
+    "chai": "^4.3.10",
+    "coveralls": "^3.1.1",
     "del": "^7.1.0",
     "gulp": "^4.0.2",
-    "gulp-bower": "^0.0.15",
-    "gulp-bump": "^3.1.0",
+    "gulp-bump": "^3.2.0",
     "gulp-conventional-changelog": "^4.0.0",
     "gulp-gh-pages-will": "^0.5.5",
-    "gulp-git": "^2.5.2",
-    "gulp-gzip": "^1.2.0",
-    "gulp-istanbul": "^1.0.0",
-    "gulp-jsdoc3": "^1.0.1",
+    "gulp-git": "^2.10.1",
+    "gulp-gzip": "^1.4.2",
+    "gulp-jsdoc3": "^3.0.0",
     "gulp-jshint": "^2.1.0",
     "gulp-mocha": "^10.0.0",
     "gulp-webserver": "^0.9.1",
-    "jshint": "^2.9.5",
+    "jshint": "^2.13.6",
     "mecab-ipadic-seed": "0.0.2",
     "merge-stream": "^2.0.0",
-    "minimist": "^1.2.0",
-    "mocha-lcov-reporter": "^1.2.0",
+    "minimist": "^1.2.8",
+    "mocha-lcov-reporter": "^1.3.0",
     "nyc": "^15.1.0",
     "run-sequence": "^2.2.1",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "resolutions": {
+    "lodash": "4.17.21"
   },
   "homepage": "https://github.com/takuyaa/kuromoji.js",
   "keywords": [
@@ -56,18 +57,20 @@
     "url": "https://github.com/takuyaa/kuromoji.js.git"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "build": "gulp build_task",
-    "build-demo": "gulp build_demo_task",
+    "build-demo": "gulp copy_demo_task && npm install --prefix publish/demo",
     "build-dict": "gulp build_dict_task",
     "clean": "gulp clean_task",
     "coverage": "nyc --reporter=lcov mocha",
-    "deploy": "gulp deploy_task",
+    "deploy": "npm run build-demo && gulp deploy_task",
     "jsdoc": "gulp jsdoc_task",
     "lint": "gulp lint_task",
     "release": "gulp release_task",
     "test": "gulp test_task",
     "version": "gulp version_task",
     "watch": "gulp watch_task",
-    "webserver": "gulp webserver_task"
+    "webserver": "npm run build-demo && gulp webserver_task",
+    "update-libraries": "npx npm-check-updates -u"
   }
 }
