@@ -12,7 +12,8 @@
     "tests"
   ],
   "dependencies": {
-    "foundation": "^4.2.1-1",
+    "foundation-sites": "^6.8.1",
+    "jquery": "^3.7.1",
     "vue": "^2.5.16"
   }
 }
