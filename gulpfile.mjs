@@ -5,8 +5,6 @@ import pkg_gulp from 'gulp';
 const { dest, watch, src, series } = pkg_gulp;
 import {deleteAsync} from 'del';
 import merge from 'merge-stream';
-import jshint from 'gulp-jshint';
-const { reporter: _reporter } = jshint;
 import browserify from "browserify";
 import source from "vinyl-source-stream";
 import gzip from "gulp-gzip";
@@ -42,8 +40,8 @@ export const build_task = series( clean_task, function build() {
 });
 
 export const watch_task = () => {
-  watch([ "src/**/*.js", "test/**/*.js" ], series(lint_task, build_task));
-  // TODO:gulp-jsdoc3依存をなくすためjsdoc生成のタスクをなくした。将来的にwatchの仕方を変える
+  watch([ "src/**/*.js", "test/**/*.js" ], build_task);
+  // TODO:gulp-jsdoc3依存をなくすためlintとjsdoc生成のタスクをなくした。将来的にwatchの仕方を変える
 };
 
 const clean_dict_task = () => {
@@ -150,12 +148,6 @@ export const test_task = series(build_task, function test() {
   return src("test/**/*.js", { read: false })
     .pipe(mocha({ reporter: "list" }));
 });
-
-export const lint_task = () => {
-  return src([ "src/**/*.js" ])
-    .pipe(jshint())
-    .pipe(_reporter("default"));
-};
 
 export const clean_jsdoc_task = () => {
   return deleteAsync([ "publish/jsdoc/" ]);
