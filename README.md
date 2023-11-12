@@ -1,3 +1,5 @@
+This repository is an updated version of the obsolete kuromoji.js build environment.
+
 kuromoji.js
 ===========
 
