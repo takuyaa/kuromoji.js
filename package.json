@@ -1,13 +1,13 @@
 {
-  "name": "kuromoji",
-  "description": "JavaScript implementation of Japanese morphological analyzer",
+  "name": "@rajun1971/kuromoji",
+  "description": "Forked version of kuromoji.js",
   "version": "0.1.2",
-  "author": "Takuya Asano <takuya.a@gmail.com>",
+  "author": "Jun Kimura <rajun1971@gmail.com>",
   "browser": {
     "./src/loader/NodeDictionaryLoader.js": "./src/loader/BrowserDictionaryLoader.js"
   },
   "bugs": {
-    "url": "https://github.com/takuyaa/kuromoji.js/issues"
+    "url": "https://github.com/rajun1971/kuromoji.js/issues"
   },
   "dependencies": {
     "async": "^3.2.5",
@@ -45,7 +45,7 @@
   "resolutions": {
     "lodash": "4.17.21"
   },
-  "homepage": "https://github.com/takuyaa/kuromoji.js",
+  "homepage": "https://github.com/rajun1971/kuromoji.js",
   "keywords": [
     "japanese",
     "morphological analyzer",
@@ -58,7 +58,7 @@
   "main": "./src/kuromoji.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/takuyaa/kuromoji.js.git"
+    "url": "https://github.com/rajun1971/kuromoji.js.git"
   },
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
