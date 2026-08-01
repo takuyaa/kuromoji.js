@@ -17,9 +17,34 @@
 
 "use strict";
 
-var path = require("path");
 var async = require("async");
 var DynamicDictionaries = require("../dict/DynamicDictionaries");
+
+
+/**
+ * Join a dictionary base path with a filename.
+ *
+ * Node's path.join normalises away the double slash in a URL:
+ *
+ *   "https://cdn.example.com/dict" + "base.dat.gz"
+ *     -> "https:/cdn.example.com/dict/base.dat.gz"
+ *
+ * so loading dictionaries from any absolute URL fails (#37, #39, #43).
+ * It is also a Node builtin, which forces a shim into browser bundles.
+ *
+ * Plain concatenation is correct for URLs and for POSIX paths, and Node's
+ * fs accepts forward slashes on Windows too.
+ *
+ * @param {string} base Directory path or URL prefix
+ * @param {string} filename Dictionary file name
+ * @returns {string} Joined location
+ */
+function joinPath(base, filename) {
+    if (!base) {
+        return filename;
+    }
+    return base.replace(/[\/\\]+$/, "") + "/" + filename;
+}
 
 /**
  * DictionaryLoader base constructor
@@ -48,7 +73,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Trie
         function (callback) {
             async.map([ "base.dat.gz", "check.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
+                loadArrayBuffer(joinPath(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -68,7 +93,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Token info dictionaries
         function (callback) {
             async.map([ "tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
+                loadArrayBuffer(joinPath(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -88,7 +113,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         },
         // Connection cost matrix
         function (callback) {
-            loadArrayBuffer(path.join(dic_path, "cc.dat.gz"), function (err, buffer) {
+            loadArrayBuffer(joinPath(dic_path, "cc.dat.gz"), function (err, buffer) {
                 if(err) {
                     return callback(err);
                 }
@@ -100,7 +125,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
         // Unknown dictionaries
         function (callback) {
             async.map([ "unk.dat.gz", "unk_pos.dat.gz", "unk_map.dat.gz", "unk_char.dat.gz", "unk_compat.dat.gz", "unk_invoke.dat.gz" ], function (filename, _callback) {
-                loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
+                loadArrayBuffer(joinPath(dic_path, filename), function (err, buffer) {
                     if(err) {
                         return _callback(err);
                     }
@@ -135,3 +160,4 @@ DictionaryLoader.prototype.load = function (load_callback) {
  */
 
 module.exports = DictionaryLoader;
+module.exports.joinPath = joinPath;
