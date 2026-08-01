@@ -21,6 +21,35 @@ var path = require("path");
 var async = require("async");
 var DynamicDictionaries = require("../dict/DynamicDictionaries");
 
+
+/**
+ * Build a typed array over a buffer whose byte length may not be an exact
+ * multiple of the element size.
+ *
+ * `new Int16Array(buffer)` throws a RangeError when
+ * `buffer.byteLength % 2 !== 0`, and the same applies to Int32Array and
+ * Uint32Array with their own element sizes. Whether a decompressed
+ * dictionary buffer ends up padded depends on the gunzip implementation,
+ * which is why the same .gz files load in Chrome and throw in Firefox
+ * (#47, #49).
+ *
+ * Trailing bytes that cannot form a whole element carry no data — the
+ * dictionary builder writes whole elements — so truncating to the aligned
+ * length is lossless.
+ *
+ * @param {Function} TypedArray Constructor, e.g. Int16Array
+ * @param {ArrayBuffer} buffer Raw decompressed buffer
+ * @returns {Object} Typed array view over the aligned prefix
+ */
+function alignedTypedArray(TypedArray, buffer) {
+    var alignment = TypedArray.BYTES_PER_ELEMENT;
+    var remainder = buffer.byteLength % alignment;
+    if (remainder === 0) {
+        return new TypedArray(buffer);
+    }
+    return new TypedArray(buffer.slice(0, buffer.byteLength - remainder));
+}
+
 /**
  * DictionaryLoader base constructor
  * @param {string} dic_path Dictionary path
@@ -58,8 +87,8 @@ DictionaryLoader.prototype.load = function (load_callback) {
                 if(err) {
                     return callback(err);
                 }
-                var base_buffer = new Int32Array(buffers[0]);
-                var check_buffer = new Int32Array(buffers[1]);
+                var base_buffer = alignedTypedArray(Int32Array, buffers[0]);
+                var check_buffer = alignedTypedArray(Int32Array, buffers[1]);
 
                 dic.loadTrie(base_buffer, check_buffer);
                 callback(null);
@@ -92,7 +121,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
                 if(err) {
                     return callback(err);
                 }
-                var cc_buffer = new Int16Array(buffer);
+                var cc_buffer = alignedTypedArray(Int16Array, buffer);
                 dic.loadConnectionCosts(cc_buffer);
                 callback(null);
             });
@@ -114,7 +143,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
                 var unk_pos_buffer = new Uint8Array(buffers[1]);
                 var unk_map_buffer = new Uint8Array(buffers[2]);
                 var cat_map_buffer = new Uint8Array(buffers[3]);
-                var compat_cat_map_buffer = new Uint32Array(buffers[4]);
+                var compat_cat_map_buffer = alignedTypedArray(Uint32Array, buffers[4]);
                 var invoke_def_buffer = new Uint8Array(buffers[5]);
 
                 dic.loadUnknownDictionaries(unk_buffer, unk_pos_buffer, unk_map_buffer, cat_map_buffer, compat_cat_map_buffer, invoke_def_buffer);
@@ -135,3 +164,4 @@ DictionaryLoader.prototype.load = function (load_callback) {
  */
 
 module.exports = DictionaryLoader;
+module.exports.alignedTypedArray = alignedTypedArray;
